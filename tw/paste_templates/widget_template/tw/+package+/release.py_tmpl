@@ -1,0 +1,11 @@
+# Metadata for the widget EGG. Should leave it for the (unimplemented) widget
+# tracker to track it
+
+__DISTRIBUTION__ = ${repr(project)|empty}
+__DESCRIPTION__ = ${repr(description)|empty}
+__URL__ = ${repr(url)|empty}
+__VERSION__ = ${repr(version)|empty}
+__AUTHOR__ = ${repr(author)|empty}
+__EMAIL__ = ${repr(author_email)|empty}
+__COPYRIGHT__ = "Copyright ${year} ${author}"
+__LICENSE__ = ${repr(license_name)|empty}

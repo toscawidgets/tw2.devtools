@@ -1,0 +1,35 @@
+<p xmlns:py="http://genshi.edgewall.org/">
+    <b>${name}</b><br/>
+    <table><tr><td width="400">
+        ${widget.__doc__}
+
+        <?python import tw.core as twc ?>
+        <table py:if="widget">
+            <tr py:for="p in params"
+                    py:if="p.default is twc.Required">
+                <th class="required">$p.name</th>
+                <td>$p.description</td>
+            </tr>
+            <tr py:for="p in params"
+                    py:if="not p.internal
+                        and p.default is not twc.Required
+                        and (name == 'Widget' or p.defined_on != 'Widget')">
+                <th>$p.name</th>
+                <td>$p.description (default: ${repr(p.default)})</td>
+            </tr>
+        </table>
+
+        <py:if test="child_params">
+            Parameters for child widgets:
+            <table py:if="widget">
+                <tr py:for="p in child_params">
+                    <th>$p.name</th>
+                    <td>$p.description (default: ${repr(p.default)})</td>
+                </tr>
+            </table>
+        </py:if>
+
+    </td><td>
+        ${demo and demo.display()}
+    </td></tr></table>
+</p>

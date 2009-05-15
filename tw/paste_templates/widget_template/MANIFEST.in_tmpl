@@ -1,0 +1,2 @@
+recursive-include tw/${package}/templates *
+recursive-include tw/${package}/static *

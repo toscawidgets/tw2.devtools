@@ -1,0 +1,9 @@
+th {
+    font-weight: normal;
+    text-align: left;
+    vertical-align: top;
+    width: 100px;
+}
+th.required { font-weight: bold }
+
+td { vertical-align: top; }
