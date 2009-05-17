@@ -97,10 +97,10 @@ Example
 
 How an application using this could look::
 
-    class CustomerFormManager(twb.AutoForm):
+    class CustomerFormManager(twd.AutoForm):
         model = db.Customer
 
-    class CustomerFormRegular(twd.FilteringGrid):
+    class CustomerFormRegular(twd.AutoForm):
         model = db.Customer
 
     class CustomerListManager(twd.FilteringGrid):

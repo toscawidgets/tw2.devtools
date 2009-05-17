@@ -296,7 +296,7 @@ Python web widgets were pioneered in TurboGears and many of the key ideas remain
 
 ToscaWidgets had some success, but did not gain as much usage as hoped, in part due to a lack of documentation in the beginning. Over time, several moves were made to simplify the library. ToscaWidgets 2 is an attempt to simplify widgets even further - at the cost of breaking backward-compatibility. The key differences are:
 
- * Widget parameters can have values set in a request-local manner.
+ * TBD - instance per request
  * In widget libraries, parameters are defined declaratively.
  * Validation is done in the core widget library, and no longer relies on FormEncode.
  * Declarative instantiation of widgets has been made more concise.
