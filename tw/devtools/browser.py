@@ -24,7 +24,7 @@ class List(Page):
 class BrowseWidget(twc.Widget):
     id = None
     template = 'genshi:tw.devtools.templates.wb_widget'
-    resources = [twc.CSSLink.cls(modname='tw.devtools', filename='static/browser.css').req()]
+    resources = [twc.CSSLink(modname='tw.devtools', filename='static/browser.css').req()]
     name = twc.Variable()
     widget = twc.Variable()
     params = twc.Variable()
@@ -41,9 +41,9 @@ class BrowseWidget(twc.Widget):
             self.child_params.sort(key=lambda p: p._seq)
             req_prm = [p.name for p in self.params if p.default is twc.Required]
             if self.demo:
-                self.demo = self.demo(id='demo%i' % self.repetition, parent=self)
+                self.demo = self.demo(id='demo%i' % self.repetition, parent=self).req()
             elif not req_prm or req_prm == ['id']: # auto demo
-                self.demo = self.widget(id='demo', parent=self)
+                self.demo = self.widget(id='demo', parent=self).req()
             else:
                 self.demo = None
 
@@ -94,7 +94,7 @@ def widget_browser(environ, start_response):
     req = wo.Request(environ)
     resp = wo.Response(request=req, content_type="text/html; charset=UTF8")
     if req.path in paths:
-        resp.body = paths[req.path].display().encode('utf-8')
+        resp.body = paths[req.path].idisplay().encode('utf-8')
     else:
         resp.body = BrowseModule.idisplay(module = req.path.lstrip('/')).encode('utf-8')
     return resp(environ, start_response)
