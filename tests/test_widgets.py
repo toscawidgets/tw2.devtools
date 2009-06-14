@@ -24,11 +24,11 @@ class TestWidgets(object):
         assert(test.attrs['test'] == 'wibble')
 
     # this behaviour is removed
-    def xxtest_attribute_clash(self):
-        test = Test6(id='test', template='test', test='wibble')
+    def test_attribute_clash(self):
+        test = Test6(id='test', template='test', test='wibble').req()
         test.attrs = {'test':'blah'}
         try:
-            test.process()
+            test.prepare()
             assert(False)
         except twc.ParameterError:
             pass
