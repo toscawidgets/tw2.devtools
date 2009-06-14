@@ -1,22 +1,22 @@
 import formencode, tw.core as twc, testapi
 
 
-compound_widget = twc.CompoundWidget(id='a', children=[
-    twc.Widget(id='b', validator=twc.Validator(required=True)),
-    twc.Widget(id='c', validator=twc.Validator(required=True)),
+compound_widget = twc.CompoundWidget.cls(id='a', children=[
+    twc.Widget.cls(id='b', validator=twc.Validator(required=True)),
+    twc.Widget.cls(id='c', validator=twc.Validator(required=True)),
 ])
 
-repeating_widget = twc.RepeatingWidget(id='a', child=
-    twc.Widget(id='b', validator=twc.Validator(required=True))
+repeating_widget = twc.RepeatingWidget.cls(id='a', child=
+    twc.Widget.cls(validator=twc.Validator(required=True))
 )
 
 class TestValidation(object):
     def setUp(self):
         testapi.setup()
 
-    def test_call_validator(self):
+    def test_catch_errors(self):
         try:
-            twc.validation.call_validator(formencode.validators.Int, 'x')
+            twc.validation.catch_errors(lambda s, x: formencode.validators.Int.to_python(x))(None, 'x')
             assert(False)
         except twc.ValidationError:
             pass
@@ -47,7 +47,6 @@ class TestValidation(object):
             twc.Validator().to_python('abc\xC3')
             assert(False)
         except twc.ValidationError, e:
-            print e
             assert(str(e) == 'Received in the wrong character set')
 
     def test_strip(self):
@@ -55,8 +54,8 @@ class TestValidation(object):
         assert(twc.Validator(strip=False).to_python(' a ') == ' a ')
 
     def test_auto_unflatten(self):
-        test = twc.CompoundWidget(id='a', children=[
-            twc.Widget(id='b', validator=twc.Validator(required=True)),
+        test = twc.CompoundWidget.cls(id='a', children=[
+            twc.Widget.cls(id='b', validator=twc.Validator(required=True)),
         ])
         testapi.request(1)
         assert(test.validate({'a:b':'10'}) == {'b':'10'})
@@ -79,14 +78,14 @@ class TestValidation(object):
         except twc.ValidationError:
             pass
 
-    def test_process_validate(self):
+    def test_prepare_validate(self):
         class MyValidator(twc.Validator):
             def from_python(self, value):
                 return value.upper()
-        test = twc.Widget(id='a', template='b', validator=MyValidator())
+        test = twc.Widget.cls(id='a', template='b', validator=MyValidator()).req()
         testapi.request(1)
         test.value = 'fred'
-        test.process()
+        test.prepare()
         assert(test.value == 'FRED')
 
     def test_ve_string(self):
@@ -109,20 +108,19 @@ class TestValidation(object):
             assert(str(e) == 'Cannot be more than 10')
 
     def test_vld_leaf_pass(self):
-        test = twc.Widget(validator=twc.IntValidator())
-        testapi.request(1)
-        assert(test.validate('1') == 1)
+        test = twc.Widget.cls(validator=twc.IntValidator())
+        xx = test.req()
+        assert(xx._validate('1') == 1)
 
     def test_vld_leaf_fail(self):
-        test = twc.Widget(validator=twc.IntValidator())
-        testapi.request(1)
+        test = twc.Widget.cls(validator=twc.IntValidator()).req()
         try:
-            test.validate('x')
+            test._validate('x')
             assert(False)
         except twc.ValidationError:
             pass
 
-        assert(test.orig_value == 'x')
+        assert(test.value == 'x')
         assert(test.error_msg == 'Must be an integer')
 
     def test_compound_pass(self):
@@ -130,8 +128,9 @@ class TestValidation(object):
         inp = {'a': {'b':'test', 'c':'test2'}}
         out = compound_widget.validate(inp)
         assert(out == inp['a'])
-        assert(compound_widget.children.b.orig_value == 'test')
-        assert(compound_widget.children.c.orig_value == 'test2')
+        cw = twc.core.request_local()['validated_widget']
+        assert(cw.children.b.value == 'test')
+        assert(cw.children.c.value == 'test2')
 
     def test_compound_corrupt(self):
         testapi.request(1)
@@ -148,24 +147,26 @@ class TestValidation(object):
             assert(False)
         except twc.ValidationError:
             pass
-        assert(compound_widget.children.b.orig_value == 'test')
-        assert('enter a value' in compound_widget.children.c.error_msg)
+        cw = twc.core.request_local()['validated_widget']
+        assert(cw.children.b.value == 'test')
+        assert('enter a value' in cw.children.c.error_msg)
 
     def test_compound_whole_validator(self):
         pass # TBD
 
     def test_rw_pass(self):
         testapi.request(1)
+        rep = repeating_widget.req()
         inp = ['test', 'test2']
-        out = repeating_widget.validate(inp)
+        out = rep._validate(inp)
         assert(inp == out)
-        assert(repeating_widget.children[0].orig_value == 'test')
-        assert(repeating_widget.children[1].orig_value == 'test2')
+        assert(rep.children[0].value == 'test')
+        assert(rep.children[1].value == 'test2')
 
     def test_rw_corrupt(self):
         testapi.request(1)
         try:
-            repeating_widget.validate({'a':[]})
+            repeating_widget.validate({'a':{'a':'b'}})
             assert(False)
         except twc.ValidationError:
             pass
@@ -173,47 +174,56 @@ class TestValidation(object):
     def test_rw_child_fail(self):
         testapi.request(1)
         try:
-            repeating_widget.validate(['test', ''])
+            repeating_widget.validate({'a':['test', '']})
             assert(False)
         except twc.ValidationError, e:
             pass
-        assert(repeating_widget.children[0].orig_value == 'test')
-        assert('enter a value' in repeating_widget.children[1].error_msg)
+        rw = twc.core.request_local()['validated_widget']
+        assert(rw.children[0].value == 'test')
+        assert('enter a value' in rw.children[1].error_msg)
 
     def test_dow(self):
-        test = twc.DisplayOnlyWidget(child=compound_widget)
+        test = twc.DisplayOnlyWidget.cls(child=compound_widget)
         testapi.request(1)
         inp = {'a': {'b':'test', 'c':'test2'}}
         out = test.validate(inp)
         assert(out == inp['a'])
-        assert(test.child.c.b.orig_value == 'test')
-        assert(test.child.c.c.orig_value == 'test2')
+        test = twc.core.request_local()['validated_widget']
+        assert(test.child.children.b.value == 'test')
+        assert(test.child.children.c.value == 'test2')
 
     #--
     # Test round trip
     #--
     def test_round_trip(self):
-        test = twc.CompoundWidget(id='a', children=[
-            twc.DisplayOnlyWidget(id='q', child= # TBD
-                twc.RepeatingWidget(id=None, child=
-                    twc.Widget(id='b')
-                )
+        test = twc.CompoundWidget.cls(id='a', children=[
+            twc.DisplayOnlyWidget.cls(child=
+                twc.RepeatingWidget.cls(id='q', child=twc.Widget)
             ),
-            twc.CompoundWidget(id='cc', children=[
-                twc.Widget(id='d'),
-                twc.Widget(id='e'),
+            twc.CompoundWidget.cls(id='cc', children=[
+                twc.Widget.cls(id='d'),
+                twc.Widget.cls(id='e'),
             ])
         ])
 
         widgets = [
-            test.c[0].child.children[0],
-            test.c[0].child.children[1],
-            test.c.cc.c.d,
-            test.c.cc.c.e,
+            test.children[0].child.children[0],
+            test.children[0].child.children[1],
+            test.children.cc.children.d,
+            test.children.cc.children.e,
         ]
 
-        data = dict((w._compound_id, 'test%d' % i) for i,w in enumerate(widgets))
+        data = dict((w._compound_id(), 'test%d' % i) for i,w in enumerate(widgets))
         testapi.request(1)
         vdata = test.validate(data)
+
+        test = twc.core.request_local()['validated_widget']
+        widgets = [
+            test.children[0].child.children[0],
+            test.children[0].child.children[1],
+            test.children.cc.children.d,
+            test.children.cc.children.e,
+        ]
+
         for i,w in enumerate(widgets):
-            assert(w.orig_value == 'test%d' % i)
+            assert(w.value == 'test%d' % i)
