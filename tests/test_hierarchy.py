@@ -8,25 +8,25 @@ class TestHierarchy(object):
     # Compound IDs
     #--
     def test_compound_id(self):
-        test = twc.CompoundWidget.cls(id='x', children=[
-            twc.Widget.cls(id='a'),
-            twc.Widget.cls(id='b'),
+        test = twc.CompoundWidget(id='x', children=[
+            twc.Widget(id='a'),
+            twc.Widget(id='b'),
         ])
         assert(test.children.a._compound_id() == 'x:a')
 
     def test_invalid_id(self):
         try:
-            a = twc.Widget.cls(id=':')
+            a = twc.Widget(id=':')
             assert(False)
         except twc.ParameterError, e:
             assert(str(e) == "Not a valid identifier: ':'")
 
     def test_id_none(self):
-        test = twc.Widget.cls(id=None)
+        test = twc.Widget(id=None)
         assert(test._compound_id() == '')
 
     def test_repeating_id(self):
-        test = twc.RepeatingWidget.cls(id='x', child=twc.Widget)
+        test = twc.RepeatingWidget(id='x', child=twc.Widget)
         assert(test.children[3]._compound_id() == 'x:3')
 
     #--
@@ -64,8 +64,8 @@ class TestHierarchy(object):
 
     def test_cw_propagate(self):
         test = twc.CompoundWidget(id='a', template='x', children=[
-            twc.Widget.cls(id='b'),
-            twc.Widget.cls(id='c'),
+            twc.Widget(id='b'),
+            twc.Widget(id='c'),
         ]).req()
         test.value = {'b':1, 'c':2}
         test.prepare()
@@ -87,7 +87,7 @@ class TestHierarchy(object):
     # Repeating Widget Bunch
     #--
     def test_rwb(self):
-        test = twc.RepeatingWidget.cls(child=twc.Widget).req()
+        test = twc.RepeatingWidget(child=twc.Widget).req()
         testapi.request(1)
         test.value = ['a', 'b', 'c']
         test.prepare()
@@ -96,7 +96,7 @@ class TestHierarchy(object):
         assert(test.children[0] is not test.children[1])
 
     def test_rw_propagate(self):
-        test = twc.RepeatingWidget.cls(child=twc.Widget).req()
+        test = twc.RepeatingWidget(child=twc.Widget).req()
         testapi.request(1)
         test.value = ['a', 'b', 'c']
         test.prepare()
@@ -105,7 +105,7 @@ class TestHierarchy(object):
         assert([w.value for w in test.children] == ['a', 'b', 'c', None])
 
     def test_rw_length(self):
-        test = twc.RepeatingWidget.cls(child=twc.Widget).req()
+        test = twc.RepeatingWidget(child=twc.Widget).req()
 
         test.value = range(10)
         test.repetitions = None

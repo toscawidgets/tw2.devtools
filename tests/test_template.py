@@ -81,10 +81,10 @@ class TestTemplate(object):
         twc.core.request_local()['middleware'] = twc.TwMiddleware(None)
         for outer in engines:
             for inner in engines:
-                test = twc.CompoundWidget.cls(id='x',
+                test = twc.CompoundWidget(id='x',
                     template = '%s:tw.tests.templates.widget_%s' % (outer, outer),
                     children=[
-                        TestWD.cls(id='y', template='%s:tw.tests.templates.inner_%s' % (inner, inner)),
+                        TestWD(id='y', template='%s:tw.tests.templates.inner_%s' % (inner, inner)),
                     ]
                 )
                 assert(test.idisplay().replace(kid_prefix, '') == '<p>TEST <p>TEST bob</p></p>')

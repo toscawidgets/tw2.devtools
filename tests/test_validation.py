@@ -1,13 +1,13 @@
 import formencode, tw.core as twc, testapi
 
 
-compound_widget = twc.CompoundWidget.cls(id='a', children=[
-    twc.Widget.cls(id='b', validator=twc.Validator(required=True)),
-    twc.Widget.cls(id='c', validator=twc.Validator(required=True)),
+compound_widget = twc.CompoundWidget(id='a', children=[
+    twc.Widget(id='b', validator=twc.Validator(required=True)),
+    twc.Widget(id='c', validator=twc.Validator(required=True)),
 ])
 
-repeating_widget = twc.RepeatingWidget.cls(id='a', child=
-    twc.Widget.cls(validator=twc.Validator(required=True))
+repeating_widget = twc.RepeatingWidget(id='a', child=
+    twc.Widget(validator=twc.Validator(required=True))
 )
 
 class TestValidation(object):
@@ -54,8 +54,8 @@ class TestValidation(object):
         assert(twc.Validator(strip=False).to_python(' a ') == ' a ')
 
     def test_auto_unflatten(self):
-        test = twc.CompoundWidget.cls(id='a', children=[
-            twc.Widget.cls(id='b', validator=twc.Validator(required=True)),
+        test = twc.CompoundWidget(id='a', children=[
+            twc.Widget(id='b', validator=twc.Validator(required=True)),
         ])
         testapi.request(1)
         assert(test.validate({'a:b':'10'}) == {'b':'10'})
@@ -82,7 +82,7 @@ class TestValidation(object):
         class MyValidator(twc.Validator):
             def from_python(self, value):
                 return value.upper()
-        test = twc.Widget.cls(id='a', template='b', validator=MyValidator()).req()
+        test = twc.Widget(id='a', template='b', validator=MyValidator()).req()
         testapi.request(1)
         test.value = 'fred'
         test.prepare()
@@ -108,12 +108,12 @@ class TestValidation(object):
             assert(str(e) == 'Cannot be more than 10')
 
     def test_vld_leaf_pass(self):
-        test = twc.Widget.cls(validator=twc.IntValidator())
+        test = twc.Widget(validator=twc.IntValidator())
         xx = test.req()
         assert(xx._validate('1') == 1)
 
     def test_vld_leaf_fail(self):
-        test = twc.Widget.cls(validator=twc.IntValidator()).req()
+        test = twc.Widget(validator=twc.IntValidator()).req()
         try:
             test._validate('x')
             assert(False)
@@ -183,7 +183,7 @@ class TestValidation(object):
         assert('enter a value' in rw.children[1].error_msg)
 
     def test_dow(self):
-        test = twc.DisplayOnlyWidget.cls(child=compound_widget)
+        test = twc.DisplayOnlyWidget(child=compound_widget)
         testapi.request(1)
         inp = {'a': {'b':'test', 'c':'test2'}}
         out = test.validate(inp)
@@ -196,13 +196,13 @@ class TestValidation(object):
     # Test round trip
     #--
     def test_round_trip(self):
-        test = twc.CompoundWidget.cls(id='a', children=[
-            twc.DisplayOnlyWidget.cls(child=
-                twc.RepeatingWidget.cls(id='q', child=twc.Widget)
+        test = twc.CompoundWidget(id='a', children=[
+            twc.DisplayOnlyWidget(child=
+                twc.RepeatingWidget(id='q', child=twc.Widget)
             ),
-            twc.CompoundWidget.cls(id='cc', children=[
-                twc.Widget.cls(id='d'),
-                twc.Widget.cls(id='e'),
+            twc.CompoundWidget(id='cc', children=[
+                twc.Widget(id='d'),
+                twc.Widget(id='e'),
             ])
         ])
 

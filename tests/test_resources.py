@@ -151,7 +151,7 @@ class TestResources(object):
 
     def test_mw_inject(self):
         testapi.request(1, mw)
-        widget = twc.Widget.cls(id='a', template='b', resources=[js]).req().prepare()
+        widget = twc.Widget(id='a', template='b', resources=[js]).req().prepare()
         assert(tst_mw.get('/').body == '<html><head><script type="text/javascript" src="paj"></script><title>a</title></head><body>hello</body></html>')
 
     def test_mw_inject_html_only(self):

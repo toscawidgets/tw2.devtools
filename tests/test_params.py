@@ -67,9 +67,9 @@ class TestParams(object):
 
     def test_child(self):
         assert(not hasattr(TestContainer, 'test'))
-        test = twc.Widget.cls(id='q')
+        test = twc.Widget(id='q')
         assert(not hasattr(test, 'test'))
-        test2 = TestContainer.cls(id='r', children=[test]).req()
+        test2 = TestContainer(id='r', children=[test]).req()
         assert(test2.c.q.test == 10)
 
     def xxtest_locked(self):

@@ -19,13 +19,13 @@ class TestWidgets(object):
             assert(str(e) == 'Widget is missing required parameter template')
 
     def test_attribute(self):
-        test = Test6.cls(id='test', template='test', test='wibble').req()
+        test = Test6(id='test', template='test', test='wibble').req()
         test.prepare()
         assert(test.attrs['test'] == 'wibble')
 
     # this behaviour is removed
     def xxtest_attribute_clash(self):
-        test = Test6.cls(id='test', template='test', test='wibble')
+        test = Test6(id='test', template='test', test='wibble')
         test.attrs = {'test':'blah'}
         try:
             test.process()
@@ -34,7 +34,7 @@ class TestWidgets(object):
             pass
 
     def test_deferred(self):
-        test = twc.Widget.cls(id='test', template=twc.Deferred(lambda: 'test'))
+        test = twc.Widget(id='test', template=twc.Deferred(lambda: 'test'))
         assert(test.template != 'test')
         ins = test.req()
         ins.prepare()
@@ -43,8 +43,8 @@ class TestWidgets(object):
     def test_child_attr(self):
         class LayoutContainer(twc.CompoundWidget):
             label = twc.ChildParam(default='b')
-        test = LayoutContainer.cls(children=[twc.Widget.cls(id='a', label='a')]).req()
+        test = LayoutContainer(children=[twc.Widget(id='a', label='a')]).req()
         assert(test.c.a.label == 'a')
-        test = LayoutContainer.cls(children=[twc.Widget.cls(id='a')]).req()
+        test = LayoutContainer(children=[twc.Widget(id='a')]).req()
         assert(test.c.a.label == 'b')
 
