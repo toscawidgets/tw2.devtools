@@ -42,8 +42,10 @@ class BrowseWidget(twc.Widget):
             req_prm = [p.name for p in self.params if p.default is twc.Required]
             if self.demo:
                 self.demo = self.demo(id='demo%i' % self.repetition, parent=self).req()
+                self.demo.prepare()
             elif not req_prm or req_prm == ['id']: # auto demo
                 self.demo = self.widget(id='demo', parent=self).req()
+                self.demo.prepare()
             else:
                 self.demo = None
 
