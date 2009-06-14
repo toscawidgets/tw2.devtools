@@ -13,30 +13,31 @@ class Welcome(Page):
 
 class List(Page):
     modules = twc.Variable()
-    def process(self):
-        super(List, self).process()
+    def prepare(self):
+        super(List, self).prepare()
         self.modules = [ep.module_name
-                        for ep in pr.iter_entry_points('toscawidgets.widgets')]
+                        for ep in pr.iter_entry_points('toscawidgets.widgets')
+                        if not ep.module_name.endswith('.samples')]
     template = "genshi:tw.devtools.templates.wb_list"
 
 
 class BrowseWidget(twc.Widget):
     id = None
     template = 'genshi:tw.devtools.templates.wb_widget'
-    resources = [twc.CSSLink(modname='tw.devtools', filename='static/browser.css')]
+    resources = [twc.CSSLink.cls(modname='tw.devtools', filename='static/browser.css').req()]
     name = twc.Variable()
     widget = twc.Variable()
     params = twc.Variable()
     child_params = twc.Variable()
     demo = twc.Variable()
 
-    def process(self):
-        super(BrowseWidget, self).process()
+    def prepare(self):
+        super(BrowseWidget, self).prepare()
         if self.value:
             self.name, self.widget, self.demo = self.value
             self.params = sorted(self.widget._params.values(), key=lambda p: p._seq)
             self.child_params = [p for p in self.widget._all_params.values()
-                                            if p.member_param and not p.internal]
+                                            if p.child_param and not p.internal]
             self.child_params.sort(key=lambda p: p._seq)
             req_prm = [p.name for p in self.params if p.default is twc.Required]
             if self.demo:
@@ -49,7 +50,7 @@ class BrowseWidget(twc.Widget):
 class BrowseModule(twc.RepeatingWidget):
     template = 'genshi:tw.devtools.templates.wb_module'
     module = twc.Param('module to display')
-    child = BrowseWidget()
+    child = BrowseWidget
     extra_reps = 0
 
     def _load_ep(self, module):
@@ -69,20 +70,18 @@ class BrowseModule(twc.RepeatingWidget):
         widgets.sort(key=lambda t: t[1]._seq)
         return widgets
 
-    def process(self):
+    def prepare(self):
         demo_for = {}
         try:
             samples = self._get_widgets(self._load_ep(self.module + '.samples'))
             for n,s in samples:
                 df = s.__dict__.get('demo_for', s.__mro__[1])
                 demo_for[df] = s
-        except Exception:
+        except Exception, e:
             pass
         widgets = self._get_widgets(self._load_ep(self.module))
         self.value = [(n, w, demo_for.get(w)) for n, w in widgets]
-        super(BrowseModule, self).process()
-
-module_detail = BrowseModule(id='x')
+        super(BrowseModule, self).prepare()
 
 paths = {
     '/': Index(),
@@ -94,16 +93,13 @@ paths = {
 def widget_browser(environ, start_response):
     req = wo.Request(environ)
     resp = wo.Response(request=req, content_type="text/html; charset=UTF8")
-
     if req.path in paths:
         resp.body = paths[req.path].display().encode('utf-8')
     else:
-        module_detail.module = req.path.lstrip('/')
-        resp.body = module_detail.display().encode('utf-8')
-
+        resp.body = BrowseModule.idisplay(module = req.path.lstrip('/')).encode('utf-8')
     return resp(environ, start_response)
 
-wb_app = twc.make_middleware(widget_browser)
+wb_app = twc.TwMiddleware(widget_browser)
 
 from paste.script import command as pc
 
@@ -117,6 +113,7 @@ class WbCommand(pc.Command):
     usage = 'blah'
 
     parser = pc.Command.standard_parser(verbose=True)
+
 
 if __name__ == '__main__':
     ws.make_server('', 8000, wb_app).serve_forever()

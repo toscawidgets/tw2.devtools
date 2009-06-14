@@ -1,1 +1,1 @@
-<p>TEST ${children.y.display()}</p>
+<p>TEST ${w.children.y.display()}</p>

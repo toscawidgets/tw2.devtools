@@ -1,11 +1,8 @@
-import webob as wo, webtest as wt, tw.core as twc, tw, os, testapi
+import webob as wo, webtest as wt, tw.core as twc, tw.tests, os, testapi
 
-js = twc.JSLink(link='paj')
-css = twc.CSSLink(link='joe')
-jssrc = twc.JSSource(src='bob')
-
-resources_app = twc.resources.registry
-tst_app = wt.TestApp(resources_app)
+js = twc.JSLink.req(link='paj')
+css = twc.CSSLink.req(link='joe')
+jssrc = twc.JSSource.req(src='bob')
 
 html = "<html><head><title>a</title></head><body>hello</body></html>"
 
@@ -15,10 +12,11 @@ def simple_app(environ, start_response):
     req = wo.Request(environ)
     ct = 'text/html' if req.path == '/' else 'test/plain'
     resp = wo.Response(request=req, content_type="%s; charset=UTF8" % ct)
-    inject_widget.process()
+    inject_widget.prepare()
     resp.body = html
     return resp(environ, start_response)
-tst_mw = wt.TestApp(twc.make_middleware(simple_app))
+mw = twc.TwMiddleware(simple_app)
+tst_mw = wt.TestApp(mw)
 
 
 class TestResources(object):
@@ -30,9 +28,9 @@ class TestResources(object):
         wb = twc.Widget(id='b', template='b', resources=[js,css])
 
         rl = testapi.request(1)
-        wa.process()
+        wa.prepare()
         assert(len(rl.get('resources', [])) == 0)
-        wb.process()
+        wb.prepare()
         assert(rl['resources'] == set([js,css]))
 
         rl = testapi.request(2)
@@ -40,19 +38,23 @@ class TestResources(object):
 
     def test_res_nodupe(self):
         wa = twc.Widget(id='a', template='b', resources=[js])
-        wb = twc.Widget(id='b', template='b', resources=[twc.JSLink(link='paj')])
-        wc = twc.Widget(id='c', template='b', resources=[twc.JSLink(link='test')])
+        wb = twc.Widget(id='b', template='b', resources=[twc.JSLink.req(link='paj')])
+        wc = twc.Widget(id='c', template='b', resources=[twc.JSLink.req(link='test')])
         wd = twc.Widget(id='d', template='b', resources=[css])
-        we = twc.Widget(id='e', template='b', resources=[twc.CSSLink(link='joe')])
+        we = twc.Widget(id='e', template='b', resources=[twc.CSSLink.req(link='joe')])
 
         rl = testapi.request(1)
-        wa.process()
-        wb.process()
+        wa.prepare()
+        wb.prepare()
+        r = rl['resources']
+        print r
+        for rr in r:
+            print hash(rr), rr.link
         assert(len(rl['resources']) == 1)
-        wc.process()
+        wc.prepare()
         assert(len(rl['resources']) == 2)
-        wd.process()
-        we.process()
+        wd.prepare()
+        we.prepare()
         assert(len(rl['resources']) == 3)
 
 
@@ -60,44 +62,44 @@ class TestResources(object):
     # ResourcesApp
     #--
     def test_not_found(self):
-        assert(tst_app.get('/fred', expect_errors=True).status == '404 Not Found')
-        assert(tst_app.get('/resources/test', expect_errors=True).status == '404 Not Found')
+        #assert(tst_mw.get('/fred', expect_errors=True).status == '404 Not Found')
+        assert(tst_mw.get('/resources/test', expect_errors=True).status == '404 Not Found')
 
     def test_serve(self):
-        resources_app.register('tw.tests', 'templates/simple_genshi.html')
+        mw.resources.register('tw.tests', 'templates/simple_genshi.html')
         fcont = open(os.path.join(os.path.dirname(tw.tests.__file__), 'templates/simple_genshi.html')).read()
-        assert(tst_app.get('/resources/tw.tests/templates/simple_genshi.html').body == fcont)
-        assert(tst_app.get('/resources/tw.tests/templates/notexist', expect_errors=True).status == '404 Not Found')
+        assert(tst_mw.get('/resources/tw.tests/templates/simple_genshi.html').body == fcont)
+        assert(tst_mw.get('/resources/tw.tests/templates/notexist', expect_errors=True).status == '404 Not Found')
 
     def test_dir_traversal(self): # check for potential security flaw
-        resources_app.register('tw.tests', 'templates/simple_genshi.html')
-        assert(tst_app.get('/resources/tw.tests/__init__.py', expect_errors=True).status == '404 Not Found')
-        assert(tst_app.get('/resources/tw.tests/templates/../__init__.py', expect_errors=True).status == '404 Not Found')
+        mw.resources.register('tw.tests', 'templates/simple_genshi.html')
+        assert(tst_mw.get('/resources/tw.tests/__init__.py', expect_errors=True).status == '404 Not Found')
+        assert(tst_mw.get('/resources/tw.tests/templates/../__init__.py', expect_errors=True).status == '404 Not Found')
 
     def test_different_file(self):
-        resources_app.register('tw.tests', 'templates/simple_genshi.html')
-        assert(tst_app.get('/resources/tw.tests/simple_kid.kid', expect_errors=True).status == '404 Not Found')
+        mw.resources.register('tw.tests', 'templates/simple_genshi.html')
+        assert(tst_mw.get('/resources/tw.tests/simple_kid.kid', expect_errors=True).status == '404 Not Found')
 
     def test_zipped(self):
         # assumes webtest is installed as a zipped egg
-        resources_app.register('webtest', '__init__.py')
-        assert(tst_app.get('/resources/webtest/__init__.py').body.startswith('# (c) 2005 Ian'))
+        mw.resources.register('webtest', '__init__.py')
+        assert(tst_mw.get('/resources/webtest/__init__.py').body.startswith('# (c) 2005 Ian'))
 
     #--
     # Links register resources
     #--
     def test_link_reg(self):
-        wa = twc.JSLink(modname='tw.tests', filename='templates/simple_mako.mak')
-        testapi.request(1)
-        wa.process()
+        testapi.request(1, mw)
+        wa = twc.JSLink.req(modname='tw.tests', filename='templates/simple_mako.mak')
+        wa.prepare()
         assert(wa.link == '/resources/tw.tests/templates/simple_mako.mak')
-        tst_app.get(wa.link)
+        tst_mw.get(wa.link)
 
     def test_mime_type(self):
-        wa = twc.JSLink(modname='tw.tests', filename='templates/simple_genshi.html')
-        testapi.request(1)
-        wa.process()
-        resp = tst_app.get(wa.link)
+        testapi.request(1, mw)
+        wa = twc.JSLink.req(modname='tw.tests', filename='templates/simple_genshi.html')
+        wa.prepare()
+        resp = tst_mw.get(wa.link)
         assert(resp.content_type == 'text/html')
         assert(resp.charset == 'UTF-8')
 
@@ -108,25 +110,25 @@ class TestResources(object):
     # Resource injector
     #--
     def test_inject_head(self):
-        rl = testapi.request(1)
+        rl = testapi.request(1, mw)
         out = twc.inject_resources(html, [js])
         assert(out == '<html><head><script type="text/javascript" src="paj"></script><title>a</title></head><body>hello</body></html>')
 
     def test_inject_body(self):
-        rl = testapi.request(1)
+        rl = testapi.request(1, mw)
         out = twc.inject_resources(html, [jssrc])
         assert(out == '<html><head><title>a</title></head><body>hello<script type="text/javascript">bob</script></body></html>')
 
     def test_inject_both(self):
-        rl = testapi.request(1)
+        rl = testapi.request(1, mw)
         out = twc.inject_resources(html, [js, jssrc])
         assert(out == '<html><head><script type="text/javascript" src="paj"></script><title>a</title></head><body>hello<script type="text/javascript">bob</script></body></html>')
 
     def test_detect_clear(self):
         widget = twc.Widget(id='a', template='b', resources=[js])
-        rl = testapi.request(1)
+        rl = testapi.request(1, mw)
         assert(len(rl.get('resources', [])) == 0)
-        widget.process()
+        widget.prepare()
         assert(len(rl.get('resources', [])) == 1)
         out = twc.inject_resources(html)
         assert(len(rl.get('resources', [])) == 0)
@@ -136,7 +138,7 @@ class TestResources(object):
     #--
     def test_mw_resourcesapp(self):
         testapi.request(1)
-        resources_app.register('tw.tests', 'templates/simple_genshi.html')
+        mw.resources.register('tw.tests', 'templates/simple_genshi.html')
         fcont = open(os.path.join(os.path.dirname(tw.tests.__file__), 'templates/simple_genshi.html')).read()
         print tst_mw.get('/resources/tw.tests/templates/simple_genshi.html').body
         assert(tst_mw.get('/resources/tw.tests/templates/simple_genshi.html').body == fcont)
@@ -148,10 +150,11 @@ class TestResources(object):
         assert(rl == {})
 
     def test_mw_inject(self):
-        testapi.request(1)
+        testapi.request(1, mw)
+        widget = twc.Widget.cls(id='a', template='b', resources=[js]).req().prepare()
         assert(tst_mw.get('/').body == '<html><head><script type="text/javascript" src="paj"></script><title>a</title></head><body>hello</body></html>')
 
     def test_mw_inject_html_only(self):
-        testapi.request(1)
-        widget = twc.Widget(id='a', template='b', resources=[js])
+        testapi.request(1, mw)
+        widget = twc.Widget.cls(id='a', template='b', resources=[js]).req().prepare()
         assert(tst_mw.get('/plain').body == html)

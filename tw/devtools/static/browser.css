@@ -1,9 +1,11 @@
 th {
     font-weight: normal;
     text-align: left;
-    vertical-align: top;
     width: 100px;
 }
 th.required { font-weight: bold }
-
-td { vertical-align: top; }
+td, td { vertical-align: top; }
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}

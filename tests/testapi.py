@@ -17,7 +17,10 @@ def setup():
     _request_local = {}
     _request_id = None
 
-def request(requestid):
+def request(requestid, mw=None):
     global _request_id
     _request_id = requestid
+    rl = twc.core.request_local()
+    rl.clear()
+    rl['middleware'] = mw
     return request_local_tst()
