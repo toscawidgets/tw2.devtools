@@ -70,8 +70,9 @@ class TestTemplate(object):
 
     def test_widget_display(self):
         twc.core.request_local()['middleware'] = twc.TwMiddleware(None)
-        test = TestWD(id='x')
+        mtest = TestWD(id='x')
         for eng in engines:
+            test = mtest.req()
             test.template = '%s:tw.tests.templates.inner_%s' % (eng, eng)
             out = strip_prefix(kid_prefix, test.display())
             assert(out == '<p>TEST bob</p>')

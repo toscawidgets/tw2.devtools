@@ -66,7 +66,7 @@ class TestHierarchy(object):
         test = twc.CompoundWidget(id='a', template='x', children=[
             twc.Widget.cls(id='b'),
             twc.Widget.cls(id='c'),
-        ])
+        ]).req()
         test.value = {'b':1, 'c':2}
         test.prepare()
         assert(test.children.b.value == 1)
@@ -137,6 +137,7 @@ class TestHierarchy(object):
         assert(a.parent is None)
         assert(test.child.parent.template == test.template)
         testapi.request(1)
+        test = test.req()
         test.value = 10
         test.prepare()
         assert(test.child.value == 10)

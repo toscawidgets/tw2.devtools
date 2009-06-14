@@ -12,7 +12,7 @@ def simple_app(environ, start_response):
     req = wo.Request(environ)
     ct = 'text/html' if req.path == '/' else 'test/plain'
     resp = wo.Response(request=req, content_type="%s; charset=UTF8" % ct)
-    inject_widget.prepare()
+    inject_widget.req().prepare()
     resp.body = html
     return resp(environ, start_response)
 mw = twc.TwMiddleware(simple_app)
@@ -24,8 +24,8 @@ class TestResources(object):
         testapi.setup()
 
     def test_res_collection(self):
-        wa = twc.Widget(id='a', template='b')
-        wb = twc.Widget(id='b', template='b', resources=[js,css])
+        wa = twc.Widget(id='a', template='b').req()
+        wb = twc.Widget(id='b', template='b', resources=[js,css]).req()
 
         rl = testapi.request(1)
         wa.prepare()
@@ -37,11 +37,11 @@ class TestResources(object):
         assert(len(rl.get('resources', [])) == 0)
 
     def test_res_nodupe(self):
-        wa = twc.Widget(id='a', template='b', resources=[js])
-        wb = twc.Widget(id='b', template='b', resources=[twc.JSLink.req(link='paj')])
-        wc = twc.Widget(id='c', template='b', resources=[twc.JSLink.req(link='test')])
-        wd = twc.Widget(id='d', template='b', resources=[css])
-        we = twc.Widget(id='e', template='b', resources=[twc.CSSLink.req(link='joe')])
+        wa = twc.Widget(id='a', template='b', resources=[js]).req()
+        wb = twc.Widget(id='b', template='b', resources=[twc.JSLink.req(link='paj')]).req()
+        wc = twc.Widget(id='c', template='b', resources=[twc.JSLink.req(link='test')]).req()
+        wd = twc.Widget(id='d', template='b', resources=[css]).req()
+        we = twc.Widget(id='e', template='b', resources=[twc.CSSLink.req(link='joe')]).req()
 
         rl = testapi.request(1)
         wa.prepare()
@@ -128,7 +128,7 @@ class TestResources(object):
         widget = twc.Widget(id='a', template='b', resources=[js])
         rl = testapi.request(1, mw)
         assert(len(rl.get('resources', [])) == 0)
-        widget.prepare()
+        widget.req().prepare()
         assert(len(rl.get('resources', [])) == 1)
         out = twc.inject_resources(html)
         assert(len(rl.get('resources', [])) == 0)
@@ -156,5 +156,5 @@ class TestResources(object):
 
     def test_mw_inject_html_only(self):
         testapi.request(1, mw)
-        widget = twc.Widget.cls(id='a', template='b', resources=[js]).req().prepare()
+        widget = twc.Widget(id='a', template='b', resources=[js]).req().prepare()
         assert(tst_mw.get('/plain').body == html)
