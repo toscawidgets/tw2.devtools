@@ -1,8 +1,8 @@
 import webob as wo, webtest as wt, tw.core as twc, tw.tests, os, testapi
 
-js = twc.JSLink.req(link='paj')
-css = twc.CSSLink.req(link='joe')
-jssrc = twc.JSSource.req(src='bob')
+js = twc.JSLink(link='paj')
+css = twc.CSSLink(link='joe')
+jssrc = twc.JSSource(src='bob')
 
 html = "<html><head><title>a</title></head><body>hello</body></html>"
 
@@ -31,25 +31,22 @@ class TestResources(object):
         wa.prepare()
         assert(len(rl.get('resources', [])) == 0)
         wb.prepare()
-        assert(rl['resources'] == set([js,css]))
-
+        for r in rl['resources']:
+            assert(any(isinstance(r, b) for b in [js,css]))
         rl = testapi.request(2)
         assert(len(rl.get('resources', [])) == 0)
 
     def test_res_nodupe(self):
         wa = twc.Widget(id='a', template='b', resources=[js]).req()
-        wb = twc.Widget(id='b', template='b', resources=[twc.JSLink.req(link='paj')]).req()
-        wc = twc.Widget(id='c', template='b', resources=[twc.JSLink.req(link='test')]).req()
+        wb = twc.Widget(id='b', template='b', resources=[twc.JSLink(link='paj')]).req()
+        wc = twc.Widget(id='c', template='b', resources=[twc.JSLink(link='test')]).req()
         wd = twc.Widget(id='d', template='b', resources=[css]).req()
-        we = twc.Widget(id='e', template='b', resources=[twc.CSSLink.req(link='joe')]).req()
+        we = twc.Widget(id='e', template='b', resources=[twc.CSSLink(link='joe')]).req()
 
         rl = testapi.request(1)
         wa.prepare()
         wb.prepare()
         r = rl['resources']
-        print r
-        for rr in r:
-            print hash(rr), rr.link
         assert(len(rl['resources']) == 1)
         wc.prepare()
         assert(len(rl['resources']) == 2)
@@ -90,14 +87,14 @@ class TestResources(object):
     #--
     def test_link_reg(self):
         testapi.request(1, mw)
-        wa = twc.JSLink.req(modname='tw.tests', filename='templates/simple_mako.mak')
+        wa = twc.JSLink(modname='tw.tests', filename='templates/simple_mako.mak').req()
         wa.prepare()
         assert(wa.link == '/resources/tw.tests/templates/simple_mako.mak')
         tst_mw.get(wa.link)
 
     def test_mime_type(self):
         testapi.request(1, mw)
-        wa = twc.JSLink.req(modname='tw.tests', filename='templates/simple_genshi.html')
+        wa = twc.JSLink(modname='tw.tests', filename='templates/simple_genshi.html').req()
         wa.prepare()
         resp = tst_mw.get(wa.link)
         assert(resp.content_type == 'text/html')
@@ -111,17 +108,17 @@ class TestResources(object):
     #--
     def test_inject_head(self):
         rl = testapi.request(1, mw)
-        out = twc.inject_resources(html, [js])
+        out = twc.inject_resources(html, [js.req()])
         assert(out == '<html><head><script type="text/javascript" src="paj"></script><title>a</title></head><body>hello</body></html>')
 
     def test_inject_body(self):
         rl = testapi.request(1, mw)
-        out = twc.inject_resources(html, [jssrc])
+        out = twc.inject_resources(html, [jssrc.req()])
         assert(out == '<html><head><title>a</title></head><body>hello<script type="text/javascript">bob</script></body></html>')
 
     def test_inject_both(self):
         rl = testapi.request(1, mw)
-        out = twc.inject_resources(html, [js, jssrc])
+        out = twc.inject_resources(html, [js.req(), jssrc.req()])
         assert(out == '<html><head><script type="text/javascript" src="paj"></script><title>a</title></head><body>hello<script type="text/javascript">bob</script></body></html>')
 
     def test_detect_clear(self):

@@ -24,7 +24,7 @@ class List(Page):
 class BrowseWidget(twc.Widget):
     id = None
     template = 'genshi:tw.devtools.templates.wb_widget'
-    resources = [twc.CSSLink(modname='tw.devtools', filename='static/browser.css').req()]
+    resources = [twc.CSSLink(modname='tw.devtools', filename='static/browser.css')]
     name = twc.Variable()
     widget = twc.Variable()
     params = twc.Variable()
