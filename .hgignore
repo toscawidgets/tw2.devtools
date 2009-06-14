@@ -1,2 +1,3 @@
 glob:tw.devtools.egg-info
 glob:docs/.output
+glob:*.pyc
