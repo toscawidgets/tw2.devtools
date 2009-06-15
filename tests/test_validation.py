@@ -1,5 +1,8 @@
-import formencode, tw.core as twc, testapi
-
+import tw2.core as twc, testapi
+try:
+    import formencode
+except ImportError:
+    formencoe = None
 
 compound_widget = twc.CompoundWidget(id='a', children=[
     twc.Widget(id='b', validator=twc.Validator(required=True)),

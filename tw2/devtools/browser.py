@@ -6,25 +6,25 @@ class Page(twc.Widget):
     id = None
 
 class Index(Page):
-    template = "genshi:tw.devtools.templates.wb_index"
+    template = "genshi:tw2.devtools.templates.wb_index"
 
 class Welcome(Page):
-    template = "genshi:tw.devtools.templates.wb_welcome"
+    template = "genshi:tw2.devtools.templates.wb_welcome"
 
 class List(Page):
     modules = twc.Variable()
     def prepare(self):
         super(List, self).prepare()
-        self.modules = [ep.module_name
+        self.modules = sorted(ep.module_name
                         for ep in pr.iter_entry_points('tw2.widgets')
-                        if not ep.module_name.endswith('.samples')]
-    template = "genshi:tw.devtools.templates.wb_list"
+                        if not ep.module_name.endswith('.samples'))
+    template = "genshi:tw2.devtools.templates.wb_list"
 
 
 class BrowseWidget(twc.Widget):
     id = None
-    template = 'genshi:tw.devtools.templates.wb_widget'
-    resources = [twc.CSSLink(modname='tw.devtools', filename='static/browser.css')]
+    template = 'genshi:tw2.devtools.templates.wb_widget'
+    resources = [twc.CSSLink(modname='tw2.devtools', filename='static/browser.css')]
     name = twc.Variable()
     widget = twc.Variable()
     params = twc.Variable()
@@ -50,13 +50,13 @@ class BrowseWidget(twc.Widget):
                 self.demo = None
 
 class BrowseModule(twc.RepeatingWidget):
-    template = 'genshi:tw.devtools.templates.wb_module'
+    template = 'genshi:tw2.devtools.templates.wb_module'
     module = twc.Param('module to display')
     child = BrowseWidget
     extra_reps = 0
 
     def _load_ep(self, module):
-        for ep in pr.iter_entry_points('toscawidgets.widgets'):
+        for ep in pr.iter_entry_points('tw2.widgets'):
             if ep.module_name == module:
                 return ep.load()
         raise Exception('module not found')

@@ -1,4 +1,4 @@
-import tw.core as twc, testapi
+import tw2.core as twc, testapi
 
 class TestHierarchy(object):
     def setUp(self):

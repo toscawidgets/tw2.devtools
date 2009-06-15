@@ -4,7 +4,7 @@ th {
     width: 100px;
 }
 th.required { font-weight: bold }
-td, td { vertical-align: top; }
+th, td { vertical-align: top; }
 ul {
     list-style-type: none;
     padding-left: 0;

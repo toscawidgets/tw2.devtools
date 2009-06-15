@@ -1,24 +1,19 @@
-import os
-import sys
-
 from setuptools import setup, find_packages
 
-execfile(os.path.join("tw", "${package}", "release.py"))
-
 setup(
-    name=__DISTRIBUTION__,
-    version=__VERSION__,
-    description=__DESCRIPTION__,
-    author=__AUTHOR__,
-    author_email=__EMAIL__,
-    url=__URL__,
+    name='',
+    version='',
+    description='',
+    author='',
+    author_email='',
+    url=',
     install_requires=[
-        "ToscaWidgets",
+        "tw2.core",
         ## Add other requirements here
         # "Genshi",
         ],
     packages=find_packages(exclude=['ez_setup', 'tests']),
-    namespace_packages = ['tw'],
+    namespace_packages = ['tw2'],
     zip_safe=False,
     include_package_data=True,
     test_suite = 'nose.collector',

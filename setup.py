@@ -7,8 +7,6 @@ from setuptools import setup
 if sys.version_info < (2, 5):
     raise SystemExit("Python 2.5 or later is required")
 
-execfile(os.path.join("tw", "release.py"))
-
 def get_description(fname='README.txt'):
     # Adapted from PEAK-Rules' setup.py
     # Get our long description from the documentation
@@ -24,9 +22,6 @@ def get_description(fname='README.txt'):
     f.close()
     return ''.join(lines)
 
-PACKAGES = [
-    'tw2.devtools',
-    ]
 
 # Requirements to install buffet plugins and engines
 _extra_cheetah = ["Cheetah>=1.0", "TurboCheetah>=0.9.5"]
@@ -37,14 +32,14 @@ _extra_mako = ["Mako >= 0.1.1"]
 # Requierements to run all tests
 _extra_tests = _extra_cheetah + _extra_genshi + _extra_kid + _extra_mako + ['BeautifulSoup', 'WebTest']
 
+
 setup(
-    name=__PACKAGE_NAME__,
-    version=__VERSION__,
+    name='tw2.devtools',
+    version='2.0.0-alpha1',
     description="Web widget creation toolkit based on TurboGears widgets - development tools",
     long_description = get_description(),
     install_requires=[
-        'tw.core',
-        'simplejson >= 2.0',
+        'tw2.core',
         ],
     extras_require = {
         'cheetah': _extra_cheetah,
@@ -58,12 +53,12 @@ setup(
     tests_require = _extra_tests,
     url = "http://toscawidgets.org/",
     download_url = "http://toscawidgets.org/download/",
-    author=__AUTHOR__,
-    author_email=__EMAIL__,
-    license=__LICENSE__,
+    author='Paul Johnston, Alberto Valverde & contributors',
+    author_email='paj@pajhome.org.uk',
+    license='MIT',
     test_suite = 'tests',
-    packages = PACKAGES,
-    namespace_packages = [],
+    packages = ['tw2.devtools'],
+    namespace_packages = ['tw2'],
     include_package_data=True,
     exclude_package_data={"thirdparty" : ["*"]},
     entry_points="""

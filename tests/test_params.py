@@ -1,4 +1,4 @@
-import tw.core as twc, testapi
+import tw2.core as twc, testapi
 
 class Test(object):
     __metaclass__ = twc.params.ParamMeta
