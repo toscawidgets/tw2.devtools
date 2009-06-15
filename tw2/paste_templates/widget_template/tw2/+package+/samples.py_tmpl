@@ -6,9 +6,9 @@ These samples will appear in the WidgetBrowser
 See http://toscawidgets.org/documentation/WidgetBrowser for more information
 """
 
-from tw.${package} import ${package.capitalize()}
+import widgets
 
-class Demo${package.capitalize()}(${package.capitalize()}):
+class Demo${package.capitalize()}(widgets.${package.capitalize()}):
     # Provide default parameters, value, etc... here
     # default = <some-default-value>
     pass

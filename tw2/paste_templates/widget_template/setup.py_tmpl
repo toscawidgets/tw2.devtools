@@ -25,8 +25,8 @@ setup(
     entry_points="""
         [toscawidgets.widgets]
         # Register your widgets so they can be listed in the WidgetBrowser
-        widgets = tw.${package}
-        samples = tw.${package}.samples
+        widgets = tw2.${package}
+        samples = tw2.${package}.samples
     """,
     keywords = [
         'toscawidgets.widgets',

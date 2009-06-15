@@ -25,7 +25,7 @@ def get_description(fname='README.txt'):
     return ''.join(lines)
 
 PACKAGES = [
-    'tw.devtools',
+    'tw2.devtools',
     ]
 
 # Requirements to install buffet plugins and engines

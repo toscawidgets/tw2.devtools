@@ -1,4 +1,4 @@
-import wsgiref.simple_server as ws, webob as wo, tw.core as twc
+import wsgiref.simple_server as ws, webob as wo, tw2.core as twc
 import pkg_resources as pr
 
 
@@ -16,7 +16,7 @@ class List(Page):
     def prepare(self):
         super(List, self).prepare()
         self.modules = [ep.module_name
-                        for ep in pr.iter_entry_points('toscawidgets.widgets')
+                        for ep in pr.iter_entry_points('tw2.widgets')
                         if not ep.module_name.endswith('.samples')]
     template = "genshi:tw.devtools.templates.wb_list"
 
