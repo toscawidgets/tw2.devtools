@@ -1,3 +1,4 @@
 glob:docs/.output
 glob:*.pyc
 glob:tw2.devtools.egg-info
+glob:*Thumbs.db
