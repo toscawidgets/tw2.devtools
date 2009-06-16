@@ -112,8 +112,7 @@ class TestValidation(object):
 
     def test_vld_leaf_pass(self):
         test = twc.Widget(validator=twc.IntValidator())
-        xx = test.req()
-        assert(xx._validate('1') == 1)
+        assert(test.req()._validate('1') == 1)
 
     def test_vld_leaf_fail(self):
         test = twc.Widget(validator=twc.IntValidator()).req()

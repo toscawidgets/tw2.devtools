@@ -100,9 +100,6 @@ class TestResources(object):
         assert(resp.content_type == 'text/html')
         assert(resp.charset == 'UTF-8')
 
-    def test_auto_modname(self):
-        pass  # TBD
-
     #--
     # Resource injector
     #--
