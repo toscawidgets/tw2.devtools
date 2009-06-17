@@ -1,7 +1,7 @@
 Tutorial
 ========
 
-This tutorial will show you how to get ToscaWidgets 2 working with a WSGI application. You need to install tw2.core, tw2.devtools and tw2.forms, from the Mercurial repositories:
+This tutorial will show you how to get ToscaWidgets 2 working with a WSGI application. You need to install tw2.core, tw2.devtools and tw2.forms, from the Mercurial repositories::
 
     hg clone http://bitbucket.org/paj/tw2core/ tw2.core
     hg clone http://bitbucket.org/paj/tw2devtools/ tw2.devtools
@@ -9,7 +9,7 @@ This tutorial will show you how to get ToscaWidgets 2 working with a WSGI applic
 
 You need to run ``python setup.py develop`` for each repository.
 
-To check the install worked, we will try to run the widget browser. Go into ``tw2.devtools/tw2/devtools`` and issue ``python browser.py`` Then browse to http://localhost:8000/. You should see the widget browser, like this:
+To check the install worked, we will try to run the widget browser. Issue ``paster twbrowser`` then browse to http://localhost:8000/. You should see the widget browser, like this:
 
 .. image:: tut0.png
 
