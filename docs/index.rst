@@ -20,6 +20,7 @@ Contents:
    core
    validation
    devtools
+   history
    future
 
 

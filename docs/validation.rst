@@ -31,10 +31,10 @@ Using Validators
 There's two parts to using validators. First, specify validators in the widget definition, like this::
 
     class RegisterUser(twf.TableForm):
-        validator = MyValidator
-        name = twf.TextField
-        password = twf.PasswordField(validator=twf.StrongPassword(minlen=6))
-        confirm_password = twf.PasswordField(validator=twf.MatchField('password'))
+        validator = twc.MatchValidator('email', 'confirm_email')
+        name = twf.TextField()
+        email = twf.TextField(validator=twc.EmailValidator)
+        confirm_email = twf.PasswordField()
 
 You can specify a validator on any widget, either a class or an instance. Using an instance lets you pass parameters to the validator. You can code your own validator by subclassing :class:`tw2.core.Validator`. All validators have at least these parameters:
 
@@ -65,6 +65,14 @@ Then validate works recursively, using the widget hierarchy
 There is a specific :class:`tw2.core.Invalid` marker, but this is only seen in a compound/repeating validator, if some of the children have failed validation.
 
 
+**TBD** Messages
+
+
+.. autoclass:: tw2.core.ValidationError
+    :members: __all__
+
+
+
 Available Validators
 --------------------
 
@@ -78,6 +86,9 @@ Available Validators
     :members: __all__
 
 .. autoclass:: tw2.core.ListLengthValidator
+    :members: __all__
+
+.. autoclass:: tw2.core.RangeValidator
     :members: __all__
 
 .. autoclass:: tw2.core.IntValidator
@@ -102,7 +113,4 @@ Available Validators
     :members: __all__
 
 .. autoclass:: tw2.core.IpAddressValidator
-    :members: __all__
-
-.. autoclass:: tw2.core.ValidationError
     :members: __all__

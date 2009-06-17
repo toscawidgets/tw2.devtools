@@ -50,8 +50,12 @@ In practice, you will rarely need to explictly create an instance, using ``req()
     MyWidget.display(value='my value')
 
 
-Identifier
-~~~~~~~~~~
+**Thread Safety**
+
+ToscaWidgets is designed to support thread-safe usage, with no internal locks. To support this, Widget classes must not be modified after they are defined, and Widget instances must only be used in a single thread.
+
+
+**Identifier**
 
 In general, a widget needs to have an identifier. Without an id, it cannot participate in value propagation or validation, and it does not get an id= attribute. For widgets with an id, a compound id is generated for the id= attribute, by joining it's parent and all ancestors' ids. The default separator is colon (:), resulting in compound ids like "form:sub_form:field".
 
@@ -116,8 +120,6 @@ Every widget has a template, this is core to the widget concept. ToscaWidgets ai
 
 The :attr:`template` parameter takes the form ``engine_name:template_path``. The ``engine_name`` is the name that the template engine defines in the ``python.templating.engines`` entry point, e.g. ``genshi`` or ``mako``. Specifying the engine name is compulsory, unlike previous versions of ToscaWidgets. The ``template_path`` is a string the engine can use to locate the template; usually this is dot-notation that mimics the semantics of Python's import statement, e.g. ``myapp.templates.mytemplate``.
 
-
-.. automethod:: tw2.core.Widget.display
 .. autoclass:: tw2.core.template.EngineManager
 
 
@@ -126,13 +128,10 @@ Resources
 
 Widgets often need to access resources, such as JavaScript or CSS files. A key feature of widgets is the ability to automatically serve such resources, and insert links into appropriate sections of the page, e.g. ``<HEAD>``. There are several parts to this:
 
- * Widget subclasses can define resources they use
- * When a Widget is instantiated, it registers resources in request-local storage
+ * Widgets can define resources they use, using the :attr:`resources` parameter.
+ * When a Widget is displayed, it registers resources in request-local storage
  * The resource injection middleware detects resources in request-local storage, and rewrites the generated page to include appropriate links.
  * The resource server middleware serves static files used by widgets
-
-TBD: removing dupes
-Efficiency - merging with parent
 
 Defining Resources
 ~~~~~~~~~~~~~~~~~~
@@ -226,18 +225,12 @@ The function tw2.core.request_local returns a dictionary that is local to the cu
 
 In some situations thread-local is not appropriate, e.g. twisted. In this case the application will need to monkey patch request_local to use appropriate request_local storage.
 
-**Thread Safety**
-
-ToscaWidgets is designed to support thread-safe usage, with no internal locks. To support this, Widget classes must not be modified after they are defined, and Widget instances must only be used in a single thread.
-
 **pkg_resources**
 
 tw2.core aims to take advantage of pkg_resources where it is available, but not to depend on it. This allows tw2.core to be used on Google App Engine. pkg_resources is used in two places:
 
  * In ResourcesApp, to serve resources from modules, which may be zipped eggs. If pkg_resources is not available, this uses a simpler system that does not support zipped eggs.
  * In EngingeManager, to load a templating engine from a text string, e.g. "genshi". If pkg_resources is not available, this uses a simple, built-in mapping that covers the most common template engines.
-
-
 
 
 History

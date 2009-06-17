@@ -136,3 +136,11 @@ If you submit the form with some invalid fields, you should see this:
 
 .. image:: tut4.png
 
+
+Creating Widgets
+----------------
+
+ * Decide what base class to use
+ * Identify parameters
+ * Write template
+ * Add any ``prepare()`` code you need
