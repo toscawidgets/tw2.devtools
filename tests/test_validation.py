@@ -71,16 +71,6 @@ class TestValidation(object):
             msgs = {'b':'c'}
         assert(B.msgs == {'a':'b', 'b':'c'})
 
-    def test_meta_super(self):
-        class MyVld(twc.Validator):
-            def validate_python(self, value):
-                pass
-        try:
-            MyVld(required=True).to_python(None)
-            assert(False)
-        except twc.ValidationError:
-            pass
-
     def test_prepare_validate(self):
         class MyValidator(twc.Validator):
             def from_python(self, value):

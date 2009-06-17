@@ -231,38 +231,3 @@ tw2.core aims to take advantage of pkg_resources where it is available, but not 
 
  * In ResourcesApp, to serve resources from modules, which may be zipped eggs. If pkg_resources is not available, this uses a simpler system that does not support zipped eggs.
  * In EngingeManager, to load a templating engine from a text string, e.g. "genshi". If pkg_resources is not available, this uses a simple, built-in mapping that covers the most common template engines.
-
-
-History
-=======
-
-Python web widgets were pioneered in TurboGears and many of the key ideas remain. Once the value of widgets was realised, a move was made to create a separate library, this is ToscaWidgets. The key differences are:
-
- * ToscaWidget is framework independent.
- * Multiple template engines are supported.
- * Resource links are injected by rewriting the page on output.
- * The forms library is separate from the core widget library.
- * The tw namespace exists for widget libraries to be located in.
-
-ToscaWidgets had some success, but did not gain as much usage as hoped, in part due to a lack of documentation in the beginning. Over time, several moves were made to simplify the library. ToscaWidgets 2 is an attempt to simplify widgets even further - at the cost of breaking backward-compatibility. The key differences are:
-
- * TBD - instance per request
- * In widget libraries, parameters are defined declaratively.
- * Validation is done in the core widget library, and no longer relies on FormEncode.
- * Declarative instantiation of widgets has been made more concise.
- * Framework interfaces are almost completely removed; ToscaWidgets is just a piece of WSGI middleware.
-
-Some minor differences to be aware of:
-
- * There is no automatic calling of parameters; you must explicitly use :class:`tw2.core.Deferred` for this.
- * A widget does not automatically get the ``resources`` from its base class.
- * engine_name is compulsory for templates, and there are no inline templates (yet, may be added later).
- * ToscaWidgets 2 requires Python 2.5
- * tw.api has been removed; just use tw2.core
- * The compound ID separator is now a colon (:) and IDs may not contain colons.
- * The toscasidgets simple template engine has been removed.
- * Widget.__call__ is no longer an alias for display, as this causes problems for Cheetah.
-
-In tw2.forms
- * name is always identical to id
- * Simpler inheritence tree
