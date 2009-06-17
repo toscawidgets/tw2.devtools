@@ -3,7 +3,9 @@ Tutorial
 
 This tutorial will show you how to get ToscaWidgets 2 working with a WSGI application. You need to install tw2.core, tw2.devtools and tw2.forms, from the Mercurial repositories:
 
-    TBD
+    hg clone http://bitbucket.org/paj/tw2core/ tw2.core
+    hg clone http://bitbucket.org/paj/tw2devtools/ tw2.devtools
+    hg clone http://bitbucket.org/paj/tw2forms/ tw2.forms
 
 You need to run ``python setup.py develop`` for each repository.
 
