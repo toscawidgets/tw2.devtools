@@ -78,7 +78,7 @@ class BrowseModule(twc.RepeatingWidget):
     def prepare(self):
         demo_for = {}
         try:
-            sample_module = self._load_ep(self.module + '.xxsamples')
+            sample_module = self._load_ep(self.module + '.samples')
         except ModuleMissing:
             pass
         else:
