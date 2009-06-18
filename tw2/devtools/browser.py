@@ -49,6 +49,9 @@ class BrowseWidget(twc.Widget):
             else:
                 self.demo = None
 
+class ModuleMissing(Exception):
+    pass
+
 class BrowseModule(twc.RepeatingWidget):
     template = 'genshi:tw2.devtools.templates.wb_module'
     module = twc.Param('module to display')
@@ -59,7 +62,7 @@ class BrowseModule(twc.RepeatingWidget):
         for ep in pr.iter_entry_points('tw2.widgets'):
             if ep.module_name == module:
                 return ep.load()
-        raise Exception('module not found')
+        raise ModuleMissing()
 
     def _get_widgets(self, module=None, modname=None):
         if not module:
@@ -75,12 +78,14 @@ class BrowseModule(twc.RepeatingWidget):
     def prepare(self):
         demo_for = {}
         try:
-            samples = self._get_widgets(self._load_ep(self.module + '.samples'))
+            sample_module = self._load_ep(self.module + '.xxsamples')
+        except ModuleMissing:
+            pass
+        else:
+            samples = self._get_widgets()
             for n,s in samples:
                 df = s.__dict__.get('demo_for', s.__mro__[1])
                 demo_for[df] = s
-        except Exception, e:
-            pass
         widgets = self._get_widgets(self._load_ep(self.module))
         self.value = [(n, w, demo_for.get(w)) for n, w in widgets]
         super(BrowseModule, self).prepare()
@@ -108,11 +113,11 @@ from paste.script import command as pc
 class WbCommand(pc.Command):
     def command(self):
         ws.make_server('', 8000, wb_app).serve_forever()
-    group_name = 'toscawidgets'
-    summary = 'Browse widgets'
+    group_name = 'tw2'
+    summary = 'Browse available ToscaWidgets'
     min_args = 0
     max_args = 0
-    usage = 'blah'
+    usage = "then browse to http://localhost:8000/"
 
     parser = pc.Command.standard_parser(verbose=True)
 
