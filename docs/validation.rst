@@ -69,48 +69,22 @@ There is a specific :class:`tw2.core.Invalid` marker, but this is only seen in a
 
 
 .. autoclass:: tw2.core.ValidationError
-    :members: __all__
-
 
 
 Available Validators
 --------------------
 
 .. autoclass:: tw2.core.Validator
-    :members: __all__
-
 .. autoclass:: tw2.core.LengthValidator
-    :members: __all__
-
 .. autoclass:: tw2.core.StringLengthValidator
-    :members: __all__
-
 .. autoclass:: tw2.core.ListLengthValidator
-    :members: __all__
-
 .. autoclass:: tw2.core.RangeValidator
-    :members: __all__
-
 .. autoclass:: tw2.core.IntValidator
-    :members: __all__
-
 .. autoclass:: tw2.core.OneOfValidator
-    :members: __all__
-
 .. autoclass:: tw2.core.DateValidator
-    :members: __all__
-
 .. autoclass:: tw2.core.DateTimeValidator
-    :members: __all__
-
 .. autoclass:: tw2.core.RegexValidator
-    :members: __all__
-
 .. autoclass:: tw2.core.EmailValidator
-    :members: __all__
-
 .. autoclass:: tw2.core.UrlValidator
-    :members: __all__
-
 .. autoclass:: tw2.core.IpAddressValidator
-    :members: __all__
+.. autoclass:: tw2.core.MatchValidator
