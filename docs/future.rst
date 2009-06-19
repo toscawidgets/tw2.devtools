@@ -19,16 +19,11 @@ TBD: how to implement this?
 Widgets as Controllers
 ======================
 
-Sometimes widgets will want to define controller methods. This is particularly useful for Ajax widgets.
+:meth:`controller` is in instance method, so it gets ``self``. This is a different request to where the widget was displayed however, request-local variables are separate. You can use the session to pass state if required.
+
 
 Widget has a method, :meth:`link(**kw)` to generate a link to the controller method, with any desired parameters. When a link is generated, the widget is registered with the ToscaWidgets middleware. Requests to ``/controllers/my_widget`` will result in the controller method being called::
 
-    class MyWidget(twc.Widget):
-        def controller(self, req):
-            resp = #TBD
-            return resp
-
-The ``req`` parameter is a WebOb Request object, and the function must return a WebOb Response object. :meth:`controller` is in instance method, so it gets ``self``. This is a different request to where the widget was displayed however, request-local variables are separate. You can use the session to pass state if required.
 
 Security Model
 ~~~~~~~~~~~~~~
@@ -115,17 +110,3 @@ How an application using this could look::
                 return CustomerListManager
             else:
                 return CustomerListRegular
-
-Using Controllers
-~~~~~~~~~~~~~~~~~
-
-The most common use of a controller is simply to display the widget. Do this::
-
-    class MyWidget(twc.Widget):
-        def controller(req):
-            resp =
-            resp.body = self.display(displays_on='string').encode('utf-8')
-            return resp
-
-
-TBD: sitetemplate

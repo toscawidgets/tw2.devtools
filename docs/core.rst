@@ -188,6 +188,26 @@ And this is used by classes like :class:`TableForm` and :class:`TableFieldSet` t
         b = twf.TextArea()
 
 
+Widgets as Controllers
+======================
+
+Sometimes widgets will want to define controller methods. This is particularly useful for Ajax widgets. This can be done like this::
+
+    class MyWidget(twc.Widget):
+        @classmethod
+        def request(cls, req):
+            resp = webob.Response(request=req, content_type="text/html; charset=UTF8")
+            # ...
+            return resp
+
+The ``req`` parameter is a WebOb Request object, and the function must return a WebOb Response object.
+
+To register the controller with the middleware, you must do this::
+
+    mw = twc.TwMiddleware(app)
+    mw.controllers.register(MyWidget, 'mywidget')
+
+
 General Considerations
 ======================
 
