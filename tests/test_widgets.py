@@ -48,3 +48,17 @@ class TestWidgets(object):
         test = LayoutContainer(children=[twc.Widget(id='a')]).req()
         assert(test.c.a.label == 'b')
 
+    def test_params_as_vars(self):
+        import mako
+        class MyTest(twc.Widget):
+            template = 'mako:tw2.tests.templates.simple_mako'
+            test= twc.Param('blah', default='hello')
+        testapi.request(1)
+        twc.core.request_local()['middleware'] = twc.TwMiddleware(None, params_as_vars=True)
+        MyTest.idisplay()
+        twc.core.request_local()['middleware'] = twc.TwMiddleware(None, params_as_vars=False)
+        try:
+            MyTest.idisplay()
+            assert(False)
+        except NameError:
+            pass

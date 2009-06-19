@@ -62,7 +62,7 @@ class BrowseModule(twc.RepeatingWidget):
         for ep in pr.iter_entry_points('tw2.widgets'):
             if ep.module_name == module:
                 return ep.load()
-        raise ModuleMissing()
+        raise ModuleMissing(module)
 
     def _get_widgets(self, module=None, modname=None):
         if not module:
@@ -82,7 +82,7 @@ class BrowseModule(twc.RepeatingWidget):
         except ModuleMissing:
             pass
         else:
-            samples = self._get_widgets()
+            samples = self._get_widgets(sample_module)
             for n,s in samples:
                 df = s.__dict__.get('demo_for', s.__mro__[1])
                 demo_for[df] = s
