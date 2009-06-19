@@ -13,7 +13,7 @@ ToscaWidgets had some success, but did not gain as much usage as hoped, in part 
 
  * A widget instance is now created for each request.
  * In widget libraries, parameters are defined declaratively.
- * In widget templates, the widget is available as ``$w``.
+ * In widget templates, the widget is available as ``$w``. By default, parameters must be accessed as ``$w.param`` although the *params_as_vars* config option allows ``$param`` as in ToscaWidgets 0.9.
  * Validation is done in the core widget library, and no longer relies on FormEncode.
  * Declarative instantiation of widgets has been made more concise.
  * Framework interfaces are almost completely removed; ToscaWidgets is just a piece of WSGI middleware.
