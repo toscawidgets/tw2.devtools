@@ -101,9 +101,9 @@ def widget_browser(environ, start_response):
     req = wo.Request(environ)
     resp = wo.Response(request=req, content_type="text/html; charset=UTF8")
     if req.path in paths:
-        resp.body = paths[req.path].idisplay().encode('utf-8')
+        resp.body = paths[req.path].display().encode('utf-8')
     else:
-        resp.body = BrowseModule.idisplay(module = req.path.lstrip('/')).encode('utf-8')
+        resp.body = BrowseModule.display(module = req.path.lstrip('/')).encode('utf-8')
     return resp(environ, start_response)
 
 wb_app = twc.TwMiddleware(widget_browser)

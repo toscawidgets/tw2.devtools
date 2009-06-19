@@ -55,10 +55,10 @@ class TestWidgets(object):
             test= twc.Param('blah', default='hello')
         testapi.request(1)
         twc.core.request_local()['middleware'] = twc.TwMiddleware(None, params_as_vars=True)
-        MyTest.idisplay()
+        MyTest.display()
         twc.core.request_local()['middleware'] = twc.TwMiddleware(None, params_as_vars=False)
         try:
-            MyTest.idisplay()
+            MyTest.display()
             assert(False)
         except NameError:
             pass

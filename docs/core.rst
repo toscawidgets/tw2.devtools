@@ -1,24 +1,3 @@
-tw2.core Design
----------------
-
-This document discusses the design objectives and implementation of ToscaWidgets 2. It is intended to be reference documentation for both developers and users of widgets, and for developers of ToscaWidgets itself. New users should start with the tutorial.
-
-**Packaging**
-
-ToscaWidgets comes in two main packages:
-
- * tw2.core - the core functionality needed to use widgets in an app
- * tw2.devtools - documentation, unit tests, widget browser, library template, resource collator
-
-The idea is that only tw2.core needs to be installed on a server. It has minimal dependencies, while tw2.devtools has more, e.g. sphinx.
-
-Widget library packages follow the same naming convention, e.g. tw2.forms.
-
-**Framework Interface**
-
-ToscaWidgets is designed to be standalone WSGI middeware and not have any framework interactions. However, when using ToscaWidgets with a framework, there are some configuration settings that need to be consistent with the framework, for correct interaction. Future vesions of ToscaWidgets may include framework-specific hooks to automatically gather this configuration.
-
-
 Widget Overview
 ===============
 
@@ -49,22 +28,6 @@ In practice, you will rarely need to explictly create an instance, using ``req()
     # Implicit creation
     MyWidget.display(value='my value')
 
-
-**Thread Safety**
-
-ToscaWidgets is designed to support thread-safe usage, with no internal locks. To support this, Widget classes must not be modified after they are defined, and Widget instances must only be used in a single thread.
-
-
-**Identifier**
-
-In general, a widget needs to have an identifier. Without an id, it cannot participate in value propagation or validation, and it does not get an id= attribute. For widgets with an id, a compound id is generated for the id= attribute, by joining it's parent and all ancestors' ids. The default separator is colon (:), resulting in compound ids like "form:sub_form:field".
-
-There are some exceptions to this:
-
- * Some widgets do not need an id (e.g. Label, Spacer) and provide a default id of None.
- * The child of a RepeatingWidget must not have an id. The repetition is used instead to generate compound  ids.
- * DisplayOnlyWidget takes the id from its child, but uses None for generating compound ids. TBD: not quite true now
- * If a child of a CompoundWidget is also a CompoundWidget, and has no id, this causes the children of the child CompoundWidget to be merged with the children of the parent CompoundWidget. This also works with a DisplayOnlyWidget between the two CompoundWidgets.
 
 Parameters
 ~~~~~~~~~~
@@ -111,6 +74,17 @@ Widgets can be arranged in a hierarchy. This is useful for applications like lay
 An important feature of the hierarchy is value propagation. When the value is set for a compound or repeating widget, this causes the value to be set for the child widgets. In general, a leaf widget takes a scalar type as a value, a compound widget takes a dict or an  object, and a repeating widget takes a list.
 
 The hierarchy also affects the generation of compound ids, and validation.
+
+**Identifier**
+
+In general, a widget needs to have an identifier. Without an id, it cannot participate in value propagation or validation, and it does not get an id= attribute. For widgets with an id, a compound id is generated for the id= attribute, by joining it's parent and all ancestors' ids. The default separator is colon (:), resulting in compound ids like "form:sub_form:field".
+
+There are some exceptions to this:
+
+ * Some widgets do not need an id (e.g. Label, Spacer) and provide a default id of None.
+ * The child of a RepeatingWidget must not have an id. The repetition is used instead to generate compound  ids.
+ * DisplayOnlyWidget takes the id from its child, but uses None for generating compound ids. TBD: not quite true now
+ * If a child of a CompoundWidget is also a CompoundWidget, and has no id, this causes the children of the child CompoundWidget to be merged with the children of the parent CompoundWidget. This also works with a DisplayOnlyWidget between the two CompoundWidgets.
 
 
 Template
@@ -231,3 +205,8 @@ tw2.core aims to take advantage of pkg_resources where it is available, but not 
 
  * In ResourcesApp, to serve resources from modules, which may be zipped eggs. If pkg_resources is not available, this uses a simpler system that does not support zipped eggs.
  * In EngingeManager, to load a templating engine from a text string, e.g. "genshi". If pkg_resources is not available, this uses a simple, built-in mapping that covers the most common template engines.
+
+**Framework Interface**
+
+ToscaWidgets is designed to be standalone WSGI middeware and not have any framework interactions. However, when using ToscaWidgets with a framework, there are some configuration settings that need to be consistent with the framework, for correct interaction. Future vesions of ToscaWidgets may include framework-specific hooks to automatically gather this configuration.
+

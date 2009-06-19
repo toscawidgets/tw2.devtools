@@ -125,7 +125,7 @@ To enable validation we also need to modify the application to handle POST reque
         req = wo.Request(environ)
         resp = wo.Response(request=req, content_type="text/html; charset=UTF8")
         if req.method == 'GET':
-            resp.body = MyForm.idisplay().encode('utf-8')
+            resp.body = MyForm.display().encode('utf-8')
         elif req.method == 'POST':
             try:
                 data = MyForm.validate(req.POST)

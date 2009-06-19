@@ -87,4 +87,4 @@ class TestTemplate(object):
                         TestWD(id='y', template='%s:tw2.tests.templates.inner_%s' % (inner, inner)),
                     ]
                 )
-                assert(test.idisplay().replace(kid_prefix, '') == '<p>TEST <p>TEST bob</p></p>')
+                assert(test.display().replace(kid_prefix, '') == '<p>TEST <p>TEST bob</p></p>')
