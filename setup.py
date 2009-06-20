@@ -63,10 +63,10 @@ setup(
     exclude_package_data={"thirdparty" : ["*"]},
     entry_points="""
     [paste.paster_create_template]
-    toscawidgets=tw2.paste_template:ToscaWidgetsTemplate
+    tw2.library=tw2.paste_template:ToscaWidgetsTemplate
 
     [paste.global_paster_command]
-    twbrowser=tw2.devtools.browser:WbCommand
+    tw2.browser=tw2.devtools.browser:WbCommand
     """,
     zip_safe=False,
     classifiers = [

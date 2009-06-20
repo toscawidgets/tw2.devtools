@@ -16,6 +16,21 @@ Some checks cannot be done client-side, e.g. checking if a user name is taken. I
 TBD: how to implement this?
 
 
+Template Optimisation
+=====================
+
+The idea is to combine templates from a set of widgets at startup, so only a single template is rendered to handle a request. For Genshi, the arrangement could work like this:
+
+`DisplayOnlyWidget`
+    ``$w.child.display()`` is replaced with the child template, wrapped in a ``<py:with "w.child as w">`` block.
+
+`CompoundWidget`
+    Locate a for loop like ``py:for each="var in s.c(hildren)?"``. Unroll this to a series of child templates, wrapped in a with block, just like ``DisplayOnlyWidget``. Also, calls to ``display()`` outside a for loop can be optimised.
+
+`RepeatingWidget`
+    Locate the for loop like ``CompoundWidget``, but it is not unrolled. Inside the loop, ``var.display()`` is replaced with the child template, wrapped in a with block.
+
+
 Widgets as Controllers
 ======================
 
