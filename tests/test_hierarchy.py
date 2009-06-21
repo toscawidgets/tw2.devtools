@@ -12,7 +12,7 @@ class TestHierarchy(object):
             twc.Widget(id='a'),
             twc.Widget(id='b'),
         ])
-        assert(test.children.a._compound_id() == 'x:a')
+        assert(test.children.a.compound_id == 'x:a')
 
     def test_invalid_id(self):
         try:
@@ -23,11 +23,11 @@ class TestHierarchy(object):
 
     def test_id_none(self):
         test = twc.Widget(id=None)
-        assert(test._compound_id() == '')
+        assert(test.compound_id == None)
 
     def test_repeating_id(self):
         test = twc.RepeatingWidget(id='x', child=twc.Widget)
-        assert(test.children[3]._compound_id() == 'x:3')
+        assert(test.rwbc[3].compound_id == 'x:3')
 
     #--
     # CompoundWidget / WidgetBunch

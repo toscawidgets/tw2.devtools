@@ -77,13 +77,13 @@ The hierarchy also affects the generation of compound ids, and validation.
 
 **Identifier**
 
-In general, a widget needs to have an identifier. Without an id, it cannot participate in value propagation or validation, and it does not get an id= attribute. For widgets with an id, a compound id is generated for the id= attribute, by joining it's parent and all ancestors' ids. The default separator is colon (:), resulting in compound ids like "form:sub_form:field".
+In general, a widget needs to have an identifier. Without an id, it cannot participate in value propagation or validation, and it does not get an id= attribute. For widgets with an id, *compound_id* is generated for the id= attribute, by joining it's parent and all ancestors' ids. The default separator is colon (:), resulting in compound ids like "form:sub_form:field".
 
 There are some exceptions to this:
 
  * Some widgets do not need an id (e.g. Label, Spacer) and provide a default id of None.
  * The child of a RepeatingWidget must not have an id. The repetition is used instead to generate compound  ids.
- * DisplayOnlyWidget takes the id from its child, but uses None for generating compound ids. TBD: not quite true now
+ * DisplayOnlyWidget takes the id from its child, but uses None for generating compound ids.
  * If a child of a CompoundWidget is also a CompoundWidget, and has no id, this causes the children of the child CompoundWidget to be merged with the children of the parent CompoundWidget. This also works with a DisplayOnlyWidget between the two CompoundWidgets.
 
 

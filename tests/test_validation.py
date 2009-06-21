@@ -199,13 +199,13 @@ class TestValidation(object):
         ])
 
         widgets = [
-            test.children[0].child.children[0],
-            test.children[0].child.children[1],
+            test.children[0].child.rwbc[0],
+            test.children[0].child.rwbc[1],
             test.children.cc.children.d,
             test.children.cc.children.e,
         ]
 
-        data = dict((w._compound_id(), 'test%d' % i) for i,w in enumerate(widgets))
+        data = dict((w.compound_id, 'test%d' % i) for i,w in enumerate(widgets))
         testapi.request(1)
         vdata = test.validate(data)
 
