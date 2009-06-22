@@ -86,7 +86,8 @@ class BrowseModule(twc.RepeatingWidget):
             for n,s in samples:
                 df = s.__dict__.get('demo_for', s.__mro__[1])
                 demo_for[df] = s
-        widgets = self._get_widgets(self._load_ep(self.module))
+        self.mod = self._load_ep(self.module)
+        widgets = self._get_widgets(self.mod)
         self.value = [(n, w, demo_for.get(w)) for n, w in widgets]
         super(BrowseModule, self).prepare()
 
