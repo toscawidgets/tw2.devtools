@@ -4,6 +4,7 @@ js = twc.JSLink(link='paj')
 css = twc.CSSLink(link='joe')
 jssrc = twc.JSSource(src='bob')
 
+TestWidget = twc.Widget(template='genshi:tw2.tests.templates.inner_genshi', test='test')
 html = "<html><head><title>a</title></head><body>hello</body></html>"
 
 inject_widget = twc.Widget(id='a', template='b', resources=[js])
@@ -37,21 +38,21 @@ class TestResources(object):
         assert(len(rl.get('resources', [])) == 0)
 
     def test_res_nodupe(self):
-        wa = twc.Widget(id='a', template='b', resources=[js]).req()
-        wb = twc.Widget(id='b', template='b', resources=[twc.JSLink(link='paj')]).req()
-        wc = twc.Widget(id='c', template='b', resources=[twc.JSLink(link='test')]).req()
-        wd = twc.Widget(id='d', template='b', resources=[css]).req()
-        we = twc.Widget(id='e', template='b', resources=[twc.CSSLink(link='joe')]).req()
+        wa = TestWidget(id='a', resources=[js]).req()
+        wb = TestWidget(id='b', resources=[twc.JSLink(link='paj')]).req()
+        wc = TestWidget(id='c', resources=[twc.JSLink(link='test')]).req()
+        wd = TestWidget(id='d', resources=[css]).req()
+        we = TestWidget(id='e', resources=[twc.CSSLink(link='joe')]).req()
 
-        rl = testapi.request(1)
-        wa.prepare()
-        wb.prepare()
+        rl = testapi.request(1, mw)
+        wa.display()
+        wb.display()
         r = rl['resources']
         assert(len(rl['resources']) == 1)
-        wc.prepare()
+        wc.display()
         assert(len(rl['resources']) == 2)
-        wd.prepare()
-        we.prepare()
+        wd.display()
+        we.display()
         assert(len(rl['resources']) == 3)
 
 
@@ -119,10 +120,10 @@ class TestResources(object):
         assert(out == '<html><head><script type="text/javascript" src="paj"></script><title>a</title></head><body>hello<script type="text/javascript">bob</script></body></html>')
 
     def test_detect_clear(self):
-        widget = twc.Widget(id='a', template='b', resources=[js])
+        widget = twc.Widget(id='a', template='genshi:tw2.tests.templates.inner_genshi', test='test', resources=[js])
         rl = testapi.request(1, mw)
         assert(len(rl.get('resources', [])) == 0)
-        widget.req().prepare()
+        widget.display()
         assert(len(rl.get('resources', [])) == 1)
         out = twc.inject_resources(html)
         assert(len(rl.get('resources', [])) == 0)
@@ -145,10 +146,11 @@ class TestResources(object):
 
     def test_mw_inject(self):
         testapi.request(1, mw)
-        widget = twc.Widget(id='a', template='b', resources=[js]).req().prepare()
+        TestWidget(id='a', resources=[js]).display()
         assert(tst_mw.get('/').body == '<html><head><script type="text/javascript" src="paj"></script><title>a</title></head><body>hello</body></html>')
 
     def test_mw_inject_html_only(self):
         testapi.request(1, mw)
-        widget = twc.Widget(id='a', template='b', resources=[js]).req().prepare()
+        TestWidget(id='a', resources=[js]).display()
         assert(tst_mw.get('/plain').body == html)
+

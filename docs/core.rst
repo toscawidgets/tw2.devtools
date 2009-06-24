@@ -57,6 +57,9 @@ Subclasses of Widget can override the following methods. It is not recommended t
 
 .. automethod:: tw2.core.widgets.Widget.post_define
 .. automethod:: tw2.core.widgets.Widget.prepare
+.. automethod:: tw2.core.widgets.Widget.request
+.. automethod:: tw2.core.widgets.Widget.fetch_data
+.. automethod:: tw2.core.widgets.Widget.validated_request
 
 
 Widget Hierarchy
@@ -103,22 +106,34 @@ Resources
 Widgets often need to access resources, such as JavaScript or CSS files. A key feature of widgets is the ability to automatically serve such resources, and insert links into appropriate sections of the page, e.g. ``<HEAD>``. There are several parts to this:
 
  * Widgets can define resources they use, using the :attr:`resources` parameter.
- * When a Widget is displayed, it registers resources in request-local storage
+ * When a Widget is displayed, it registers resources in request-local storage, and with the resource server.
  * The resource injection middleware detects resources in request-local storage, and rewrites the generated page to include appropriate links.
  * The resource server middleware serves static files used by widgets
+ * Widgets can also access resources at display time, e.g. to get links
 
-Defining Resources
-~~~~~~~~~~~~~~~~~~
+**Defining Resources**
 
-To define a resource, just add a :class:`tw2.core.Resource` subclass to the widget's :attr:`resources` parameter. The following resource types are available:
+To define a resource, just add a :class:`tw2.core.Resource` subclass to the widget's :attr:`resources` parameter. It is also possible to append to :attr:`resources` from within the :meth:`prepare` method. The following resource types are available:
 
 .. autoclass:: tw2.core.CSSLink
 .. autoclass:: tw2.core.JSLink
 .. autoclass:: tw2.core.JSSource
+.. autoclass:: tw2.core.JSFuncCall
+
+
+**Design Notes**
+
+Resources are widgets, but follow a slightly different lifecycle. Resource subclasses are passed into the :attr:`resources` parameter. An instance is created for each request, but this is only one at the time of the parent Widget's :meth:`display` method. This gives widgets a chance to add dynamic resources in their :meth:`prepare` method.
+
+Two optimisations have been considered, but discounted for the time being:
+
+ * Resources only being initialised once, at startup time
+ * Static resources being optimised by parent widgets taking all the resources of their children, and removing duplicates. This would not be done where the resource has an :attr:`id`, so the widget can still reference that resource.
 
 
 Middleware
 ==========
+
 
 The WSGI middleware has three functions:
 
@@ -138,6 +153,13 @@ However, some configuration values must be done on a global basis. These are:
 
     `compound_id_separator`
         (default: ':')
+
+
+**Design Considerations**
+
+A key design choice is whether to support multiple middleware instances in a single Python namespace.
+
+
 
 
 Declarative Instantiation

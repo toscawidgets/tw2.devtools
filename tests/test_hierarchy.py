@@ -100,9 +100,8 @@ class TestHierarchy(object):
         testapi.request(1)
         test.value = ['a', 'b', 'c']
         test.prepare()
-        assert(len(test.children) == 4)
-        print [w.value for w in test.children]
-        assert([w.value for w in test.children] == ['a', 'b', 'c', None])
+        assert(len(test.children) == 3)
+        assert([w.value for w in test.children] == ['a', 'b', 'c'])
 
     def test_rw_length(self):
         test = twc.RepeatingWidget(child=twc.Widget).req()
@@ -110,7 +109,7 @@ class TestHierarchy(object):
         test.value = range(10)
         test.repetitions = None
         test.prepare()
-        assert(test.repetitions == 11)
+        assert(test.repetitions == 10)
 
         test.extra_reps = 5
         test.repetitions = None

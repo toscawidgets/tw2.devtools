@@ -23,7 +23,12 @@ If a field has no value, if defaults to ``None``. It is down to that field's val
 
 **Security Consideration**
 
-When a widget is redisplayed after a validation failure, it's value is derived from unvalidated user input. So, all widgets must be "safe" for all input values. In practice, this is almost always the case without great care, so widgets are assumed to be safe. If a particular widget is not safe in this way, it must declare... TBD
+When a widget is redisplayed after a validation failure, it's value is derived from unvalidated user input. So, all widgets must be "safe" for all input values. In practice, this is almost always the case without great care, so widgets are assumed to be safe. If a particular widget is not safe in this way, it must override :meth:`_validate` and set :attr:`value` to *None* in case of error.
+
+**Validator Messages**
+
+if msg is a tuple, it's (newname, msg)
+
 
 Using Validators
 ----------------

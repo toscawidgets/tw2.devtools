@@ -50,7 +50,7 @@ class TestValidation(object):
             twc.Validator().to_python('abc\xC3')
             assert(False)
         except twc.ValidationError, e:
-            assert(str(e) == 'Received in the wrong character set')
+            assert(str(e) == 'Received in the wrong character set; should be utf-8')
 
     def test_strip(self):
         assert(twc.Validator().to_python(' a ') == 'a')
@@ -91,7 +91,7 @@ class TestValidation(object):
         try:
             raise twc.ValidationError('required')
         except twc.ValidationError, e:
-            assert(str(e) == 'Please enter a value')
+            assert(str(e) == 'Enter a value')
 
     def test_ve_subst(self):
         try:
@@ -141,7 +141,7 @@ class TestValidation(object):
             pass
         cw = twc.core.request_local()['validated_widget']
         assert(cw.children.b.value == 'test')
-        assert('enter a value' in cw.children.c.error_msg)
+        assert('Enter a value' == cw.children.c.error_msg)
 
     def test_compound_whole_validator(self):
         pass # TBD
@@ -172,7 +172,7 @@ class TestValidation(object):
             pass
         rw = twc.core.request_local()['validated_widget']
         assert(rw.children[0].value == 'test')
-        assert('enter a value' in rw.children[1].error_msg)
+        assert('Enter a value' == rw.children[1].error_msg)
 
     def test_dow(self):
         test = twc.DisplayOnlyWidget(child=compound_widget)
