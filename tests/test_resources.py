@@ -7,16 +7,16 @@ jssrc = twc.JSSource(src='bob')
 TestWidget = twc.Widget(template='genshi:tw2.tests.templates.inner_genshi', test='test')
 html = "<html><head><title>a</title></head><body>hello</body></html>"
 
-inject_widget = twc.Widget(id='a', template='b', resources=[js])
+inject_widget = TestWidget(id='a', resources=[js])
 
 def simple_app(environ, start_response):
     req = wo.Request(environ)
     ct = 'text/html' if req.path == '/' else 'test/plain'
     resp = wo.Response(request=req, content_type="%s; charset=UTF8" % ct)
-    inject_widget.req().prepare()
+    inject_widget.display()
     resp.body = html
     return resp(environ, start_response)
-mw = twc.TwMiddleware(simple_app)
+mw = twc.make_middleware(simple_app)
 tst_mw = wt.TestApp(mw)
 
 
@@ -25,24 +25,23 @@ class TestResources(object):
         testapi.setup()
 
     def test_res_collection(self):
-        wa = twc.Widget(id='a', template='b').req()
-        wb = twc.Widget(id='b', template='b', resources=[js,css]).req()
-
-        rl = testapi.request(1)
-        wa.prepare()
+        rl = testapi.request(1, mw)
+        wa = TestWidget(id='a')
+        wb = TestWidget(id='b', resources=[js,css])
+        wa.display()
         assert(len(rl.get('resources', [])) == 0)
-        wb.prepare()
+        wb.display()
         for r in rl['resources']:
             assert(any(isinstance(r, b) for b in [js,css]))
         rl = testapi.request(2)
         assert(len(rl.get('resources', [])) == 0)
 
     def test_res_nodupe(self):
-        wa = TestWidget(id='a', resources=[js]).req()
-        wb = TestWidget(id='b', resources=[twc.JSLink(link='paj')]).req()
-        wc = TestWidget(id='c', resources=[twc.JSLink(link='test')]).req()
-        wd = TestWidget(id='d', resources=[css]).req()
-        we = TestWidget(id='e', resources=[twc.CSSLink(link='joe')]).req()
+        wa = TestWidget(id='a', resources=[js])
+        wb = TestWidget(id='b', resources=[twc.JSLink(link='paj')])
+        wc = TestWidget(id='c', resources=[twc.JSLink(link='test')])
+        wd = TestWidget(id='d', resources=[css])
+        we = TestWidget(id='e', resources=[twc.CSSLink(link='joe')])
 
         rl = testapi.request(1, mw)
         wa.display()
@@ -146,11 +145,9 @@ class TestResources(object):
 
     def test_mw_inject(self):
         testapi.request(1, mw)
-        TestWidget(id='a', resources=[js]).display()
         assert(tst_mw.get('/').body == '<html><head><script type="text/javascript" src="paj"></script><title>a</title></head><body>hello</body></html>')
 
     def test_mw_inject_html_only(self):
         testapi.request(1, mw)
-        TestWidget(id='a', resources=[js]).display()
         assert(tst_mw.get('/plain').body == html)
 

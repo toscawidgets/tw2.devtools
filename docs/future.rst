@@ -16,8 +16,17 @@ Some checks cannot be done client-side, e.g. checking if a user name is taken. I
 TBD: how to implement this?
 
 
-Template Optimisation
-=====================
+Performance
+===========
+
+**Resources**
+
+Two optimisations have been considered, but discounted for the time being:
+
+ * Resources only being initialised once, at startup time
+ * Static resources being optimised by parent widgets taking all the resources of their children, and removing duplicates. This would not be done where the resource has an :attr:`id`, so the widget can still reference that resource.
+
+**Template**
 
 The idea is to combine templates from a set of widgets at startup, so only a single template is rendered to handle a request. For Genshi, the arrangement could work like this:
 

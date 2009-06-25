@@ -120,15 +120,7 @@ To define a resource, just add a :class:`tw2.core.Resource` subclass to the widg
 .. autoclass:: tw2.core.JSSource
 .. autoclass:: tw2.core.JSFuncCall
 
-
-**Design Notes**
-
-Resources are widgets, but follow a slightly different lifecycle. Resource subclasses are passed into the :attr:`resources` parameter. An instance is created for each request, but this is only one at the time of the parent Widget's :meth:`display` method. This gives widgets a chance to add dynamic resources in their :meth:`prepare` method.
-
-Two optimisations have been considered, but discounted for the time being:
-
- * Resources only being initialised once, at startup time
- * Static resources being optimised by parent widgets taking all the resources of their children, and removing duplicates. This would not be done where the resource has an :attr:`id`, so the widget can still reference that resource.
+Resources are widgets, but follow a slightly different lifecycle. Resource subclasses are passed into the :attr:`resources` parameter. An instance is created for each request, but this is only done at the time of the parent Widget's :meth:`display` method. This gives widgets a chance to add dynamic resources in their :meth:`prepare` method.
 
 
 Middleware
@@ -149,18 +141,6 @@ Configuration is passed as keyword arguments to the middleware constructor. The 
 
 .. autoclass:: tw2.core.middleware.Config
 
-However, some configuration values must be done on a global basis. These are:
-
-    `compound_id_separator`
-        (default: ':')
-
-
-**Design Considerations**
-
-A key design choice is whether to support multiple middleware instances in a single Python namespace.
-
-
-
 
 Declarative Instantiation
 =========================
@@ -169,7 +149,6 @@ Instantiating compound widgets can result in less-than-beautiful code. To help a
 
     class MovieForm(twf.TableForm):
         action = 'save_movie'
-
         id = twf.HiddenField()
         year = twf.TextField()
         desc = twf.TextArea(rows=5)
@@ -188,20 +167,31 @@ Nested declarative definitions can be used, like this::
             x = twf.Label(text='this is a test')
             c = twf.TextField()
 
-Inheritence is supported - a subclass gets the children from the base class, plus any defined on the subclass. If there's a name clash, the subclass takes priority. Multiple inheritence resolves ame clashes in a similar way.
+Inheritence is supported - a subclass gets the children from the base class, plus any defined on the subclass. If there's a name clash, the subclass takes priority. Multiple inheritence resolves name clashes in a similar way. For example::
 
-**Layouts**
+    class MyFields(twc.CompoundWidget):
+        b = twf.TextArea()
+        x = twf.Label(text='this is a test')
+        c = twf.TextField()
 
-Without layouts, double nesting of classes would often be necessary, e.g.::
+    class TableFields(MyFields, twf.TableLayout):
+        pass
+
+    class ListFields(MyFields, twf.ListLayout):
+        b = twf.TextField()
+
+**Proxying children**
+
+Without this feature, double nesting of classes is often necessary, e.g.::
 
     class MyForm(twf.Form):
         class child(twf.TableLayout):
             b = twf.TextArea()
 
-Specifying a layout for a :class:`RepeatingWidget` or :class:`DisplayOnlyWidget` sets the child to the layout, and adds childen of the first class to the layout. The following is equivalent to the definition above::
+Proxying children means that if :class:`RepeatingWidget` or :class:`DisplayOnlyWidget` have :attr:`children` set, this is passed to their :attr:`child`. The following is equivalent to the definition above::
 
     class MyForm(twf.Form):
-        layout = twf.TableLayout
+        child = twf.TableLayout()
         b = twf.TextArea()
 
 And this is used by classes like :class:`TableForm` and :class:`TableFieldSet` to allow the user more concise widget definitions::
@@ -210,23 +200,29 @@ And this is used by classes like :class:`TableForm` and :class:`TableFieldSet` t
         b = twf.TextArea()
 
 
+**Automatic ID**
+
+Sub classes of :class:`Page` that do not have an id, will have the id automatically set to the name of the class.
+
+
 Widgets as Controllers
 ======================
 
-Sometimes widgets will want to define controller methods. This is particularly useful for Ajax widgets. This can be done like this::
+Sometimes widgets will want to define controller methods. This is particularly useful for Ajax widgets. Any widget can have a :meth:`request` method, which is called with a WebOb :class:`Request` object, and must return a WebOb :class:`Response` object, like this::
 
     class MyWidget(twc.Widget):
+        id = 'my_widget'
         @classmethod
         def request(cls, req):
             resp = webob.Response(request=req, content_type="text/html; charset=UTF8")
             # ...
             return resp
 
-The ``req`` parameter is a WebOb Request object, and the function must return a WebOb Response object.
+For the :meth:`request` method to be called, the widget must be registered with the :class:`ControllersApp` in the middleware. By default, the path is constructed from /controllers/, and the widget's id. A request to /controllers/ refers to a widget with id ``index``. You can specify :attr:`controllers_prefix` in the configuration.
 
-To register the controller with the middleware, you must do this::
+For convenience, widgets that have a :meth:`request` method, and an :attr:`id` will be registered automatically. By default, this uses a global :class:`ControllersApp` instance, which is also the default controllers_app for :func:`make_middleware`. If you want to use multiple controller applications in a single python instance, you will need to override this. Set :attr:`tw2_controllers` as a global variable, and this will affect all widgets defined in that module. Set this to None to disable automatic registration. You can also manually register widgets::
 
-    mw = twc.TwMiddleware(app)
+    mw = twc.make_middleware()
     mw.controllers.register(MyWidget, 'mywidget')
 
 

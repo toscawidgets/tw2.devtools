@@ -69,7 +69,7 @@ class TestTemplate(object):
                 assert(out == '<p>TEST <p>TEST test1</p></p>')
 
     def test_widget_display(self):
-        twc.core.request_local()['middleware'] = twc.TwMiddleware(None)
+        twc.core.request_local()['middleware'] = twc.make_middleware(None)
         mtest = TestWD(id='x')
         for eng in engines:
             test = mtest.req()
@@ -78,7 +78,7 @@ class TestTemplate(object):
             assert(out == '<p>TEST bob</p>')
 
     def test_widget_nesting(self):
-        twc.core.request_local()['middleware'] = twc.TwMiddleware(None)
+        twc.core.request_local()['middleware'] = twc.make_middleware(None)
         for outer in engines:
             for inner in engines:
                 test = twc.CompoundWidget(id='x',

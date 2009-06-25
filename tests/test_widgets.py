@@ -54,9 +54,9 @@ class TestWidgets(object):
             template = 'mako:tw2.tests.templates.simple_mako'
             test= twc.Param('blah', default='hello')
         testapi.request(1)
-        twc.core.request_local()['middleware'] = twc.TwMiddleware(None, params_as_vars=True)
+        twc.core.request_local()['middleware'] = twc.make_middleware(None, params_as_vars=True)
         MyTest.display()
-        twc.core.request_local()['middleware'] = twc.TwMiddleware(None, params_as_vars=False)
+        twc.core.request_local()['middleware'] = twc.make_middleware(None, params_as_vars=False)
         try:
             MyTest.display()
             assert(False)
