@@ -1,24 +1,21 @@
-import wsgiref.simple_server as ws, webob as wo, tw2.core as twc
+import wsgiref.simple_server as ws, tw2.core as twc
 import pkg_resources as pr
 
 
-class Page(twc.Widget):
-    id = None
-
-class Index(Page):
+class Index(twc.Page):
     template = "genshi:tw2.devtools.templates.wb_index"
 
-class Welcome(Page):
+class Welcome(twc.Page):
     template = "genshi:tw2.devtools.templates.wb_welcome"
 
-class List(Page):
+class List(twc.Page):
+    template = "genshi:tw2.devtools.templates.wb_list"
     modules = twc.Variable()
     def prepare(self):
         super(List, self).prepare()
         self.modules = sorted(ep.module_name
                         for ep in pr.iter_entry_points('tw2.widgets')
                         if not ep.module_name.endswith('.samples'))
-    template = "genshi:tw2.devtools.templates.wb_list"
 
 
 class BrowseWidget(twc.Widget):
@@ -52,68 +49,56 @@ class BrowseWidget(twc.Widget):
 class ModuleMissing(Exception):
     pass
 
-class BrowseModule(twc.RepeatingWidget):
+class Module(twc.Page):
     template = 'genshi:tw2.devtools.templates.wb_module'
-    module = twc.Param('module to display')
-    child = BrowseWidget
-    extra_reps = 0
+    def fetch_data(self, req):
+        self.module = req.GET['module']
+        self.child.module = req.GET['module']
 
-    def _load_ep(self, module):
-        for ep in pr.iter_entry_points('tw2.widgets'):
-            if ep.module_name == module:
-                return ep.load()
-        raise ModuleMissing(module)
+    class child(twc.RepeatingWidget):
+        module = twc.Param('module to display')
+        child = BrowseWidget
 
-    def _get_widgets(self, module=None, modname=None):
-        if not module:
-            module = self._load_ep(modname)
-        widgets = []
-        for attr in dir(module):
-            widget = getattr(module, attr)
-            if isinstance(widget, twc.widgets.WidgetMeta):
-                widgets.append((attr, widget))
-        widgets.sort(key=lambda t: t[1]._seq)
-        return widgets
+        def _load_ep(self, module):
+            for ep in pr.iter_entry_points('tw2.widgets'):
+                if ep.module_name == module:
+                    return ep.load()
+            raise ModuleMissing(module)
 
-    def prepare(self):
-        demo_for = {}
-        try:
-            sample_module = self._load_ep(self.module + '.samples')
-        except ModuleMissing:
-            pass
-        else:
-            samples = self._get_widgets(sample_module)
-            for n,s in samples:
-                df = s.__dict__.get('demo_for', s.__mro__[1])
-                demo_for[df] = s
-        self.mod = self._load_ep(self.module)
-        widgets = self._get_widgets(self.mod)
-        self.value = [(n, w, demo_for.get(w)) for n, w in widgets]
-        super(BrowseModule, self).prepare()
+        def _get_widgets(self, module=None, modname=None):
+            if not module:
+                module = self._load_ep(modname)
+            widgets = []
+            for attr in dir(module):
+                widget = getattr(module, attr)
+                if isinstance(widget, twc.widgets.WidgetMeta):
+                    widgets.append((attr, widget))
+            widgets.sort(key=lambda t: t[1]._seq)
+            return widgets
 
-paths = {
-    '/': Index(),
-    '/welcome': Welcome(),
-    '/list': List(),
-}
+        def prepare(self):
+            demo_for = {}
+            try:
+                sample_module = self._load_ep(self.module + '.samples')
+            except ModuleMissing:
+                pass
+            else:
+                samples = self._get_widgets(sample_module)
+                for n,s in samples:
+                    df = s.__dict__.get('demo_for', s.__mro__[1])
+                    demo_for[df] = s
+            self.mod = self._load_ep(self.module)
+            widgets = self._get_widgets(self.mod)
+            self.parent.mod = self.mod
+            self.value = [(n, w, demo_for.get(w)) for n, w in widgets]
+            twc.RepeatingWidget.prepare(self)
 
-
-def widget_browser(environ, start_response):
-    req = wo.Request(environ)
-    resp = wo.Response(request=req, content_type="text/html; charset=UTF8")
-    if req.path in paths:
-        resp.body = paths[req.path].display().encode('utf-8')
-    else:
-        resp.body = BrowseModule.display(module = req.path.lstrip('/')).encode('utf-8')
-    return resp(environ, start_response)
-
-wb_app = twc.TwMiddleware(widget_browser)
 
 from paste.script import command as pc
 
 class WbCommand(pc.Command):
     def command(self):
-        ws.make_server('', 8000, wb_app).serve_forever()
+        ws.make_server('', 8000, twc.make_middleware(controller_prefix='/')).serve_forever()
     group_name = 'tw2'
     summary = 'Browse available ToscaWidgets'
     min_args = 0
@@ -124,4 +109,4 @@ class WbCommand(pc.Command):
 
 
 if __name__ == '__main__':
-    ws.make_server('', 8000, wb_app).serve_forever()
+    ws.make_server('', 8000, twc.make_middleware(controller_prefix='/')).serve_forever()
