@@ -62,3 +62,10 @@ class TestWidgets(object):
             assert(False)
         except NameError:
             pass
+
+    def test_meta_forceid(self):
+        class MyTest(twc.CompoundWidget):
+            a = twc.Widget(id='fred')
+            b = twc.Widget()
+        assert(MyTest.children[0].id == 'fred')
+        assert(MyTest.children[1].id == 'b')

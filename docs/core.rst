@@ -148,14 +148,19 @@ Declarative Instantiation
 Instantiating compound widgets can result in less-than-beautiful code. To help alleviate this, widgets can be defined declaratively, and this is the recommended approach. A definition looks like this::
 
     class MovieForm(twf.TableForm):
-        action = 'save_movie'
         id = twf.HiddenField()
         year = twf.TextField()
         desc = twf.TextArea(rows=5)
 
 Any class members that are subclasses of Widget become children. All the children get their ``id`` from the name of the member variable. Note: it is important that all children are defined like ``id = twf.HiddenField()`` and not ``id = twf.HiddenField``. Otherwise, the order of the children will not be preserved.
 
-It is possible to define children that have the same name as parameters, using this syntax. However, doing so does prevent a widget overriding a parameter, and defining a child with the same name. If you need to do this; you will need to avoid the declarative style and specify childen explicitly.
+It is possible to define children that have the same name as parameters, using this syntax. However, doing so does prevent a widget overriding a parameter, and defining a child with the same name. If you need to do this, you must use a throwaway name for the member variable, and specify the id explicitly, e.g.::
+
+    class MovieForm(twf.TableForm):
+        resources = [my_resource]
+        id = twf.HiddenField()
+        noname = twf.TextArea(id='resources')
+
 
 **Nesting and Inheritence**
 
@@ -224,6 +229,17 @@ For convenience, widgets that have a :meth:`request` method, and an :attr:`id` w
 
     mw = twc.make_middleware()
     mw.controllers.register(MyWidget, 'mywidget')
+
+**Methods to override**
+
+    `view_request`
+        Instance method - get self and req. load from db
+
+    `validated_request`
+        Class method - get cls and validated data
+
+    `ajax_request`
+        Return python data that is automatically converted to an ajax response
 
 
 General Considerations
