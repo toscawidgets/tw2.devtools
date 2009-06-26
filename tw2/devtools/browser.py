@@ -94,6 +94,22 @@ class Module(twc.Page):
             twc.RepeatingWidget.prepare(self)
 
 
+class Validators(twc.Page):
+    title = 'Validators'
+    class child(twc.RepeatingWidget):
+        def prepare(self):
+            self.value = sorted([ep for ep in pr.iter_entry_points('tw2.widgets')
+                    if not ep.module_name.endswith('.samples')], key=lambda e: e.module_name)
+            twc.RepeatingWidget.prepare(self)
+        class child(twc.Widget):
+            template = 'genshi:tw2.devtools.templates.wb_validator'
+            def prepare(self):
+                twc.Widget.prepare(self)
+                vd = self.value.load()
+                self.validators = [getattr(vd, v) for v in dir(vd)
+                            if isinstance(getattr(vd, v), twc.validation.ValidatorMeta)]
+
+
 from paste.script import command as pc
 
 class WbCommand(pc.Command):
