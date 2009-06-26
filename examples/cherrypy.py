@@ -1,7 +1,4 @@
-from pkg_resources import require
-require('CherryPy>=3.0.0', 'tw.forms', 'Genshi')
-
-import cherrypy as cp, tw.core as twc
+import cherrypy as cp, tw2.core as twc
 
 
 class Controller(object):
@@ -13,12 +10,12 @@ class Controller(object):
 #XXX I'm not sure how can I pass args. to the middleware with CP's config
 #    pipeline API, hence this hacky wrapper. Any better way of doing this?
 def tw_middleware(app):
-    conf = {'toscawidgets.framework.default_view':'genshi'}
-    return twc.make_middleware(app, conf, stack_registry=True)
+    conf = {'default_view':'genshi'}
+    return twc.make_middleware(app, **conf)
 
 
 cp_config = {
-    '/': {'wsgi.pipeline': [('tw', tw_middleware)]}
+    '/': {'wsgi.pipeline': [('tw2', tw_middleware)]}
 }
 
 if __name__ == "__main__":

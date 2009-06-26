@@ -41,21 +41,6 @@ class TestValidation(object):
         assert(twc.validation.unflatten_params({'a:1':20, 'a:x':10}) ==
             {'a':{'1':20, 'x':10}})
 
-    def test_decode(self):
-        ustr = u'abc\u1234'
-        assert(twc.Validator().to_python(ustr.encode('utf-8')) == ustr)
-
-    def test_decode_error(self):
-        try:
-            twc.Validator().to_python('abc\xC3')
-            assert(False)
-        except twc.ValidationError, e:
-            assert(str(e) == 'Received in the wrong character set; should be utf-8')
-
-    def test_strip(self):
-        assert(twc.Validator().to_python(' a ') == 'a')
-        assert(twc.Validator(strip=False).to_python(' a ') == ' a ')
-
     def test_auto_unflatten(self):
         test = twc.CompoundWidget(id='a', children=[
             twc.Widget(id='b', validator=twc.Validator(required=True)),

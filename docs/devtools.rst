@@ -26,4 +26,6 @@ Widget Library Quick Start
 Unit Tests
 ==========
 
-To run the tests, in ``tw2.devtools/tests`` run ``nosetests``.
+To run the tests, in ``tw2.devtools/tests`` issue::
+
+    nosetests --with-doctest --doctest-extension=.txt
