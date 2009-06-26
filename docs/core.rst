@@ -223,7 +223,7 @@ And this is used by classes like :class:`TableForm` and :class:`TableFieldSet` t
 
 **Automatic ID**
 
-Sub classes of :class:`Page` that do not have an id, will have the id automatically set to the name of the class.
+Sub classes of :class:`Page` that do not have an id, will have the id automatically set to the name of the class. This can be disabled by setting :attr:`_no_autoid` on the class. This only affects that specific class, not any subclasses.
 
 
 Widgets as Controllers
