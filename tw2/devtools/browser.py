@@ -79,7 +79,7 @@ class Module(twc.Page):
         def prepare(self):
             demo_for = {}
             try:
-                sample_module = self._load_ep(self.module + '.samples')
+                sample_module = __import__(self.module + '.samples', fromlist=[''])
             except ModuleMissing:
                 pass
             else:
@@ -98,8 +98,7 @@ class Validators(twc.Page):
     title = 'Validators'
     class child(twc.RepeatingWidget):
         def prepare(self):
-            self.value = sorted([ep for ep in pr.iter_entry_points('tw2.widgets')
-                    if not ep.module_name.endswith('.samples')], key=lambda e: e.module_name)
+            self.value = sorted([ep for ep in pr.iter_entry_points('tw2.widgets')], key=lambda e: e.module_name)
             twc.RepeatingWidget.prepare(self)
         class child(twc.Widget):
             template = 'genshi:tw2.devtools.templates.wb_validator'
