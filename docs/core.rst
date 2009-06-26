@@ -87,7 +87,23 @@ There are some exceptions to this:
  * Some widgets do not need an id (e.g. Label, Spacer) and provide a default id of None.
  * The child of a RepeatingWidget must not have an id. The repetition is used instead to generate compound  ids.
  * DisplayOnlyWidget takes the id from its child, but uses None for generating compound ids.
- * If a child of a CompoundWidget is also a CompoundWidget, and has no id, this causes the children of the child CompoundWidget to be merged with the children of the parent CompoundWidget. This also works with a DisplayOnlyWidget between the two CompoundWidgets.
+
+**Deep Children**
+
+This is a feature that helps have a form layout that doesn't exactly match the database layout. For example, we might have a sinlge database table, with fields like title, customer, start_date, end_date. We want to display this in a Form that's broken up into two FieldSets. Without deep children, the FieldSets would have to have ids, and field makes would be dotted, like info.title. The deep children feature lets us set the id to None::
+
+    class MyForm(twf.Form):
+        class child(twc.CompoundWidget):
+            class info(twf.FieldSet):
+                id = None
+                title = twf.TextField()
+                customer = twf.TextField()
+            class dates(twf.FieldSet):
+                id = None
+                start_date = twf.TextField()
+                end_date = twf.TextField()
+
+Now, when a value like ``{'title': 'my title'}`` is passed to MyForm, this will propage correctly.
 
 
 Template
