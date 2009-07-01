@@ -1,40 +1,27 @@
 .. index:
 
-ToscaWidgets 2 Documentation
-============================
+tw2.devtools
+============
 
-ToscaWidgets aims to be a practical and useful widgets framework that helps people build interactive websites with compelling features, faster and easier. Widgets are re-usable web components that can include a template, server-side code and JavaScripts/CSS resources. The library aims to be: flexible, reliable, documented, performant, and as simple as possible.
+To keep tw2.core as minimal as possible, features needed only for development are in a separate package, tw2.devtools. The features in devtools are:
 
-ToscaWidgets comes in two main packages:
-
- * tw2.core - the core functionality needed to use widgets in an app
- * tw2.devtools - documentation, unit tests, widget browser, library template, resource collator
-
-The idea is that only tw2.core needs to be installed on a server. It has minimal dependencies, while tw2.devtools has more, e.g. sphinx.
-
-In addition, widget library packages follow the same naming convention, for example:
-
- * tw2.forms - Basic forms library
- * tw2.dynforms - Dynamic forms - client-side and Ajax
+ * Widget browser
+ * Widget library quick start
 
 
-Contents:
+Widget Browser
+==============
 
-.. toctree::
-   :maxdepth: 2
+The browser essentially enumerates the ``tw2.widgets`` entrypoint.
 
-   tutorial
-   core
-   validation
-   devtools
-   history
-   future
+The parameters that are displayed are: all the required parameters, plus non-required parameters that are defined on anything other than the Widget base class. Variables are never shown.
 
 
-Indices and tables
-==================
+Widget Library Quick Start
+==========================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+To create a widget library, issue::
 
+    paster quickstart -t tw2.library tw2.mylib
+
+This creates an empty template that gets you started.
