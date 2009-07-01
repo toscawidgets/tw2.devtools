@@ -80,7 +80,7 @@ class Module(twc.Page):
             demo_for = {}
             try:
                 sample_module = __import__(self.module + '.samples', fromlist=[''])
-            except ModuleMissing:
+            except ImportError:
                 pass
             else:
                 samples = self._get_widgets(sample_module)

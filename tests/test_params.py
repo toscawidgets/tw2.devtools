@@ -71,23 +71,3 @@ class TestParams(object):
         assert(not hasattr(test, 'test'))
         test2 = TestContainer(id='r', children=[test]).req()
         assert(test2.c.q.test == 10)
-
-    def xxtest_locked(self):
-        class Test(twc.Widget):
-            def __init__(self, **kw):
-                super(Test, self).__init__(**kw)
-                assert(self._locked == False)
-        test = Test()
-        assert(test._locked == True)
-
-    def xxtest_locked_attrs(self):
-        test = twc.Widget()
-        object.__setattr__(test, '_locked', False)
-        test.id = 'blah'
-        test._locked = True
-        try:
-            test.id = 'lah'
-            assert(False)
-        except twc.ParameterError:
-            pass
-
