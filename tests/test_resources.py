@@ -16,9 +16,9 @@ def simple_app(environ, start_response):
     inject_widget.display()
     resp.body = html
     return resp(environ, start_response)
+
 mw = twc.make_middleware(simple_app)
 tst_mw = wt.TestApp(mw)
-
 
 class TestResources(object):
     def setUp(self):
@@ -68,14 +68,20 @@ class TestResources(object):
         assert(tst_mw.get('/resources/tw2.tests/templates/simple_genshi.html').body == fcont)
         assert(tst_mw.get('/resources/tw2.tests/templates/notexist', expect_errors=True).status == '404 Not Found')
 
-    def test_dir_traversal(self): # check for potential security flaw
-        mw.resources.register('tw2.tests', 'templates/simple_genshi.html')
-        assert(tst_mw.get('/resources/tw2.tests/__init__.py', expect_errors=True).status == '404 Not Found')
-        assert(tst_mw.get('/resources/tw2.tests/templates/../__init__.py', expect_errors=True).status == '404 Not Found')
-
     def test_different_file(self):
         mw.resources.register('tw2.tests', 'templates/simple_genshi.html')
         assert(tst_mw.get('/resources/tw2.tests/simple_kid.kid', expect_errors=True).status == '404 Not Found')
+
+    def test_whole_dir(self):
+        mw.resources.register('tw2.tests', 'templates/', whole_dir=True)
+        fcont = open(os.path.join(os.path.dirname(tw2.tests.__file__), 'templates/simple_genshi.html')).read()
+        assert(tst_mw.get('/resources/tw2.tests/templates/simple_genshi.html').body == fcont)
+        assert(tst_mw.get('/resources/tw2.tests/templates/notexist', expect_errors=True).status == '404 Not Found')
+
+    def test_dir_traversal(self): # check for potential security flaw
+        mw.resources.register('tw2.tests', 'templates/')
+        assert(tst_mw.get('/resources/tw2.tests/__init__.py', expect_errors=True).status == '404 Not Found')
+        assert(tst_mw.get('/resources/tw2.tests/templates/../__init__.py', expect_errors=True).status == '404 Not Found')
 
     def test_zipped(self):
         # assumes webtest is installed as a zipped egg
