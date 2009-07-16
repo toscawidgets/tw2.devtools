@@ -80,6 +80,9 @@ class Module(twc.Page):
             demo_for = {}
             try:
                 sample_module = __import__(self.module + '.samples', fromlist=[''])
+                if 'page_options' in dir(sample_module):
+                    for k,v in sample_module.page_options.items():
+                        setattr(self, k, v)
             except ImportError:
                 pass
             else:
