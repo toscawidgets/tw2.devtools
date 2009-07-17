@@ -55,6 +55,16 @@ class Module(twc.Page):
         self.module = req.GET['module']
         self.child.module = req.GET['module']
 
+    def prepare(self):
+        try:
+            sample_module = __import__(self.module + '.samples', fromlist=[''])
+            if 'page_options' in dir(sample_module):
+                for k,v in sample_module.page_options.items():
+                    setattr(self, k, v)
+        except ImportError:
+            pass
+        super(Module, self).prepare()
+
     class child(twc.RepeatingWidget):
         module = twc.Param('module to display')
         child = BrowseWidget
@@ -80,9 +90,6 @@ class Module(twc.Page):
             demo_for = {}
             try:
                 sample_module = __import__(self.module + '.samples', fromlist=[''])
-                if 'page_options' in dir(sample_module):
-                    for k,v in sample_module.page_options.items():
-                        setattr(self, k, v)
             except ImportError:
                 pass
             else:
