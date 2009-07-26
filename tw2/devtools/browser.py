@@ -6,9 +6,11 @@ class Index(twc.Page):
     template = "genshi:tw2.devtools.templates.wb_index"
 
 class Welcome(twc.Page):
+    resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css')]
     template = "genshi:tw2.devtools.templates.wb_welcome"
 
 class List(twc.Page):
+    resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css')]
     template = "genshi:tw2.devtools.templates.wb_list"
     modules = twc.Variable()
     def prepare(self):
@@ -50,6 +52,7 @@ class ModuleMissing(Exception):
     pass
 
 class Module(twc.Page):
+    resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css')]
     template = 'genshi:tw2.devtools.templates.wb_module'
     def fetch_data(self, req):
         self.module = req.GET['module']
