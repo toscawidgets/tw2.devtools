@@ -6,11 +6,11 @@ class Index(twc.Page):
     template = "genshi:tw2.devtools.templates.wb_index"
 
 class Welcome(twc.Page):
-    resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css')]
+    #resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css')]
     template = "genshi:tw2.devtools.templates.wb_welcome"
 
 class List(twc.Page):
-    resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css')]
+    #resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css')]
     template = "genshi:tw2.devtools.templates.wb_list"
     modules = twc.Variable()
     def prepare(self):
@@ -40,10 +40,10 @@ class BrowseWidget(twc.Widget):
             self.child_params.sort(key=lambda p: p._seq)
             req_prm = [p.name for p in self.params if p.default is twc.Required]
             if self.demo:
-                self.demo = self.demo(id='demo', parent=self).req()
+                self.demo = self.demo(id='demo', parent=self.__class__).req()
                 self.demo.prepare()
             elif not req_prm or req_prm == ['id']: # auto demo
-                self.demo = self.widget(id='demo', parent=self).req()
+                self.demo = self.widget(id='demo', parent=self.__class__).req()
                 self.demo.prepare()
             else:
                 self.demo = None
@@ -52,7 +52,7 @@ class ModuleMissing(Exception):
     pass
 
 class Module(twc.Page):
-    resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css')]
+    #resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css')]
     template = 'genshi:tw2.devtools.templates.wb_module'
     def fetch_data(self, req):
         self.module = req.GET['module']
