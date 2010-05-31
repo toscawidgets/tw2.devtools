@@ -38,6 +38,7 @@ setup(
     install_requires=[
         'tw2.core',
         'paste',
+        'pastescript',
         'weberror',
         ],
     extras_require = {
