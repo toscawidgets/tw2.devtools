@@ -1,0 +1,30 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:py="http://genshi.edgewall.org/">
+  <head>
+    <title>ToscaWidgets Browser</title>
+	<link rel="shortcut icon" href="/resources/tw2.devtools.browser/static/favicon.ico"
+          type="image/vnd.microsoft.icon" />
+  </head>
+  <body>
+    <div>
+      <img src="/resources/tw2.devtools.browser/static/icon-header.jpg" width="96"
+           height="96" alt="Icon Header" id="icon"/>
+    </div>
+    <div id="header">
+        <img src="/resources/tw2.devtools.browser/static/toscawidgets-logo.jpg"
+             width="343" height="74" alt="Toscawidgets Logo" id="logo" />
+    </div>   
+    <table id="content"><tr><td id="sidebar">
+        <h3 style="margin-bottom:0; margin-top: 1em">Modules</h3>
+        <py:for each="m in w.modules">
+            <a href="module?module=$m">$m</a><br/>
+        </py:for>
+        <p><a href="validators">Validators</a></p>
+    </td><td>
+        ${w.child.display()}
+    </td></tr></table>
+    <div id="footer">
+        &copy; 2008-2010 Paul Johnston, <a href="http://ematia.de/">Daniel Haus</a> and contributors.
+    </div>
+  </body>
+</html>

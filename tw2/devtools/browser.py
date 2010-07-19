@@ -1,29 +1,27 @@
-import wsgiref.simple_server as ws, tw2.core as twc
-import pkg_resources as pr
+import tw2.core as twc, pkg_resources as pr
+from paste.script import command as pc
 
 
-class Index(twc.Page):
-    template = "genshi:tw2.devtools.templates.wb_index"
-
-class Welcome(twc.Page):
-    #resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css')]
-    template = "genshi:tw2.devtools.templates.wb_welcome"
-
-class List(twc.Page):
-    #resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css')]
-    template = "genshi:tw2.devtools.templates.wb_list"
-    modules = twc.Variable()
+class WbPage(twc.Page):
+    _no_autoid = True
+    resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css'),
+                 twc.DirLink(modname=__name__, filename='static/')]
+    template = "genshi:tw2.devtools.templates.wb_page"
     def prepare(self):
-        super(List, self).prepare()
+        super(WbPage, self).prepare()
         self.modules = sorted(ep.module_name
                         for ep in pr.iter_entry_points('tw2.widgets')
                         if not ep.module_name.endswith('.samples'))
 
 
+class Index(WbPage):
+    class child(twc.Widget):
+        template = "genshi:tw2.devtools.templates.wb_welcome"
+
+
 class BrowseWidget(twc.Widget):
     id = None
     template = 'genshi:tw2.devtools.templates.wb_widget'
-    resources = [twc.CSSLink(modname='tw2.devtools', filename='static/browser.css')]
     name = twc.Variable()
     widget = twc.Variable()
     params = twc.Variable()
@@ -51,64 +49,64 @@ class BrowseWidget(twc.Widget):
 class ModuleMissing(Exception):
     pass
 
-class Module(twc.Page):
-    #resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css')]
-    template = 'genshi:tw2.devtools.templates.wb_module'
+class Module(WbPage):
     def fetch_data(self, req):
-        self.module = req.GET['module']
         self.child.module = req.GET['module']
+        self.child.child.module = req.GET['module']
 
-    def prepare(self):
-        try:
-            sample_module = __import__(self.module + '.samples', fromlist=[''])
-            if 'page_options' in dir(sample_module):
-                for k,v in sample_module.page_options.items():
-                    setattr(self, k, v)
-        except ImportError:
-            pass
-        super(Module, self).prepare()
-
-    class child(twc.RepeatingWidget):
-        module = twc.Param('module to display')
-        child = BrowseWidget
-
-        def _load_ep(self, module):
-            for ep in pr.iter_entry_points('tw2.widgets'):
-                if ep.module_name == module:
-                    return ep.load()
-            raise ModuleMissing(module)
-
-        def _get_widgets(self, module=None, modname=None):
-            if not module:
-                module = self._load_ep(modname)
-            widgets = []
-            for attr in dir(module):
-                widget = getattr(module, attr)
-                if isinstance(widget, twc.widgets.WidgetMeta):
-                    widgets.append((attr, widget))
-            widgets.sort(key=lambda t: t[1]._seq)
-            return widgets
-
+    class child(twc.DisplayOnlyWidget):
+        template = 'genshi:tw2.devtools.templates.wb_module'
+    
         def prepare(self):
-            demo_for = {}
             try:
                 sample_module = __import__(self.module + '.samples', fromlist=[''])
+                if 'page_options' in dir(sample_module):
+                    for k,v in sample_module.page_options.items():
+                        setattr(self, k, v)
             except ImportError:
                 pass
-            else:
-                samples = self._get_widgets(sample_module)
-                for n,s in samples:
-                    df = s.__dict__.get('demo_for', s.__mro__[1])
-                    demo_for[df] = s
-            self.mod = self._load_ep(self.module)
-            widgets = self._get_widgets(self.mod)
-            self.parent.mod = self.mod
-            self.value = [(n, w, demo_for.get(w)) for n, w in widgets]
-            twc.RepeatingWidget.prepare(self)
+            twc.DisplayOnlyWidget.prepare(self)
+    
+        class child(twc.RepeatingWidget):
+            module = twc.Param('module to display')
+            child = BrowseWidget
+    
+            def _load_ep(self, module):
+                for ep in pr.iter_entry_points('tw2.widgets'):
+                    if ep.module_name == module:
+                        return ep.load()
+                raise ModuleMissing(module)
+    
+            def _get_widgets(self, module=None, modname=None):
+                if not module:
+                    module = self._load_ep(modname)
+                widgets = []
+                for attr in dir(module):
+                    widget = getattr(module, attr)
+                    if isinstance(widget, twc.widgets.WidgetMeta):
+                        widgets.append((attr, widget))
+                widgets.sort(key=lambda t: t[1]._seq)
+                return widgets
+    
+            def prepare(self):
+                demo_for = {}
+                try:
+                    sample_module = __import__(self.module + '.samples', fromlist=[''])
+                except ImportError:
+                    pass
+                else:
+                    samples = self._get_widgets(sample_module)
+                    for n,s in samples:
+                        df = s.__dict__.get('demo_for', s.__mro__[1])
+                        demo_for[df] = s
+                self.mod = self._load_ep(self.module)
+                widgets = self._get_widgets(self.mod)
+                self.parent.mod = self.mod
+                self.value = [(n, w, demo_for.get(w)) for n, w in widgets]
+                twc.RepeatingWidget.prepare(self)
 
 
-class Validators(twc.Page):
-    title = 'Validators'
+class Validators(WbPage):
     class child(twc.RepeatingWidget):
         def prepare(self):
             self.value = sorted([ep for ep in pr.iter_entry_points('tw2.widgets')], key=lambda e: e.module_name)
@@ -122,19 +120,15 @@ class Validators(twc.Page):
                             if isinstance(getattr(vd, v), twc.validation.ValidatorMeta)]
 
 
-from paste.script import command as pc
-
 class WbCommand(pc.Command):
     def command(self):
-        ws.make_server('', 8000, twc.make_middleware(controller_prefix='/')).serve_forever()
+        twc.dev_server()
     group_name = 'tw2'
     summary = 'Browse available ToscaWidgets'
     min_args = 0
     max_args = 0
     usage = "then browse to http://localhost:8000/"
-
     parser = pc.Command.standard_parser(verbose=True)
 
-
 if __name__ == '__main__':
-    ws.make_server('', 8000, twc.make_middleware(controller_prefix='/')).serve_forever()
+    twc.dev_server()

@@ -1,9 +1,7 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:py="http://genshi.edgewall.org/">
-<head><title>ToscaWidgets Browser</title></head>
-<body py:attrs="w.attrs">
+<div xmlns="http://www.w3.org/1999/xhtml" 
+    xmlns:py="http://genshi.edgewall.org/"
+    py:strip="True">
     <h1>$w.module</h1>
     <p>$w.mod.__doc__</p>
     ${w.child.display()}
-</body>
-</html>
+</div>
