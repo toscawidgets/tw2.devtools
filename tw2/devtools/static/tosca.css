@@ -46,10 +46,6 @@ ul li {
 /*    list-style-image: url('bullet.gif'); */
 }
 
-#content {
-    margin-top: 1em;
-}
-
 #footer {
     clear: both;
     margin: 1em 0.5em 0 0.5em;
