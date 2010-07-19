@@ -1,6 +1,13 @@
-import tw2.core as twc, pkg_resources as pr
+import tw2.core as twc, pkg_resources as pr, docutils.core, os, genshi.input as gsi, re
 from paste.script import command as pc
 
+
+def rst2html(x, s):
+    html = docutils.core.publish_string(s or '', writer_name='html', 
+        settings_overrides={'template': os.path.dirname(__file__)+'/rststub.txt'})
+    html = html.replace('<blockquote>', '')
+    html = html.replace('</blockquote>', '')    
+    return gsi.HTML(html)
 
 class WbPage(twc.Page):
     _no_autoid = True
@@ -26,7 +33,8 @@ class BrowseWidget(twc.Widget):
     widget = twc.Variable()
     params = twc.Variable()
     child_params = twc.Variable()
-    demo = twc.Variable()
+    demo = twc.Variable()    
+    rst2html = rst2html
 
     def prepare(self):
         super(BrowseWidget, self).prepare()
@@ -56,7 +64,8 @@ class Module(WbPage):
 
     class child(twc.DisplayOnlyWidget):
         template = 'genshi:tw2.devtools.templates.wb_module'
-    
+        rst2html = rst2html
+
         def prepare(self):
             try:
                 sample_module = __import__(self.module + '.samples', fromlist=[''])

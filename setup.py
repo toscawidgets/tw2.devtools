@@ -40,6 +40,7 @@ setup(
         'paste',
         'pastescript',
         'weberror',
+        'docutils',
         ],
     extras_require = {
         'cheetah': _extra_cheetah,

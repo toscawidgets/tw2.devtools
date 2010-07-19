@@ -1,7 +1,7 @@
 <p xmlns:py="http://genshi.edgewall.org/">
     <b>${w.name}</b><br/>
     <table><tr><td width="400">
-        ${w.widget.__doc__}
+        ${w.rst2html(w.widget.__doc__)}
 
         <?python import tw2.core as twc ?>
         <table py:if="w.widget">

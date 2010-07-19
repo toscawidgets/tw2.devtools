@@ -43,7 +43,10 @@ a:hover {
 ul li {
     list-style: none;
     padding-left: 0;
-/*    list-style-image: url('bullet.gif'); */
+}
+
+ul.simple li {
+    list-style-image: url('bullet.gif');
 }
 
 #footer {
