@@ -122,6 +122,7 @@ class Validators(WbPage):
             twc.RepeatingWidget.prepare(self)
         class child(twc.Widget):
             template = 'genshi:tw2.devtools.templates.wb_validator'
+            rst2html = rst2html
             def prepare(self):
                 twc.Widget.prepare(self)
                 vd = self.value.load()

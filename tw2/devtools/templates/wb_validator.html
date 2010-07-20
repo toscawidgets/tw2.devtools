@@ -2,6 +2,6 @@
     <h2 py:if="w.validators">$w.value.module_name</h2>
     <p py:for="v in w.validators">
         <b>$v.__name__</b><br/>
-        $v.__doc__
+        ${w.rst2html(v.__doc__)}
     </p>
 </div>
