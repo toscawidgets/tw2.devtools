@@ -131,14 +131,21 @@ class Validators(WbPage):
 
 
 class WbCommand(pc.Command):
+    parser = pc.Command.standard_parser(verbose=False)
+    parser.add_option('-p', '--port',
+                      dest='port',
+                      help="Specify the port to listen on",
+                      default='8000')
+    parser.add_option('-l', '--listen',
+                      dest='host',
+                      help="Specify the address to listen on",
+                      default="127.0.0.1")
     def command(self):
-        twc.dev_server()
+        twc.dev_server(host=self.options.host, port=self.options.port)
     group_name = 'tw2'
     summary = 'Browse available ToscaWidgets'
     min_args = 0
     max_args = 0
-    usage = "then browse to http://localhost:8000/"
-    parser = pc.Command.standard_parser(verbose=True)
 
 if __name__ == '__main__':
     twc.dev_server()
