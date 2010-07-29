@@ -64,7 +64,7 @@ setup(
     exclude_package_data={"thirdparty" : ["*"]},
     entry_points="""
     [paste.paster_create_template]
-    tw2.library=tw2.paste_template:ToscaWidgetsTemplate
+    tw2.library=tw2.devtools.paste_template:ToscaWidgetsTemplate
 
     [paste.global_paster_command]
     tw2.browser=tw2.devtools.browser:WbCommand
