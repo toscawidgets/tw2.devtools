@@ -1,6 +1,6 @@
 <p xmlns:py="http://genshi.edgewall.org/">
     <b>${w.name}</b><br/>
-    <table><tr><td width="400">
+    <table width="100%"><tr><td>
         ${w.rst2html(w.widget.__doc__)}
 
         <?python import tw2.core as twc ?>
@@ -29,7 +29,7 @@
             </table>
         </py:if>
 
-    </td><td>
+    </td><td style="width:400px">
         ${w.demo and w.demo.display()}
     </td></tr></table>
 </p>
