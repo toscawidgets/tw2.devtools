@@ -84,9 +84,3 @@ setup(
         'Programming Language :: Python',
     ],
 )
-
-
-"""
-    [distutils.commands]
-    archive_tw_resources = tw.core.command:archive_tw_resources
-"""
