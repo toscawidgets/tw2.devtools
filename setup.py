@@ -32,7 +32,7 @@ _extra_tests = _extra_cheetah + _extra_genshi + _extra_kid + _extra_mako + ['Bea
 
 setup(
     name='tw2.devtools',
-    version='2.0.0-alpha1',
+    version='2.0b4',
     description="Web widget creation toolkit based on TurboGears widgets - development tools",
     long_description = get_description(),
     install_requires=[
