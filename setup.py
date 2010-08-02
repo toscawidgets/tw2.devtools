@@ -19,7 +19,7 @@ setup(
     name='tw2.devtools',
     version='2.0b4',
     description="Web widget creation toolkit based on TurboGears widgets - development tools",
-    long_description = open('README.txt').read().split('\n\n', 1)[1]
+    long_description = open('README.txt').read().split('\n\n', 1)[1],
     install_requires=[
         'tw2.core>=2.0b4',
         'paste',
