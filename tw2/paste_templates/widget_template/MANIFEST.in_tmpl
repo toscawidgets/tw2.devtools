@@ -1,2 +1,2 @@
-recursive-include tw/${package}/templates *
-recursive-include tw/${package}/static *
+recursive-include tw2/${package}/templates *
+recursive-include tw2/${package}/static *

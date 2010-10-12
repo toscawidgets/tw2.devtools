@@ -1,1 +1,4 @@
+include tw2/devtools/rststub.txt
 recursive-include tw2/paste_templates *
+recursive-include tw2/devtools/templates *
+recursive-include tw2/devtools/static *

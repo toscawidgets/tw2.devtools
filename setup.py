@@ -2,7 +2,7 @@
 
 import sys, os
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 # Requirements to install buffet plugins and engines
@@ -42,7 +42,7 @@ setup(
     author_email='paj@pajhome.org.uk',
     license='MIT',
     test_suite = 'tests',
-    packages = ['tw2.devtools'],
+    packages=find_packages(exclude=['ez_setup', 'tests']),
     namespace_packages = ['tw2'],
     include_package_data=True,
     exclude_package_data={"thirdparty" : ["*"]},
