@@ -1,6 +1,8 @@
-<p xmlns:py="http://genshi.edgewall.org/">
+<p xmlns:py="http://genshi.edgewall.org/" style="width:100%">
     <b>${w.name}</b><br/>
-    <table width="100%"><tr><td>
+    <a href="javascript:toggleDocs('${(w.demo and w.demo.compound_id) or w.name}');">Show Documentation</a>
+    <table style="width:100%;"><tr><td style="width:50%;">
+        <div id="${'%s-doc' % ((w.demo and w.demo.compound_id) or w.name)}">
         ${w.rst2html(w.widget.__doc__)}
 
         <?python import tw2.core as twc ?>
@@ -29,7 +31,9 @@
             </table>
         </py:if>
 
-    </td><td style="width:400px">
+        </div> <!-- w.id-doc -->
+    </td>
+    <td style="width:50%">
         ${w.demo and w.demo.display()}
     </td></tr></table>
 </p>

@@ -12,7 +12,10 @@ def rst2html(x, s):
 class WbPage(twc.Page):
     _no_autoid = True
     resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css'),
-                 twc.DirLink(modname=__name__, filename='static/')]
+                 twc.DirLink(modname=__name__, filename='static/'),
+                 twc.JSLink(modname=__name__,
+                            filename='static/js/jquery-1.4.3.min.js'),
+                 twc.JSLink(modname=__name__, filename='static/js/browser.js')]
     template = "genshi:tw2.devtools.templates.wb_page"
     def prepare(self):
         super(WbPage, self).prepare()
