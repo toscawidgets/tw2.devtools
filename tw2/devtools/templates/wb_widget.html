@@ -1,6 +1,6 @@
 <p xmlns:py="http://genshi.edgewall.org/" style="width:100%">
     <b>${w.name}</b><br/>
-    <a href="javascript:toggleDocs('${(w.demo and w.demo.compound_id) or w.name}');">Show Documentation</a>
+    <a py:if="getattr(w.widget, '_hide_docs', False)" href="javascript:toggleDocs('${(w.demo and w.demo.compound_id) or w.name}');">Show Documentation</a>
     <table style="width:100%;"><tr><td style="width:50%;">
         <div id="${'%s-doc' % ((w.demo and w.demo.compound_id) or w.name)}">
         ${w.rst2html(w.widget.__doc__)}

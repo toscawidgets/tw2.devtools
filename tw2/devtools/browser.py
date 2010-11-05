@@ -12,10 +12,8 @@ def rst2html(x, s):
 class WbPage(twc.Page):
     _no_autoid = True
     resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css'),
-                 twc.DirLink(modname=__name__, filename='static/'),
-                 twc.JSLink(modname=__name__,
-                            filename='static/js/jquery-1.4.3.min.js'),
-                 twc.JSLink(modname=__name__, filename='static/js/browser.js')]
+                 twc.DirLink(modname=__name__, filename='static/')]
+
     template = "genshi:tw2.devtools.templates.wb_page"
     def prepare(self):
         super(WbPage, self).prepare()
@@ -43,6 +41,12 @@ class BrowseWidget(twc.Widget):
         super(BrowseWidget, self).prepare()
         if self.value:
             self.name, self.widget, self.demo = self.value
+            if getattr(self.widget, '_hide_docs', False):
+                self.resources.extend([
+                    twc.JSLink(modname=__name__,
+                               filename='static/js/jquery-1.4.3.min.js'),
+                    twc.JSLink(modname=__name__,
+                               filename='static/js/browser.js')])
             self.params = sorted(self.widget._params.values(), key=lambda p: p._seq)
             self.child_params = [p for p in self.widget._all_params.values()
                                             if p.child_param and not p.internal]
