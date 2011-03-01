@@ -41,11 +41,7 @@ class BrowseWidget(twc.Widget):
         super(BrowseWidget, self).prepare()
         if self.value:
             self.name, self.widget, self.demo = self.value
-            if getattr(self.widget, '_hide_docs', False):
-
-                if not hasattr(self.demo, 'resources'):
-                    self.demo.resources = []
-
+            if getattr(self.widget, '_hide_docs', False) and self.demo:
                 self.demo.resources.extend([
                     twc.JSLink(modname=__name__,
                                filename='static/js/jquery-1.4.3.min.js'),
