@@ -1,6 +1,8 @@
 import tw2.core as twc, pkg_resources as pr, docutils.core, os, genshi.input as gsi, re
 from paste.script import command as pc
 
+import warnings
+
 
 def rst2html(x, s):
     html = docutils.core.publish_string(s or '', writer_name='html', 
@@ -79,8 +81,8 @@ class Module(WbPage):
                 if 'page_options' in dir(sample_module):
                     for k,v in sample_module.page_options.items():
                         setattr(self, k, v)
-            except ImportError:
-                pass
+            except ImportError, e:
+                warnings.warn("ImportError for '%s': %s" % (self.module, str(e)))
             twc.DisplayOnlyWidget.prepare(self)
     
         class child(twc.RepeatingWidget):
