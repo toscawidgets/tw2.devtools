@@ -42,7 +42,7 @@ class BrowseWidget(twc.Widget):
         if self.value:
             self.name, self.widget, self.demo = self.value
             if getattr(self.widget, '_hide_docs', False):
-                self.resources.extend([
+                self.demo.resources.extend([
                     twc.JSLink(modname=__name__,
                                filename='static/js/jquery-1.4.3.min.js'),
                     twc.JSLink(modname=__name__,
