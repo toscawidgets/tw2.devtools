@@ -1,5 +1,6 @@
 <p xmlns:py="http://genshi.edgewall.org/" style="width:100%">
-    <b>${w.name}</b><br/>
+<div id="${w.name}">
+  <a href="#${w.name}"><b>${w.name}</b></a><br/>
     <a py:if="getattr(w.widget, '_hide_docs', False)" href="javascript:toggleDocs('${(w.demo and w.demo.compound_id) or w.name}');">Show Documentation</a>
     <table style="width:100%;"><tr><td style="width:50%;">
         <div id="${'%s-doc' % ((w.demo and w.demo.compound_id) or w.name)}">
@@ -36,4 +37,5 @@
     <td style="width:50%">
         ${w.demo and w.demo.display()}
     </td></tr></table>
+</div>
 </p>
