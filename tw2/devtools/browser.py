@@ -111,7 +111,7 @@ class Module(WbPage):
                 demo_for = {}
                 try:
                     sample_module = __import__(self.module + '.samples', fromlist=[''])
-                except ImportError:
+                except ImportError, e:
                     warnings.warn("ImportError for '%s': %s" % (
                         self.module, str(e)))
                 else:
