@@ -82,7 +82,8 @@ class Module(WbPage):
                     for k,v in sample_module.page_options.items():
                         setattr(self, k, v)
             except ImportError, e:
-                warnings.warn("ImportError for '%s': %s" % (self.module, str(e)))
+                warnings.warn("ImportError for '%s': %s" % (
+                    self.module, str(e)))
             twc.DisplayOnlyWidget.prepare(self)
     
         class child(twc.RepeatingWidget):
@@ -111,7 +112,8 @@ class Module(WbPage):
                 try:
                     sample_module = __import__(self.module + '.samples', fromlist=[''])
                 except ImportError:
-                    pass
+                    warnings.warn("ImportError for '%s': %s" % (
+                        self.module, str(e)))
                 else:
                     samples = self._get_widgets(sample_module)
                     for n,s in samples:
