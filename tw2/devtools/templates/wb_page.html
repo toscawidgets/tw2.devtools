@@ -16,7 +16,12 @@
     <table id="content"><tr><td id="sidebar">
         <h3 style="margin-bottom:0; margin-top: 2em">Modules</h3>
         <py:for each="m in w.modules">
-            <a href="module?module=$m">$m</a><br/>
+        <a href="module?module=$m">$m</a>
+        <br/>
+        <div class="module-metadata">
+          Version: ${w.pypi_version(m)}<br/>
+          Downloads: ${str(w.pypi_downloads(m))}
+        </div>
         </py:for>
         <p><a href="validators">Validators</a></p>
     </td><td>

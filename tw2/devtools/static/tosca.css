@@ -76,3 +76,6 @@ th, td { vertical-align: top; }
 .validators p {
     margin-top: 0;
 }
+.module-metadata {
+        font-size: 66%;
+}

@@ -5,9 +5,11 @@ from paste.script import command as pc
 
 import inspect
 import pygments
+import xmlrpclib
 
 import warnings
 
+import memoize
 
 def prepare_source(s):
     try:
@@ -44,7 +46,25 @@ class WbPage(twc.Page):
         self.modules = sorted(ep.module_name
                         for ep in pr.iter_entry_points('tw2.widgets')
                         if not ep.module_name.endswith('.samples'))
+        self.pypi = xmlrpclib.ServerProxy('http://pypi.python.org/pypi')
 
+    @memoize.memoize
+    def _pypi_versions(self, module):
+        versions = self.pypi.package_releases(module, True)
+        return versions
+
+    @memoize.memoize
+    def pypi_version(self, module):
+        return self.pypi.package_releases(module)[0]
+
+    @memoize.memoize
+    def pypi_downloads(self, module):
+        return sum([
+            sum([
+                d['downloads'] for d in self.pypi.release_urls(module, version)
+            ])
+            for version in self._pypi_versions(module)
+        ])
 
 class Index(WbPage):
     class child(twc.Widget):
