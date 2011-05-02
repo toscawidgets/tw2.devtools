@@ -55,7 +55,10 @@ class WbPage(twc.Page):
 
     @memoize.memoize
     def pypi_version(self, module):
-        return self.pypi.package_releases(module)[0]
+        versions = self.pypi.package_releases(module)
+        if len(versions):
+            return versions[0]
+        return '----'
 
     @memoize.memoize
     def pypi_downloads(self, module):
