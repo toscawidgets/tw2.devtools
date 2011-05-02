@@ -26,6 +26,9 @@ setup(
         'pastescript',
         'weberror',
         'docutils',
+        "tw2.jquery",
+        "tw2.jqplugins.ui",
+        "pygments",
         ],
     extras_require = {
         'cheetah': _extra_cheetah,

@@ -1,8 +1,23 @@
 import tw2.core as twc, pkg_resources as pr, docutils.core, os, genshi.input as gsi, re
+import tw2.jquery
+import tw2.jqplugins.ui
 from paste.script import command as pc
+
+import inspect
+import pygments
 
 import warnings
 
+
+def prepare_source(s):
+    source = inspect.getsource(s)
+    html_args = {'full': False}
+    code = pygments.highlight(
+        source,
+        pygments.lexers.PythonLexer(),
+        pygments.formatters.HtmlFormatter(**html_args)
+    )
+    return code
 
 def rst2html(x, s):
     html = docutils.core.publish_string(s or '', writer_name='html',
@@ -14,6 +29,7 @@ def rst2html(x, s):
 class WbPage(twc.Page):
     _no_autoid = True
     resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css'),
+                 twc.CSSLink(modname=__name__, filename='static/pygments.css'),
                  twc.DirLink(modname=__name__, filename='static/')]
 
     template = "genshi:tw2.devtools.templates.wb_page"
@@ -37,16 +53,26 @@ class BrowseWidget(twc.Widget):
     params = twc.Variable()
     child_params = twc.Variable()
     demo = twc.Variable()
+    source = twc.Variable()
     rst2html = rst2html
 
     def prepare(self):
         super(BrowseWidget, self).prepare()
         if self.value:
-            self.name, self.widget, self.demo = self.value
+            self.name, self.widget, self.demo, self.source = self.value
+
+            if self.source:
+                self.resources.extend([
+                    tw2.jquery.jquery_js,
+                    tw2.jqplugins.ui.jquery_ui_js,
+                    tw2.jqplugins.ui.jquery_ui_css,
+                    twc.JSLink(modname=__name__,
+                               filename='static/js/source.js')
+                ])
+
             if getattr(self.widget, '_hide_docs', False) and self.demo:
                 self.demo.resources.extend([
-                    twc.JSLink(modname=__name__,
-                               filename='static/js/jquery-1.4.3.min.js'),
+                    tw2.jquery.jquery_js,
                     twc.JSLink(modname=__name__,
                                filename='static/js/browser.js')])
             self.params = sorted(self.widget._params.values(), key=lambda p: p._seq)
@@ -108,7 +134,7 @@ class Module(WbPage):
                 return widgets
 
             def prepare(self):
-                demo_for = {}
+                demo_for, source_for = {}, {}
                 try:
                     sample_module = __import__(self.module + '.samples', fromlist=[''])
                 except ImportError, e:
@@ -119,10 +145,13 @@ class Module(WbPage):
                     for n,s in samples:
                         df = s.__dict__.get('demo_for', s.__mro__[1])
                         demo_for[df] = s
+                        source_for[df] = prepare_source(s)
+
                 self.mod = self._load_ep(self.module)
                 widgets = self._get_widgets(self.mod)
                 self.parent.mod = self.mod
-                self.value = [(n, w, demo_for.get(w)) for n, w in widgets]
+                self.value = [(n, w, demo_for.get(w), source_for.get(w))
+                              for n, w in widgets]
                 twc.RepeatingWidget.prepare(self)
 
 
