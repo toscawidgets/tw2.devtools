@@ -5,10 +5,10 @@ import warnings
 
 
 def rst2html(x, s):
-    html = docutils.core.publish_string(s or '', writer_name='html', 
+    html = docutils.core.publish_string(s or '', writer_name='html',
         settings_overrides={'template': os.path.dirname(__file__)+'/rststub.txt'})
     html = html.replace('<blockquote>', '')
-    html = html.replace('</blockquote>', '')    
+    html = html.replace('</blockquote>', '')
     return gsi.HTML(html)
 
 class WbPage(twc.Page):
@@ -36,7 +36,7 @@ class BrowseWidget(twc.Widget):
     widget = twc.Variable()
     params = twc.Variable()
     child_params = twc.Variable()
-    demo = twc.Variable()    
+    demo = twc.Variable()
     rst2html = rst2html
 
     def prepare(self):
@@ -85,17 +85,17 @@ class Module(WbPage):
                 warnings.warn("ImportError for '%s': %s" % (
                     self.module, str(e)))
             twc.DisplayOnlyWidget.prepare(self)
-    
+
         class child(twc.RepeatingWidget):
             module = twc.Param('module to display')
             child = BrowseWidget
-    
+
             def _load_ep(self, module):
                 for ep in pr.iter_entry_points('tw2.widgets'):
                     if ep.module_name == module:
                         return ep.load()
                 raise ModuleMissing(module)
-    
+
             def _get_widgets(self, module=None, modname=None):
                 if not module:
                     module = self._load_ep(modname)
@@ -106,7 +106,7 @@ class Module(WbPage):
                         widgets.append((attr, widget))
                 widgets.sort(key=lambda t: t[1]._seq)
                 return widgets
-    
+
             def prepare(self):
                 demo_for = {}
                 try:
