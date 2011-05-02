@@ -13,7 +13,7 @@ def prepare_source(s):
     try:
         source = inspect.getsource(s)
     except IOError as e:
-        warnings.warn(s + " : " + str(e))
+        warnings.warn(repr(s) + " : " + str(e))
         return ""
 
     html_args = {'full': False}
