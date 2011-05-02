@@ -10,13 +10,19 @@ import warnings
 
 
 def prepare_source(s):
-    source = inspect.getsource(s)
+    try:
+        source = inspect.getsource(s)
+    except IOError as e:
+        warnings.warn(s + " : " + str(e))
+        return ""
+
     html_args = {'full': False}
     code = pygments.highlight(
         source,
         pygments.lexers.PythonLexer(),
         pygments.formatters.HtmlFormatter(**html_args)
     )
+
     return code
 
 def rst2html(x, s):
