@@ -1,14 +1,16 @@
 import tw2.core as twc, pkg_resources as pr, docutils.core, os, genshi.input as gsi, re
 import tw2.jquery
 import tw2.jqplugins.ui
+import tw2.protovis.custom
 from paste.script import command as pc
+
+import repositories
 
 import inspect
 import pygments
 import xmlrpclib
 
 import warnings
-
 import memoize
 
 def prepare_source(s):
@@ -47,6 +49,21 @@ class WbPage(twc.Page):
                         for ep in pr.iter_entry_points('tw2.widgets')
                         if not ep.module_name.endswith('.samples'))
         self.pypi = xmlrpclib.ServerProxy('http://pypi.python.org/pypi')
+
+
+    @memoize.memoize
+    def commits_per_month(self, module):
+        return repositories.commits_per_month(module)
+
+    def has_commits(self, module):
+        return self.commits_per_month(module)
+
+    def commits(self, module):
+        """ Returns a tw2.protovis spark chart widget """
+        class CommitChart(tw2.protovis.custom.SparkBar):
+            p_height = 8
+            p_data = self.commits_per_month(module)
+        return CommitChart
 
     @memoize.memoize
     def _pypi_versions(self, module):
