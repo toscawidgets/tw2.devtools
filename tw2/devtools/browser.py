@@ -41,6 +41,8 @@ class WbPage(twc.Page):
     resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css'),
                  twc.CSSLink(modname=__name__, filename='static/pygments.css'),
                  twc.DirLink(modname=__name__, filename='static/')]
+    enable_repo_metadata = twc.Param()
+    enable_pypi_metadata = twc.Param()
 
     template = "genshi:tw2.devtools.templates.wb_page"
     def prepare(self):
@@ -226,7 +228,17 @@ class WbCommand(pc.Command):
                       dest='host',
                       help="Specify the address to listen on",
                       default="127.0.0.1")
+    parser.add_option('-r', '--enable-repo-metadata',
+                      action='store_true', dest='enable_repo_metadata',
+                      default=False, help="Enable source repo metadata")
+    parser.add_option('-i', '--enable-pypi-metadata',
+                      action='store_true', dest='enable_pypi_metadata',
+                      default=False, help="Enable pypi package metadata")
+
+
     def command(self):
+        WbPage.enable_repo_metadata = self.options.enable_repo_metadata
+        WbPage.enable_pypi_metadata = self.options.enable_pypi_metadata
         twc.dev_server(host=self.options.host, port=self.options.port)
     group_name = 'tw2'
     summary = 'Browse available ToscaWidgets'

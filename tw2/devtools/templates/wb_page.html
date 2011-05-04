@@ -19,11 +19,12 @@
         <a href="module?module=$m">$m</a>
         <br/>
         <div class="module-metadata">
+          <py:if test="w.enable_pypi_metadata">
           Downloads: ${str(w.pypi_downloads(m))}<br/>
-          Commits:
-<![CDATA[
-${w.has_commits(m) and w.commits(m).display()}
-]]>
+          </py:if>
+          <py:if test="w.enable_repo_metadata">
+          Commits: <![CDATA[ ${w.has_commits(m) and w.commits(m).display()} ]]>
+          </py:if>
         </div>
         </py:for>
         <p><a href="validators">Validators</a></p>
