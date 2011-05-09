@@ -253,9 +253,9 @@ class WbCommand(pc.Command):
         WbPage.enable_pypi_metadata = self.options.enable_pypi_metadata
         twc.dev_server(
             host=self.options.host, port=self.options.port,
-            use_threadpool=options.use_threadpool,
-            threadpool_workers=options.threadpool_workers,
-            request_queue_size=options.request_queue_size,
+            use_threadpool=self.options.use_threadpool,
+            threadpool_workers=self.options.threadpool_workers,
+            request_queue_size=self.options.request_queue_size,
         )
     group_name = 'tw2'
     summary = 'Browse available ToscaWidgets'
