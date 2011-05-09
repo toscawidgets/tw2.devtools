@@ -3,9 +3,12 @@
 import github2.client
 import urllib2
 import simplejson
-import multiprocessing
 import warnings
 from datetime import datetime, timedelta
+
+# NOTE -- we can't actually use multiprocessing here.
+# b/c it eats up a tremendous amount of memory.
+#import multiprocessing
 
 ## Some constants ##
 # The number of results github returns 'per-page'
@@ -31,7 +34,9 @@ def _get_github_commits(args):
     url, page = args
     return _get_commits(url.format(page=page))['commits']
 
-pool = multiprocessing.Pool(processes=github_tries)
+# NOTE -- we can't actually use multiprocessing here.
+# b/c it eats up a tremendous amount of memory.
+#pool = multiprocessing.Pool(processes=github_tries)
 
 class ServiceHandler(object):
     """ Abstract Baseclass """
@@ -120,7 +125,11 @@ class GithubHandler(ServiceHandler):
         base_url = self.api_url+"/commits/list/{account}/{module}/{branch}"
         url = base_url.format(**locals()) + "?page={page}"
         arg_pairs = zip([url] * github_tries, range(1, github_tries+1))
-        commits = sum(pool.map(_get_github_commits, arg_pairs), [])
+
+        # NOTE -- we can't actually use multiprocessing here.
+        # b/c it eats up a tremendous amount of memory.
+        #commits = sum(pool.map(_get_github_commits, arg_pairs), [])
+        commits = sum(map(_get_github_commits, arg_pairs), [])
 
         if len(commits) >= github_theoretical_max:
             # Try increasing `github_tries` if this happens to you.
