@@ -243,7 +243,7 @@ class WbCommand(pc.Command):
                       dest='threadpool_workers', default=10,
                       help="Number of worker threads to create when " +
                       "``use_threadpool`` is true")
-    parser.add_option('-r', '--request-queue-size',
+    parser.add_option('-s', '--request-queue-size',
                       dest='request_queue_size', default=5,
                       help="specifies the maximum number of queued connections")
 
