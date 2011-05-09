@@ -228,6 +228,7 @@ class WbCommand(pc.Command):
                       dest='host',
                       help="Specify the address to listen on",
                       default="127.0.0.1")
+
     parser.add_option('-r', '--enable-repo-metadata',
                       action='store_true', dest='enable_repo_metadata',
                       default=False, help="Enable source repo metadata")
@@ -235,11 +236,27 @@ class WbCommand(pc.Command):
                       action='store_true', dest='enable_pypi_metadata',
                       default=False, help="Enable pypi package metadata")
 
+    parser.add_option('-t', '--use-threadpool', action='store_true',
+                      dest='use_threadpool', default=False,
+                      help="Server requests from a pool of worker threads")
+    parser.add_option('-w', '--threadpool-workers',
+                      dest='threadpool_workers', default=10,
+                      help="Number of worker threads to create when " +
+                      "``use_threadpool`` is true")
+    parser.add_option('-r', '--request-queue-size',
+                      dest='request_queue_size', default=5,
+                      help="specifies the maximum number of queued connections")
+
 
     def command(self):
         WbPage.enable_repo_metadata = self.options.enable_repo_metadata
         WbPage.enable_pypi_metadata = self.options.enable_pypi_metadata
-        twc.dev_server(host=self.options.host, port=self.options.port)
+        twc.dev_server(
+            host=self.options.host, port=self.options.port,
+            use_threadpool=options.use_threadpool,
+            threadpool_workers=options.threadpool_workers,
+            request_queue_size=options.request_queue_size,
+        )
     group_name = 'tw2'
     summary = 'Browse available ToscaWidgets'
     min_args = 0
