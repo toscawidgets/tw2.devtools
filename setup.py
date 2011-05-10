@@ -17,11 +17,11 @@ _extra_tests = _extra_cheetah + _extra_genshi + _extra_kid + _extra_mako + ['Bea
 
 setup(
     name='tw2.devtools',
-    version='2.0b6',
+    version='2.0b7',
     description="Web widget creation toolkit based on TurboGears widgets - development tools",
     long_description = open('README.txt').read().split('\n\n', 1)[1],
     install_requires=[
-        'tw2.core>=2.0b5',
+        'tw2.core>=2.0b4',
         'paste',
         'pastescript',
         'weberror',
