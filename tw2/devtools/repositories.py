@@ -165,6 +165,7 @@ def commits_per_month(module):
         ('bitbucket',   'paj'),
         ('bitbucket',   'percious'),
         ('bitbucket',   'josephtate'),
+        ('github',      'decause'),
     ]
     service_handlers = {
         'bitbucket' : BitbucketHandler(),
