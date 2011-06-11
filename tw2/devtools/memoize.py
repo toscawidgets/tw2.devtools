@@ -9,6 +9,7 @@ expires = datetime.timedelta(days=1)
 cache = {}
 _cache_lock = threading.Lock()
 
+@decorator.decorator
 def memoize(f, *args, **kwargs):
     key = f.__name__ + str(args[1:]) + str(kwargs)
     key = hashlib.md5(key).hexdigest()
@@ -31,5 +32,3 @@ def memoize(f, *args, **kwargs):
         }
 
     return result
-
-memoize = decorator.decorator(memoize)
