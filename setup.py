@@ -5,16 +5,6 @@ import sys, os
 from setuptools import setup, find_packages
 
 
-# Requirements to install buffet plugins and engines
-_extra_cheetah = ["Cheetah>=1.0", "TurboCheetah>=0.9.5"]
-_extra_genshi = ["Genshi >= 0.3.5"]
-_extra_kid = ["kid>=0.9.5", "TurboKid>=0.9.9"]
-_extra_mako = ["Mako >= 0.1.1"]
-
-# Requierements to run all tests
-_extra_tests = _extra_cheetah + _extra_genshi + _extra_kid + _extra_mako + ['BeautifulSoup', 'WebTest']
-
-
 setup(
     name='tw2.devtools',
     version='2.0b7',
@@ -33,20 +23,25 @@ setup(
         "github2",
         ],
     extras_require = {
-        'cheetah': _extra_cheetah,
-        'kid': _extra_kid,
-        'genshi': _extra_genshi,
-        'mako': _extra_mako,
         'build_docs': [
             "Sphinx",
             ],
         },
-    tests_require = _extra_tests,
+    tests_require = [
+        'WebTest',
+        'BeautifulSoup',
+        'nose',
+        # Note -- formencode should not (and 'is' not) required here.
+        # However, tw2.core needs it but doesn't declare it in pypi.  Therefore,
+        # we include it here the make tests pass.  TODO -- this should be
+        # removed.
+        "formencode",
+    ],
     url = "http://toscawidgets.org/documentation/tw2.core/",
     author='Paul Johnston, Christopher Perkins, Alberto Valverde & contributors',
     author_email='paj@pajhome.org.uk',
     license='MIT',
-    test_suite = 'tests',
+    test_suite = 'nose.collector',
     packages=find_packages(exclude=['ez_setup', 'tests']),
     namespace_packages = ['tw2'],
     include_package_data=True,

@@ -4,3 +4,7 @@ glob:tw2.devtools.egg-info
 glob:*Thumbs.db
 glob:build/*
 glob:dist/*
+glob:*egg*
+glob:htmlcov
+glob:*.swp
+glob:.coverage
