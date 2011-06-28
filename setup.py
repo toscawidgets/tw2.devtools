@@ -21,6 +21,7 @@ setup(
         "tw2.protovis.custom",
         "pygments",
         "github2",
+        "decorator",
         ],
     extras_require = {
         'build_docs': [
