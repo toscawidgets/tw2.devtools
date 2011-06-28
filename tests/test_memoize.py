@@ -1,4 +1,3 @@
-
 import time
 from tw2.devtools import memoize
 
