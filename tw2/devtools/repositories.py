@@ -25,7 +25,7 @@ def _get_commits(url):
         p = urllib2.urlopen(url)
         commits = simplejson.loads(p.read())
         p.close()
-    except urllib2.HTTPError as e:
+    except urllib2.HTTPError, e:
         pass
     return commits
 
@@ -150,7 +150,7 @@ class GithubHandler(ServiceHandler):
 
         try:
             urllib2.urlopen(url).close()
-        except urllib2.HTTPError as e:
+        except urllib2.HTTPError, e:
             return False
 
         return True
