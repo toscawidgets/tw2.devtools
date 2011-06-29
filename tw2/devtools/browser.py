@@ -1,4 +1,5 @@
 import tw2.core as twc, pkg_resources as pr, docutils.core, os, genshi.input as gsi, re
+import tw2.devtools
 import tw2.jquery
 import tw2.jqplugins.ui
 import tw2.protovis.custom
@@ -16,7 +17,7 @@ import memoize
 def prepare_source(s):
     try:
         source = inspect.getsource(s)
-    except IOError as e:
+    except IOError, e:
         warnings.warn(repr(s) + " : " + str(e))
         return ""
 
@@ -251,7 +252,7 @@ class WbCommand(pc.Command):
     def command(self):
         WbPage.enable_repo_metadata = self.options.enable_repo_metadata
         WbPage.enable_pypi_metadata = self.options.enable_pypi_metadata
-        twc.dev_server(
+        tw2.devtools.dev_server(
             host=self.options.host, port=self.options.port,
             use_threadpool=self.options.use_threadpool,
             threadpool_workers=self.options.threadpool_workers,
@@ -263,4 +264,4 @@ class WbCommand(pc.Command):
     max_args = 0
 
 if __name__ == '__main__':
-    twc.dev_server()
+    tw2.devtools.dev_server()
