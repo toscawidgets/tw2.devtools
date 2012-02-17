@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='tw2.devtools',
-    version='2.0b8',
+    version='2.0b9',
     description="Web widget creation toolkit based on TurboGears widgets - development tools",
     long_description = open('README.txt').read().split('\n\n', 1)[1],
     install_requires=[
@@ -22,6 +22,8 @@ setup(
         "pygments",
         "github2",
         "decorator",
+        "genshi",
+        "mako",
         ],
     extras_require = {
         'build_docs': [
