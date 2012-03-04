@@ -4,6 +4,8 @@ import sys, os
 
 from setuptools import setup, find_packages
 
+import multiprocessing
+import logging
 
 setup(
     name='tw2.devtools',
