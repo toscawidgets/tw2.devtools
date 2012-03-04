@@ -13,7 +13,7 @@
 
 import sys, os
 import pkg_resources
-execfile(os.path.join("..", "tw", "${package}", "release.py"))
+execfile(os.path.join("..", "tw2", "${package}", "release.py"))
 
 # If your extensions are in another directory, add it here. If the directory
 # is relative to the documentation root, use os.path.abspath to make it

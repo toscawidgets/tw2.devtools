@@ -12,11 +12,11 @@ Contents
    :maxdepth: 2
 
 
-:class:`tw.${package}.${package.capitalize()}`
+:class:`tw2.${package}.${package.capitalize()}`
 ----------------------------------------------------------
 
-.. autoclass:: tw.${package}.${package.capitalize()}
-.. widgetbrowser:: tw.${package}.${package.capitalize()}
+.. autoclass:: tw2.${package}.${package.capitalize()}
+.. widgetbrowser:: tw2.${package}.${package.capitalize()}
 
 .. note::
     See http://toscawidgets.org/documentation/WidgetBrowser to learn how to
