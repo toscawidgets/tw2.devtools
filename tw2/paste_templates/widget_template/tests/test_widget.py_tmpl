@@ -1,16 +1,10 @@
-from tw.core.testutil import WidgetTestCase
-from tw.${package} import *
+from tw2.core.testbase import WidgetTest
+from tw2.${package} import *
 
-class TestWidget(WidgetTestCase):
+class Test${package.capitalize()}(WidgetTest):
     # place your widget at the TestWidget attribute
-    TestWidget = ${package.capitalize()}
+    widget = ${package.capitalize()}
     # Initilization args. go here 
-    widget_kw = {}
-
-    def test_render(self):
-        # Asserts 'foo' and 'test' (the test widget's id) appear in rendered 
-        # string when 'foo' is passed as value to render
-        self.assertInOutput(['foo', 'test'], "foo")
-        # Asserts 'ohlalala' does not appear in rendered string when render 
-        # is called without args
-        self.assertNotInOutput(['ohlalala'])
+    attrs = {'id':'${package}-test'}
+    params = {}
+    expected = """<div id="${package}-test"></div>"""
