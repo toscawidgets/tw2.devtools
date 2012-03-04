@@ -2,7 +2,7 @@ import tw2.core as twc
 
 
 class ${package.capitalize()}(twc.Widget):
-    template = "genshi:tw.${package}.templates.${package}"
+    template = "genshi:tw2.${package}.templates.${package}"
 
     # declare static resources here
     # you can remove either or both of these, if not needed
