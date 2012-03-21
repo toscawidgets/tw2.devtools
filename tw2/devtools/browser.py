@@ -2,7 +2,6 @@ import tw2.core as twc, pkg_resources as pr, docutils.core, os, genshi.input as 
 import tw2.devtools
 import tw2.jquery
 import tw2.jqplugins.ui
-import tw2.protovis.custom
 from paste.script import command as pc
 
 import repositories
@@ -63,6 +62,7 @@ class WbPage(twc.Page):
 
     def commits(self, module):
         """ Returns a tw2.protovis spark chart widget """
+        import tw2.protovis.custom
         class CommitChart(tw2.protovis.custom.SparkBar):
             p_height = 8
             p_data = self.commits_per_month(module)

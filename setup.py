@@ -20,7 +20,6 @@ setup(
         'docutils',
         "tw2.jquery",
         "tw2.jqplugins.ui",
-        "tw2.protovis.custom",
         "pygments",
         "github2",
         "decorator",
