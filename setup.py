@@ -35,6 +35,7 @@ setup(
         'WebTest',
         'BeautifulSoup',
         'nose',
+        'strainer',
         # Note -- formencode should not (and 'is' not) required here.
         # However, tw2.core needs it but doesn't declare it in pypi.  Therefore,
         # we include it here the make tests pass.  TODO -- this should be
