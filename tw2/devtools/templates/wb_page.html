@@ -1,35 +1,43 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
-      xmlns:py="http://genshi.edgewall.org/">
+  xmlns:py="http://genshi.edgewall.org/">
   <head>
-    <title>ToscaWidgets Browser</title>
-	<link rel="shortcut icon" href="/resources/tw2.devtools.browser/static/favicon.ico" />
+    <title>ToscaWidgets2 Browser</title>
+    <link rel="shortcut icon" href="/resources/tw2.devtools.browser/static/favicon.ico" />
   </head>
   <body>
-    <div>
-      <img src="/resources/tw2.devtools.browser/static/icon-header.jpg" width="96"
-           height="96" alt="Icon Header" id="icon"/>
-    </div>
-    <div id="header">
-        <img src="/resources/tw2.devtools.browser/static/toscawidgets-logo.jpg"
-             width="343" height="74" alt="Toscawidgets Logo" id="logo" />
-    </div>   
-    <table id="content"><tr><td id="sidebar">
-        <h3 style="margin-bottom:0; margin-top: 2em">Modules</h3>
-        <py:for each="m in w.modules">
-        <a href="module?module=$m">$m</a>
-        <br/>
-        <div class="module-metadata">
-          <py:if test="w.enable_pypi_metadata">
-          Downloads: ${str(w.pypi_downloads(m))}<br/>
-          </py:if>
+    <div class="container_10">
+      <div class="grid_6 head lft">
+        <img id="tw-logo" src="resources/tw2.devtools.browser/static/images/toscawidgets-logo.jpg"/>
+      </div>
+      <div class="grid_4 head rght">
+      </div>
+      <div class="clearfix"></div>
+      <div class="grid_10 drop-sliver">
+      </div>
+      <div class="content">
+        <div class="grid_3 lft body">
+          <h3>Modules</h3>
+
+          <ul class="module-list">
+            <py:for each="m in w.modules">
+            <li><a href="module?module=$m">$m</a>
+            <py:if test="w.enable_pypi_metadata">
+            <br/>Downloads: ${str(w.pypi_downloads(m))}
+            </py:if>
+            </li>
+            </py:for>
+          </ul>
         </div>
-        </py:for>
-        <p><a href="validators">Validators</a></p>
-    </td><td>
-        ${w.child.display()}
-    </td></tr></table>
-    <div id="footer">
-        &copy; 2008-2010 Paul Johnston, <a href="http://ematia.de/">Daniel Haus</a> and contributors.
+        <div class="grid_7 prefix_3 rght body">
+          ${w.child.display()}
+        </div>
+      </div>
+      <div class="clear">&nbsp;</div>
     </div>
+
+    <footer>
+    <p>&copy; 2008-2010 Paul Johnston, <a href="http://ematia.de/">Daniel
+      Haus</a> and contributors.</p>
+    </footer>
   </body>
 </html>

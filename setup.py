@@ -17,6 +17,7 @@ setup(
         'paste',
         'pastescript',
         'weberror',
+        'webhelpers',
         'docutils',
         "tw2.jquery",
         "tw2.jqplugins.ui",

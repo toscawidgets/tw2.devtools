@@ -1,4 +1,4 @@
-import tw2.core as twc, pkg_resources as pr, docutils.core, os, genshi.input as gsi, re
+import tw2.core as twc, pkg_resources as pr, docutils.core, os
 import tw2.devtools
 import tw2.jquery
 import tw2.jqplugins.ui
@@ -11,33 +11,13 @@ import xmlrpclib
 import warnings
 import memoize
 
-def prepare_source(s):
-    try:
-        source = inspect.getsource(s)
-    except IOError, e:
-        warnings.warn(repr(s) + " : " + str(e))
-        return ""
-
-    html_args = {'full': False}
-    code = pygments.highlight(
-        source,
-        pygments.lexers.PythonLexer(),
-        pygments.formatters.HtmlFormatter(**html_args)
-    )
-
-    return code
-
-def rst2html(x, s):
-    html = docutils.core.publish_string(s or '', writer_name='html',
-        settings_overrides={'template': os.path.dirname(__file__)+'/rststub.txt'})
-    html = html.replace('<blockquote>', '')
-    html = html.replace('</blockquote>', '')
-    return gsi.HTML(html)
 
 class WbPage(twc.Page):
     _no_autoid = True
-    resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css'),
-                 twc.CSSLink(modname=__name__, filename='static/pygments.css'),
+    resources = [twc.CSSLink(modname=__name__, filename='static/css/reset.css'),
+                 twc.CSSLink(modname=__name__, filename='static/css/core.css'),
+                 twc.CSSLink(modname=__name__, filename='static/css/grid.css'),
+                 twc.CSSLink(modname=__name__, filename='static/css/pygments.css'),
                  twc.DirLink(modname=__name__, filename='static/')]
     enable_pypi_metadata = twc.Param()
 
@@ -84,12 +64,12 @@ class BrowseWidget(twc.Widget):
     child_params = twc.Variable()
     demo = twc.Variable()
     source = twc.Variable()
-    rst2html = rst2html
 
     def prepare(self):
         super(BrowseWidget, self).prepare()
+        tw2.jqplugins.ui.set_ui_theme_name('pepper-grinder')
         if self.value:
-            self.name, self.widget, self.demo, self.source = self.value
+            self.name, self.widget, self.demo = self.value
 
             if self.source:
                 self.resources.extend([
@@ -129,7 +109,6 @@ class Module(WbPage):
 
     class child(twc.DisplayOnlyWidget):
         template = 'genshi:tw2.devtools.templates.wb_module'
-        rst2html = rst2html
 
         def prepare(self):
             try:
@@ -175,12 +154,11 @@ class Module(WbPage):
                     for n,s in samples:
                         df = s.__dict__.get('demo_for', s.__mro__[1])
                         demo_for[df] = s
-                        source_for[df] = prepare_source(s)
 
                 self.mod = self._load_ep(self.module)
                 widgets = self._get_widgets(self.mod)
                 self.parent.mod = self.mod
-                self.value = [(n, w, demo_for.get(w), source_for.get(w))
+                self.value = [(n, w, demo_for.get(w))
                               for n, w in widgets]
                 twc.RepeatingWidget.prepare(self)
 
@@ -192,7 +170,7 @@ class Validators(WbPage):
             twc.RepeatingWidget.prepare(self)
         class child(twc.Widget):
             template = 'genshi:tw2.devtools.templates.wb_validator'
-            rst2html = rst2html
+
             def prepare(self):
                 twc.Widget.prepare(self)
                 vd = self.value.load()
