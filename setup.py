@@ -21,7 +21,6 @@ setup(
         "tw2.jquery",
         "tw2.jqplugins.ui",
         "pygments",
-        "github2",
         "decorator",
         "genshi",
         "mako",

@@ -22,9 +22,6 @@
           <py:if test="w.enable_pypi_metadata">
           Downloads: ${str(w.pypi_downloads(m))}<br/>
           </py:if>
-          <py:if test="w.enable_repo_metadata">
-          Commits: <![CDATA[ ${w.has_commits(m) and w.commits(m).display()} ]]>
-          </py:if>
         </div>
         </py:for>
         <p><a href="validators">Validators</a></p>
