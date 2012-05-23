@@ -95,7 +95,11 @@ class BrowseWidget(twc.Widget):
                 self.demo.prepare()
             elif not req_prm or req_prm == ['id']: # auto demo
                 self.demo = self.widget(id='demo', parent=self.__class__).req()
-                self.demo.prepare()
+                try:
+                    self.demo.prepare()
+                except Exception, e:
+                    warnings.warn(unicode(e))
+                    self.demo = None
             else:
                 self.demo = None
 
