@@ -70,6 +70,7 @@ body {
     width: 622px;
     z-index: 1;
     padding-bottom: 1em;
+    min-height:800px;
 }
 
 .content {
@@ -114,8 +115,24 @@ ul, li {
 
 .module-list li {
     font-weight: bold;
+    padding-bottom: 5px;
+}
+
+.ui-widget-header {
+    height: 21px !important;
+}
+
+.ui-state-default {
+    height: 20px !important;
+}
+
+.ui-state-default a {
+    padding: 0 0.7em 0 0.7em !important;
+}
+
+a {
     color: #949576;
-    padding-bottom: 16px;
+    outline: none;
 }
 
 .module-detail-list li {
@@ -124,6 +141,7 @@ ul, li {
     padding-top: 8px;
     padding-bottom: 0;
 }
+
 
 /* --- Footer ----- */
 footer {
