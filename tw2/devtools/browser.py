@@ -1,11 +1,8 @@
-import tw2.core as twc, pkg_resources as pr, docutils.core, os, genshi.input as gsi, re
+import tw2.core as twc, pkg_resources as pr, docutils.core, os
 import tw2.devtools
 import tw2.jquery
 import tw2.jqplugins.ui
-import tw2.protovis.custom
 from paste.script import command as pc
-
-import repositories
 
 import inspect
 import pygments
@@ -14,35 +11,14 @@ import xmlrpclib
 import warnings
 import memoize
 
-def prepare_source(s):
-    try:
-        source = inspect.getsource(s)
-    except IOError, e:
-        warnings.warn(repr(s) + " : " + str(e))
-        return ""
-
-    html_args = {'full': False}
-    code = pygments.highlight(
-        source,
-        pygments.lexers.PythonLexer(),
-        pygments.formatters.HtmlFormatter(**html_args)
-    )
-
-    return code
-
-def rst2html(x, s):
-    html = docutils.core.publish_string(s or '', writer_name='html',
-        settings_overrides={'template': os.path.dirname(__file__)+'/rststub.txt'})
-    html = html.replace('<blockquote>', '')
-    html = html.replace('</blockquote>', '')
-    return gsi.HTML(html)
 
 class WbPage(twc.Page):
     _no_autoid = True
-    resources = [twc.CSSLink(modname=__name__, filename='static/tosca.css'),
-                 twc.CSSLink(modname=__name__, filename='static/pygments.css'),
+    resources = [twc.CSSLink(modname=__name__, filename='static/css/reset.css'),
+                 twc.CSSLink(modname=__name__, filename='static/css/core.css'),
+                 twc.CSSLink(modname=__name__, filename='static/css/grid.css'),
+                 twc.CSSLink(modname=__name__, filename='static/css/pygments.css'),
                  twc.DirLink(modname=__name__, filename='static/')]
-    enable_repo_metadata = twc.Param()
     enable_pypi_metadata = twc.Param()
 
     template = "genshi:tw2.devtools.templates.wb_page"
@@ -52,21 +28,6 @@ class WbPage(twc.Page):
                         for ep in pr.iter_entry_points('tw2.widgets')
                         if not ep.module_name.endswith('.samples'))
         self.pypi = xmlrpclib.ServerProxy('http://pypi.python.org/pypi')
-
-
-    @memoize.memoize
-    def commits_per_month(self, module):
-        return repositories.commits_per_month(module)
-
-    def has_commits(self, module):
-        return self.commits_per_month(module)
-
-    def commits(self, module):
-        """ Returns a tw2.protovis spark chart widget """
-        class CommitChart(tw2.protovis.custom.SparkBar):
-            p_height = 8
-            p_data = self.commits_per_month(module)
-        return CommitChart
 
     @memoize.memoize
     def _pypi_versions(self, module):
@@ -103,12 +64,12 @@ class BrowseWidget(twc.Widget):
     child_params = twc.Variable()
     demo = twc.Variable()
     source = twc.Variable()
-    rst2html = rst2html
 
     def prepare(self):
         super(BrowseWidget, self).prepare()
+        tw2.jqplugins.ui.set_ui_theme_name('pepper-grinder')
         if self.value:
-            self.name, self.widget, self.demo, self.source = self.value
+            self.name, self.widget, self.demo = self.value
 
             if self.source:
                 self.resources.extend([
@@ -134,7 +95,11 @@ class BrowseWidget(twc.Widget):
                 self.demo.prepare()
             elif not req_prm or req_prm == ['id']: # auto demo
                 self.demo = self.widget(id='demo', parent=self.__class__).req()
-                self.demo.prepare()
+                try:
+                    self.demo.prepare()
+                except Exception, e:
+                    warnings.warn(unicode(e))
+                    self.demo = None
             else:
                 self.demo = None
 
@@ -148,7 +113,6 @@ class Module(WbPage):
 
     class child(twc.DisplayOnlyWidget):
         template = 'genshi:tw2.devtools.templates.wb_module'
-        rst2html = rst2html
 
         def prepare(self):
             try:
@@ -194,12 +158,11 @@ class Module(WbPage):
                     for n,s in samples:
                         df = s.__dict__.get('demo_for', s.__mro__[1])
                         demo_for[df] = s
-                        source_for[df] = prepare_source(s)
 
                 self.mod = self._load_ep(self.module)
                 widgets = self._get_widgets(self.mod)
                 self.parent.mod = self.mod
-                self.value = [(n, w, demo_for.get(w), source_for.get(w))
+                self.value = [(n, w, demo_for.get(w))
                               for n, w in widgets]
                 twc.RepeatingWidget.prepare(self)
 
@@ -211,7 +174,7 @@ class Validators(WbPage):
             twc.RepeatingWidget.prepare(self)
         class child(twc.Widget):
             template = 'genshi:tw2.devtools.templates.wb_validator'
-            rst2html = rst2html
+
             def prepare(self):
                 twc.Widget.prepare(self)
                 vd = self.value.load()
@@ -230,9 +193,6 @@ class WbCommand(pc.Command):
                       help="Specify the address to listen on",
                       default="127.0.0.1")
 
-    parser.add_option('-r', '--enable-repo-metadata',
-                      action='store_true', dest='enable_repo_metadata',
-                      default=False, help="Enable source repo metadata")
     parser.add_option('-i', '--enable-pypi-metadata',
                       action='store_true', dest='enable_pypi_metadata',
                       default=False, help="Enable pypi package metadata")
@@ -250,7 +210,6 @@ class WbCommand(pc.Command):
 
 
     def command(self):
-        WbPage.enable_repo_metadata = self.options.enable_repo_metadata
         WbPage.enable_pypi_metadata = self.options.enable_pypi_metadata
         tw2.devtools.dev_server(
             host=self.options.host, port=self.options.port,

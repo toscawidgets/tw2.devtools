@@ -1,7 +1,8 @@
 <div xmlns="http://www.w3.org/1999/xhtml" 
     xmlns:py="http://genshi.edgewall.org/"
     py:attrs="w.attrs">
+    <?python import tw2.devtools.tabs as tabs ?>
     <h1>$w.module</h1>
-    <p>${w.rst2html(w.mod.__doc__)}</p>
+    ${tabs.rst2html(w.mod.__doc__)}
     ${w.child.display()}
 </div>

@@ -4,12 +4,15 @@ import sys, os
 
 from setuptools import setup, find_packages
 
-import multiprocessing
-import logging
+try:
+    import multiprocessing
+    import logging
+except:
+    pass
 
 setup(
     name='tw2.devtools',
-    version='2.0b9',
+    version='2.0.3',
     description="Web widget creation toolkit based on TurboGears widgets - development tools",
     long_description = open('README.txt').read().split('\n\n', 1)[1],
     install_requires=[
@@ -17,15 +20,15 @@ setup(
         'paste',
         'pastescript',
         'weberror',
+        'webhelpers',
         'docutils',
         "tw2.jquery",
         "tw2.jqplugins.ui",
-        "tw2.protovis.custom",
         "pygments",
-        "github2",
         "decorator",
         "genshi",
         "mako",
+        "repoze.tm",
         ],
     extras_require = {
         'build_docs': [
@@ -36,6 +39,7 @@ setup(
         'WebTest',
         'BeautifulSoup',
         'nose',
+        'strainer',
         # Note -- formencode should not (and 'is' not) required here.
         # However, tw2.core needs it but doesn't declare it in pypi.  Therefore,
         # we include it here the make tests pass.  TODO -- this should be
