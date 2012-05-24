@@ -1,48 +1,7 @@
 <p xmlns:py="http://genshi.edgewall.org/" style="width:100%">
+<?python import tw2.devtools.tabs as tabs ?>
 <div id="${w.name}">
   <a href="#${w.name}"><b>${w.name}</b></a>
-  <a py:if="w.source" href="javascript:showWidgetSource('${w.name}');">(view source)</a>
-  <div py:if="w.source" id="${w.name}-widget-source">
-<![CDATA[
-${w.source}
-]]>
-  </div>
-  <br/>
-    <a py:if="getattr(w.widget, '_hide_docs', False)" href="javascript:toggleDocs('${(w.demo and w.demo.compound_id) or w.name}');">Show Documentation</a>
-    <table style="width:100%;"><tr><td style="width:50%;">
-        <div id="${'%s-doc' % ((w.demo and w.demo.compound_id) or w.name)}">
-        ${w.rst2html(w.widget.__doc__)}
-
-        <?python import tw2.core as twc ?>
-        <table py:if="w.widget">
-            <tr py:for="p in w.params"
-                    py:if="p.default is twc.Required">
-                <th class="required">$p.name</th>
-                <td>$p.description</td>
-            </tr>
-            <tr py:for="p in w.params"
-                    py:if="not p.internal
-                        and p.default is not twc.Required
-                        and (w.name == 'Widget' or p.defined_on != 'Widget')">
-                <th>$p.name</th>
-                <td>$p.description (default: ${repr(p.default)})</td>
-            </tr>
-        </table>
-
-        <py:if test="w.child_params">
-            Parameters for child widgets:
-            <table>
-                <tr py:for="p in w.child_params">
-                    <th>$p.name</th>
-                    <td>$p.description (default: ${repr(p.default)})</td>
-                </tr>
-            </table>
-        </py:if>
-
-        </div> <!-- w.id-doc -->
-    </td>
-    <td style="width:50%">
-        ${w.demo and w.demo.display()}
-    </td></tr></table>
+  ${tabs.make_tabs(w)}
 </div>
 </p>

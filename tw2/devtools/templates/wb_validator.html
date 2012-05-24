@@ -1,7 +1,7 @@
 <div xmlns:py="http://genshi.edgewall.org/" class="validators">
     <h2 py:if="w.validators">$w.value.module_name</h2>
     <py:for each="v in w.validators">
-        <h3>$v.__name__</h3>
-        ${w.rst2html(v.__doc__)}
+    <h3>$v.__name__</h3>
+    TODO -- rst2html used to be here
     </py:for>
 </div>

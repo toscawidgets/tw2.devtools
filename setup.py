@@ -4,8 +4,11 @@ import sys, os
 
 from setuptools import setup, find_packages
 
-import multiprocessing
-import logging
+try:
+    import multiprocessing
+    import logging
+except:
+    pass
 
 setup(
     name='tw2.devtools',
@@ -17,6 +20,7 @@ setup(
         'paste',
         'pastescript',
         'weberror',
+        'webhelpers',
         'docutils',
         "tw2.jquery",
         "tw2.jqplugins.ui",

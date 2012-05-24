@@ -1,0 +1,81 @@
+body {
+	font: medium/125% "Trebuchet MS", sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #959874;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+#header {
+    background: url('header-bg.jpg') repeat-x;
+    height: 86px;
+}
+
+#logo {
+    position: absolute;
+    top: 8px;
+    left: 5px;
+}
+
+#icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+a:link {    
+    text-decoration: none;
+    color: #597984;
+}
+a:visited {
+    text-decoration: none;
+    color: #94ADA7;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+ul li {
+    list-style: none;
+    padding-left: 0;
+}
+
+ul.simple li {
+    list-style-image: url('bullet.gif');
+}
+
+#footer {
+    clear: both;
+    margin: 1em 0.5em 0 0.5em;
+    border-top: 1px solid black;
+    text-align: right;
+}
+
+#sidebar {
+    width: 120px;
+    padding: 0 1em;
+}
+
+th {
+    font-weight: normal;
+    text-align: left;
+    width: 100px;
+}
+th.required { font-weight: bold }
+th, td { vertical-align: top; }
+
+.validators h3 {
+    margin-bottom: 0;
+}
+
+.validators p {
+    margin-top: 0;
+}
+.module-metadata {
+        font-size: 66%;
+}

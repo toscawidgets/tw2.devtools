@@ -1,0 +1,197 @@
+/*
+	@author: Michael Novia
+	@email: michael.novia[at]gmail.com
+	@uri: http://visua.us
+*/
+
+/* --- Floaters ----- */
+
+.lfloat {
+    float: left;
+}
+
+.rfloat {
+    float: right;
+}
+
+html, body {
+    min-height: 100%;
+    height: 100%;
+}
+
+/* --- Fonts ----- */
+body {
+    font-family: "Droid Sans", sans-serif;
+    font-size: 14px;
+    background: url('../images/header-bg-dark.jpg') repeat-x;
+    color: #333;
+}
+
+/* --- Header ----- */
+#tw-logo {
+    padding-top: 8px;
+    padding-left: 4px;
+}
+
+.container_10 {
+    overflow: hidden;
+    -webkit-box-shadow: 0px 0px 3px 6px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 0px 3px 6px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 3px 6px rgba(0,0,0, 0.2);
+}
+
+.container_10 .head {
+    height: 82px;
+    z-index: 1000;
+    background: url('../images/header-bg.jpg') repeat-x;
+}
+
+.head.lft, .head.rght, .body.lft, .body.rght {
+    margin: 0;
+    padding: 0 10px;
+}
+
+.grid_10.drop-sliver {
+    z-index: 500;
+    -webkit-box-shadow: 0px 0px 2px 3px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 0px 2px 3px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 2px 3px rgba(0,0,0, 0.2);
+    height: 0px;
+    margin: 0;
+    padding: 0 10px;
+}
+
+.container_10 .grid_3.body.lft {
+    z-index: 4;
+}
+.container_10 .grid_7.body.rght {
+    padding-left: 308px;
+    padding-right: 20px;
+    width: 622px;
+    z-index: 1;
+    padding-bottom: 1em;
+    min-height:800px;
+}
+
+.content {
+    overflow: hidden;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    position: relative;
+}
+
+.body.lft {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    position: absolute;
+    background-color: #f5f5f5;
+    border-right-style: solid;
+    border-right-color: #dce0e3;
+    border-right-width: 1px;
+}
+
+/* --- Body content ----- */
+
+h1, h2, h3, h4, h5, h6, p, th, td, dl {
+    padding: 8px 0 0 10px;
+    vertical-align: text-bottom;
+}
+
+
+.params-table th {
+    text-align: right;
+    line-height: 2em;
+}
+
+.params-table td {
+    line-height: 2em;
+}
+
+ul, li {
+    padding-left: 16px;
+}
+
+.module-list li {
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+div > div > .ui-tabs > .ui-widget-header {
+    height: 21px !important;
+}
+
+div > div > .ui-tabs > .ui-tabs-nav > .ui-state-default {
+    height: 20px !important;
+}
+
+div > div > .ui-tabs > .ui-tabs-nav > .ui-state-default a {
+    padding: 0 0.7em 0 0.7em !important;
+}
+
+a {
+    color: #949576;
+    outline: none;
+}
+
+.module-detail-list li {
+    font-weight: normal;
+    color: #333;
+    padding-top: 8px;
+    padding-bottom: 0;
+}
+
+
+/* --- Footer ----- */
+footer {
+    height: 2em;
+    margin-top: 0px;
+    border-style: solid;
+    border-top-width: 1px;
+    background-color: #FFF;
+}
+
+footer p {
+    padding: 0 0.25em;
+    text-align: right;
+    background-color: #FFF;
+}
+
+/* --- Topographic ----- */
+h1, h2, h3 {
+    font-weight: bold;
+    line-height: 48px;
+    color: #576973;
+}
+
+h1 {
+    font-size: 250%;
+}
+
+h2 {
+    font-size: 175%;
+    color: #949576;
+}
+
+h3 {
+    padding-top: 16px;
+}
+
+dd {
+    line-height: 2em;
+    padding-left: 16px;
+}
+
+dt, dl {
+    line-height: 2em;
+}
+
+p {
+    line-height: 2em;
+    padding-left: 12px;
+}
+
+b {
+    font-weight: bold;
+}
