@@ -43,7 +43,11 @@ def rst2html(rst):
 
 def _make_demo(widget):
     if widget.demo:
-        return dict(label="Demo", content=widget.demo.display())
+        try:
+            return dict(label="Demo", content=widget.demo.display())
+        except Exception, e:
+            warnings.warn("%r - %r" % (widget.demo, e))
+
     return None
 
 
