@@ -118,15 +118,15 @@ ul, li {
     padding-bottom: 5px;
 }
 
-.ui-widget-header {
+div > div > .ui-tabs > .ui-widget-header {
     height: 21px !important;
 }
 
-.ui-state-default {
+div > div > .ui-tabs > .ui-tabs-nav > .ui-state-default {
     height: 20px !important;
 }
 
-.ui-state-default a {
+div > div > .ui-tabs > .ui-tabs-nav > .ui-state-default a {
     padding: 0 0.7em 0 0.7em !important;
 }
 
