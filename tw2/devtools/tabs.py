@@ -9,6 +9,7 @@ import warnings
 import webhelpers.html
 
 import tw2.core as twc
+import tw2.core.templating as twt
 import tw2.jqplugins.ui
 
 
@@ -20,13 +21,50 @@ def prepare_source(s):
         return ""
 
     html_args = {'full': False}
-    code = pygments.highlight(
+    return pygments.highlight(
         source,
         pygments.lexers.PythonLexer(),
         pygments.formatters.HtmlFormatter(**html_args)
     )
 
-    return code
+
+def prepare_template(s):
+    template_name = s.template
+
+    # Determine the engine name
+    if not s.inline_engine_name:
+        engine_name = twt.get_engine_name(template_name)
+    else:
+        engine_name = s.inline_engine_name
+
+    # Load the template source
+    source = twt.get_source(engine_name, template_name, s.inline_engine_name)
+
+    lexer_lookup = dict(
+        # Genshi
+        genshi=pygments.lexers.GenshiLexer,
+        genshi_abs=pygments.lexers.GenshiLexer,
+
+        # Kajiki is meant to be 'just like genshi'
+        kajiki=pygments.lexers.GenshiLexer,
+
+        # Mako
+        mako=pygments.lexers.MakoLexer,
+
+        # Jinja
+        jinja=pygments.lexers.DjangoLexer,
+        jinja2=pygments.lexers.DjangoLexer,
+
+        # We just have to go out on a limb for this one...
+        chameleon=pygments.lexers.GenshiLexer,
+    )
+
+    html_args = {'full': False}
+    return pygments.highlight(
+        source,
+        lexer_lookup[engine_name](),
+        pygments.formatters.HtmlFormatter(**html_args)
+    )
 
 
 def rst2html(rst):
@@ -89,8 +127,9 @@ def _make_source(widget):
 
 
 def _make_tmpl(widget):
-    # TODO -- get template once tw2.core is ready.
-    #return dict(label="Template", content="awesome")
+    if widget.demo and hasattr(widget.demo, 'template'):
+        return dict(label="Template", content=prepare_template(widget.demo))
+
     return None
 
 funcs = [_make_demo, _make_docs, _make_params, _make_source, _make_tmpl]
