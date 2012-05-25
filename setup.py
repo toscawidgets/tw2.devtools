@@ -16,7 +16,7 @@ setup(
     description="Web widget creation toolkit based on TurboGears widgets - development tools",
     long_description = open('README.txt').read().split('\n\n', 1)[1],
     install_requires=[
-        'tw2.core>=2.0b4',
+        'tw2.core>=2.1.0a',
         'paste',
         'pastescript',
         'weberror',
