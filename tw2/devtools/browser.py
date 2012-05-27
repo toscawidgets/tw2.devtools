@@ -91,11 +91,16 @@ class BrowseWidget(twc.Widget):
             self.child_params.sort(key=lambda p: p._seq)
             req_prm = [p.name for p in self.params if p.default is twc.Required]
             if self.demo:
-                self.demo = self.demo(id='demo', parent=self.__class__).req()
-                self.demo.prepare()
-            elif not req_prm or req_prm == ['id']: # auto demo
-                self.demo = self.widget(id='demo', parent=self.__class__).req()
                 try:
+                    self.demo = self.demo(id='demo', parent=self.__class__).req()
+                    self.demo.prepare()
+                except Exception, e:
+                    warnings.warn(unicode(e))
+                    self.demo = None
+
+            elif not req_prm or req_prm == ['id']: # auto demo
+                try:
+                    self.demo = self.widget(id='demo', parent=self.__class__).req()
                     self.demo.prepare()
                 except Exception, e:
                     warnings.warn(unicode(e))
