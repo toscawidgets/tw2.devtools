@@ -5,6 +5,9 @@ div.highlight {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 .highlight .hll { background-color: #49483e }
 .highlight .c { color: #75715e } /* Comment */
