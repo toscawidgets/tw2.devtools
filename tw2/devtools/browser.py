@@ -3,9 +3,12 @@ import tw2.devtools
 import tw2.jquery
 import tw2.jqplugins.ui
 from paste.script import command as pc
+from paste.script.serve import _turn_sigterm_into_systemexit
 
 import inspect
 import pygments
+import subprocess
+import sys
 import xmlrpclib
 
 import warnings
@@ -188,7 +191,7 @@ class Validators(WbPage):
 
 
 class WbCommand(pc.Command):
-    parser = pc.Command.standard_parser(verbose=False)
+    parser = pc.Command.standard_parser(verbose=True)
     parser.add_option('-p', '--port',
                       dest='port',
                       help="Specify the port to listen on",
@@ -213,8 +216,100 @@ class WbCommand(pc.Command):
                       dest='request_queue_size', default=5,
                       help="specifies the maximum number of queued connections")
 
+    parser.add_option('--reload',
+                      dest='reload',
+                      action='store_true',
+                      help="Use auto-restart file monitor")
+    parser.add_option('--reload-interval',
+                      dest='reload_interval',
+                      default=1,
+                      help="Seconds between checking files (low "
+                      "number can cause significant CPU usage)")
+
+    _reloader_environ_key = 'PYTHON_RELOADER_SHOULD_RUN'
+
+
+
+    def restart_with_reloader(self):
+        """ Copy/pasted from paste.script.server. """
+        self.restart_with_monitor(reloader=True)
+
+    def restart_with_monitor(self, reloader=False):
+        """ Copy/pasted from paste.script.server. """
+
+        if self.verbose > 0:
+            if reloader:
+                print 'Starting subprocess with file monitor'
+            else:
+                print 'Starting subprocess with monitor parent'
+        while 1:
+            args = [self.quote_first_command_arg(sys.executable)] + sys.argv
+            new_environ = os.environ.copy()
+            if reloader:
+                new_environ[self._reloader_environ_key] = 'true'
+
+            proc = None
+            try:
+                try:
+                    _turn_sigterm_into_systemexit()
+                    proc = subprocess.Popen(args, env=new_environ)
+                    exit_code = proc.wait()
+                    proc = None
+                except KeyboardInterrupt:
+                    print '^C caught in monitor process'
+                    if self.verbose > 1:
+                        raise
+                    return 1
+            finally:
+                if (proc is not None
+                    and hasattr(os, 'kill')):
+                    import signal
+                    try:
+                        os.kill(proc.pid, signal.SIGTERM)
+                    except (OSError, IOError):
+                        pass
+
+            if reloader:
+                # Reloader always exits with code 3; but if we are
+                # a monitor, any exit code will restart
+                if exit_code != 3:
+                    return exit_code
+            if self.verbose > 0:
+                print '-'*20, 'Restarting', '-'*20
+
 
     def command(self):
+        if self.options.reload:
+            if os.environ.get(self._reloader_environ_key):
+                from paste import reloader
+                if self.verbose > 1:
+                    print 'Running reloading file monitor'
+
+                reloader.install(int(self.options.reload_interval))
+
+            else:
+                self.restart_with_reloader()
+
+        if self.verbose > 0:
+            if hasattr(os, 'getpid'):
+                msg = 'Starting server in PID %i.' % os.getpid()
+            else:
+                msg = 'Starting server.'
+            print msg
+
+        try:
+            self.serve()
+        except (SystemExit, KeyboardInterrupt), e:
+            if self.verbose > 1:
+                raise
+            if str(e):
+                msg = ' '+str(e)
+            else:
+                msg = ''
+            print 'Exiting%s (-v to see traceback)' % msg
+
+
+    def serve(self):
         WbPage.enable_pypi_metadata = self.options.enable_pypi_metadata
         tw2.devtools.dev_server(
             host=self.options.host, port=self.options.port,
@@ -222,6 +317,7 @@ class WbCommand(pc.Command):
             threadpool_workers=self.options.threadpool_workers,
             request_queue_size=self.options.request_queue_size,
         )
+
     group_name = 'tw2'
     summary = 'Browse available ToscaWidgets'
     min_args = 0
