@@ -12,7 +12,7 @@ except:
 
 setup(
     name='tw2.devtools',
-    version='2.1.0a2',
+    version='2.1.0',
     description="Web widget creation toolkit based on TurboGears widgets - development tools",
     long_description = open('README.txt').read().split('\n\n', 1)[1],
     install_requires=[
@@ -28,7 +28,6 @@ setup(
         "decorator",
         "genshi",
         "mako",
-        "repoze.tm",
         ],
     extras_require = {
         'build_docs': [

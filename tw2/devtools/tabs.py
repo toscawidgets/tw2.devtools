@@ -76,7 +76,7 @@ def rst2html(rst):
         }
     )
     html = html.replace('<blockquote>', '').replace('</blockquote>', '')
-    return gsi.HTML(html)
+    return gsi.HTML(html.decode('utf-8'))
 
 
 def _make_demo(widget):
