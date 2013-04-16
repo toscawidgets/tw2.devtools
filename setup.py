@@ -17,8 +17,7 @@ setup(
     long_description = open('README.txt').read().split('\n\n', 1)[1],
     install_requires=[
         'tw2.core>=2.1.0a',
-        'paste',
-        'pastescript',
+        'gearbox',
         'weberror',
         'webhelpers',
         'docutils',
@@ -36,14 +35,8 @@ setup(
         },
     tests_require = [
         'WebTest',
-        'BeautifulSoup',
         'nose',
-        'strainer',
-        # Note -- formencode should not (and 'is' not) required here.
-        # However, tw2.core needs it but doesn't declare it in pypi.  Therefore,
-        # we include it here the make tests pass.  TODO -- this should be
-        # removed.
-        "formencode",
+        'sieve',
     ],
     url = "http://toscawidgets.org/documentation/tw2.core/",
     author='Paul Johnston, Christopher Perkins, Alberto Valverde & contributors',
@@ -58,8 +51,12 @@ setup(
     [paste.paster_create_template]
     tw2.library=tw2.devtools.paste_template:ToscaWidgetsTemplate
 
-    [paste.global_paster_command]
-    tw2.browser=tw2.devtools.browser:WbCommand
+    [gearbox.commands]
+    tw2.browser = tw2.devtools.browser:WbCommand
+
+    [paste.server_runner]
+    tw2_dev_server = tw2.devtools.server:dev_server
+
     """,
     zip_safe=False,
     classifiers = [
