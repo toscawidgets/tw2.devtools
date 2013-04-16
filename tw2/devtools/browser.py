@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import tw2.core as twc, pkg_resources as pr, docutils.core, os
 import tw2.devtools
 import tw2.jquery
@@ -12,7 +14,8 @@ import sys
 import xmlrpclib
 
 import warnings
-import memoize
+from . import memoize
+import six
 
 
 class WbPage(twc.Page):
@@ -96,16 +99,16 @@ class BrowseWidget(twc.Widget):
                 try:
                     self.demo = self.demo(id='demo', parent=self.__class__).req()
                     self.demo.prepare()
-                except Exception, e:
-                    warnings.warn(unicode(e))
+                except Exception as e:
+                    warnings.warn(six.text_type(e))
                     self.demo = None
 
             elif not req_prm or req_prm == ['id']: # auto demo
                 try:
                     self.demo = self.widget(id='demo', parent=self.__class__).req()
                     self.demo.prepare()
-                except Exception, e:
-                    warnings.warn(unicode(e))
+                except Exception as e:
+                    warnings.warn(six.text_type(e))
                     self.demo = None
             else:
                 self.demo = None
@@ -127,7 +130,7 @@ class Module(WbPage):
                 if 'page_options' in dir(sample_module):
                     for k,v in sample_module.page_options.items():
                         setattr(self, k, v)
-            except ImportError, e:
+            except ImportError as e:
                 warnings.warn("ImportError for '%s': %s" % (
                     self.module, str(e)))
             twc.DisplayOnlyWidget.prepare(self)
@@ -157,7 +160,7 @@ class Module(WbPage):
                 demo_for, source_for = {}, {}
                 try:
                     sample_module = __import__(self.module + '.samples', fromlist=[''])
-                except ImportError, e:
+                except ImportError as e:
                     warnings.warn("ImportError for '%s': %s" % (
                         self.module, str(e)))
                 else:
@@ -233,9 +236,9 @@ class WbCommand(pc.Command):
 
         if self.verbose > 0:
             if reloader:
-                print 'Starting subprocess with file monitor'
+                print('Starting subprocess with file monitor')
             else:
-                print 'Starting subprocess with monitor parent'
+                print('Starting subprocess with monitor parent')
         while 1:
             args = [self.quote_first_command_arg(sys.executable)] + sys.argv
             new_environ = os.environ.copy()
@@ -250,7 +253,7 @@ class WbCommand(pc.Command):
                     exit_code = proc.wait()
                     proc = None
                 except KeyboardInterrupt:
-                    print '^C caught in monitor process'
+                    print('^C caught in monitor process')
                     if self.verbose > 1:
                         raise
                     return 1
@@ -269,7 +272,7 @@ class WbCommand(pc.Command):
                 if exit_code != 3:
                     return exit_code
             if self.verbose > 0:
-                print '-'*20, 'Restarting', '-'*20
+                print('-'*20, 'Restarting', '-'*20)
 
 
     def command(self):
@@ -277,7 +280,7 @@ class WbCommand(pc.Command):
             if os.environ.get(self._reloader_environ_key):
                 from paste import reloader
                 if self.verbose > 1:
-                    print 'Running reloading file monitor'
+                    print('Running reloading file monitor')
 
                 reloader.install(int(self.options.reload_interval))
 
@@ -289,18 +292,18 @@ class WbCommand(pc.Command):
                 msg = 'Starting server in PID %i.' % os.getpid()
             else:
                 msg = 'Starting server.'
-            print msg
+            print(msg)
 
         try:
             self.serve()
-        except (SystemExit, KeyboardInterrupt), e:
+        except (SystemExit, KeyboardInterrupt) as e:
             if self.verbose > 1:
                 raise
             if str(e):
                 msg = ' '+str(e)
             else:
                 msg = ''
-            print 'Exiting%s (-v to see traceback)' % msg
+            print('Exiting%s (-v to see traceback)' % msg)
 
 
     def serve(self):
