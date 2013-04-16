@@ -22,7 +22,6 @@ class WbPage(twc.Page):
                  twc.CSSLink(modname=__name__, filename='static/css/grid.css'),
                  twc.CSSLink(modname=__name__, filename='static/css/pygments.css'),
                  twc.DirLink(modname=__name__, filename='static/')]
-    enable_pypi_metadata = twc.Param()
 
     template = "genshi:tw2.devtools.templates.wb_page"
     def prepare(self):
@@ -200,11 +199,6 @@ class WbCommand(pc.Command):
                       dest='host',
                       help="Specify the address to listen on",
                       default="127.0.0.1")
-
-    parser.add_option('-i', '--enable-pypi-metadata',
-                      action='store_true', dest='enable_pypi_metadata',
-                      default=False, help="Enable pypi package metadata")
-
     parser.add_option('-t', '--use-threadpool', action='store_true',
                       dest='use_threadpool', default=False,
                       help="Server requests from a pool of worker threads")
@@ -310,7 +304,6 @@ class WbCommand(pc.Command):
 
 
     def serve(self):
-        WbPage.enable_pypi_metadata = self.options.enable_pypi_metadata
         tw2.devtools.dev_server(
             host=self.options.host, port=self.options.port,
             use_threadpool=self.options.use_threadpool,
