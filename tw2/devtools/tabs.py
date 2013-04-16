@@ -1,4 +1,3 @@
-
 import docutils.core
 import genshi.input as gsi
 import inspect
@@ -12,11 +11,13 @@ import tw2.core as twc
 import tw2.core.templating as twt
 import tw2.jqplugins.ui
 
+from six.moves import filter
+
 
 def prepare_source(s):
     try:
         source = inspect.getsource(s.mro()[1])
-    except IOError, e:
+    except IOError as e:
         warnings.warn(repr(s) + " : " + str(e))
         return ""
 
@@ -83,7 +84,7 @@ def _make_demo(widget):
     if widget.demo:
         try:
             return dict(label="Demo", content=widget.demo.display())
-        except Exception, e:
+        except Exception as e:
             warnings.warn("%r - %r" % (widget.demo, e))
 
     return None

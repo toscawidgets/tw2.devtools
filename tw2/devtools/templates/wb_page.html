@@ -21,9 +21,6 @@
           <ul class="module-list">
             <py:for each="m in w.modules">
             <li><a href="module?module=$m">$m</a>
-            <py:if test="w.enable_pypi_metadata">
-            <br/>Downloads: ${str(w.pypi_downloads(m))}
-            </py:if>
             </li>
             </py:for>
           </ul>
