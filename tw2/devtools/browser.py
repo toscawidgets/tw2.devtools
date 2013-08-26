@@ -56,6 +56,7 @@ class WbPage(twc.Page):
         ])
 
 class Index(WbPage):
+    title = "The Toscawidgets2 Widget Browser"
     class child(twc.Widget):
         template = "genshi:tw2.devtools.templates.wb_welcome"
 
