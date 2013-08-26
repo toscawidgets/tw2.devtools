@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import sys
 import pprint
 import pstats
@@ -41,10 +43,10 @@ class TestForm(TableForm):
         c = FormFieldRepeater(widget=TestFieldSet())
 
 def print_stats(title, func, *args, **kw):
-    print title
+    print(title)
     prof = cProfile.Profile()
     def _loop():
-        for i in xrange(NCALLS):
+        for i in range(NCALLS):
             func(*args, **kw)
     prof.runcall(_loop)
     stats = pstats.Stats(prof)
@@ -57,22 +59,22 @@ def print_stats(title, func, *args, **kw):
 
 ### Start profiling output
 
-print "*"*78
-print "Profiling ToscaWidgets %s in with NCALLS = %d" % (VERSION, NCALLS)
-if MSG: print MSG
+print("*"*78)
+print("Profiling ToscaWidgets %s in with NCALLS = %d" % (VERSION, NCALLS))
+if MSG: print(MSG)
 
-print "*"*78
+print("*"*78)
 print_stats("Widget initialization", Widget, "test_widget")
 w = Widget("test_widget")
 print_stats("Widget.prepare_dict", w.prepare_dict, "value", {})
 
-print "*"*78
+print("*"*78)
 print_stats("TestForm initialization", TestForm, "test_widget")
 w = TestForm("test_widget")
 w.display() # preload template
 print_stats("TestForm.display", w.display, data)
 
-print "*"*78
+print("*"*78)
 print_stats("AddUserForm initialization", AddUserForm, "test_widget")
 w = AddUserForm("test_widget")
 w.display() # preload template
@@ -84,10 +86,10 @@ except ImportError:
     # disable_runtime_checks is only available since 0.9.3dev_20080610
     pass
 else:
-    print "*"*78
-    print "Disabling runtime checks"
+    print("*"*78)
+    print("Disabling runtime checks")
     disable_runtime_checks()
-    print "*"*78
+    print("*"*78)
     print_stats("AddUserForm initialization (without checks)", AddUserForm, "test_widget")
     w = AddUserForm("test_widget")
     w.display() # preload template

@@ -6,7 +6,7 @@ def dev_server(
     repoze_tm=False, **config):
     """
     Run a development server, hosting the ToscaWidgets application.
-    This requires Paste and WebError, which are only sure to be available if
+    This requires gearbox and WebError, which are only sure to be available if
     tw2.devtools is installed.
     """
     config.setdefault('debug', True)
@@ -14,21 +14,26 @@ def dev_server(
     app = twc.make_middleware(app, **config)
 
     if repoze_tm:
-        import repoze.tm as rtm, tw2.sqla as tws
+        import repoze.tm as rtm
+        import tw2.sqla as tws
         app = rtm.TM(app, tws.commit_veto)
 
     if weberror:
         import weberror.errormiddleware as we
         app = we.ErrorMiddleware(app, debug=True)
 
-    if logging:
-        import paste.translogger as pt
-        app = pt.TransLogger(app)
+    # TODO - this got left behind in the python3 port.  Revive it.
+    #if logging:
+    #    import paste.translogger as pt
+    #    app = pt.TransLogger(app)
 
-    import paste.httpserver as ph
-    ph.serve(app, host=host, port=port,
-             use_threadpool=use_threadpool,
-             threadpool_workers=threadpool_workers,
-             request_queue_size=request_queue_size)
+    from gearbox.commands.server import wsgiref_server_runner
+    wsgiref_server_runner(
+        app,
+        host=host, port=port,
+        use_threadpool=use_threadpool,
+        threadpool_workers=threadpool_workers,
+        request_queue_size=request_queue_size,
+    )
 
 # TBD: autoreload

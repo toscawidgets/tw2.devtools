@@ -1,4 +1,5 @@
 include tw2/devtools/rststub.txt
+include tw2/devtools/browser_config.ini
 recursive-include tw2/paste_templates *
 recursive-include tw2/devtools/templates *
 recursive-include tw2/devtools/static *

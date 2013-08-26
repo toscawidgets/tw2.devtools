@@ -1,9 +1,11 @@
+from __future__ import print_function
+
 import tw2.core as twc, pkg_resources as pr, docutils.core, os
 import tw2.devtools
 import tw2.jquery
 import tw2.jqplugins.ui
-from paste.script import command as pc
-from paste.script.serve import _turn_sigterm_into_systemexit
+
+import gearbox.commands.serve
 
 import inspect
 import pygments
@@ -12,7 +14,8 @@ import sys
 import xmlrpclib
 
 import warnings
-import memoize
+from . import memoize
+import six
 
 
 class WbPage(twc.Page):
@@ -22,7 +25,6 @@ class WbPage(twc.Page):
                  twc.CSSLink(modname=__name__, filename='static/css/grid.css'),
                  twc.CSSLink(modname=__name__, filename='static/css/pygments.css'),
                  twc.DirLink(modname=__name__, filename='static/')]
-    enable_pypi_metadata = twc.Param()
 
     template = "genshi:tw2.devtools.templates.wb_page"
     def prepare(self):
@@ -97,16 +99,16 @@ class BrowseWidget(twc.Widget):
                 try:
                     self.demo = self.demo(id='demo', parent=self.__class__).req()
                     self.demo.prepare()
-                except Exception, e:
-                    warnings.warn(unicode(e))
+                except Exception as e:
+                    warnings.warn(six.text_type(e))
                     self.demo = None
 
             elif not req_prm or req_prm == ['id']: # auto demo
                 try:
                     self.demo = self.widget(id='demo', parent=self.__class__).req()
                     self.demo.prepare()
-                except Exception, e:
-                    warnings.warn(unicode(e))
+                except Exception as e:
+                    warnings.warn(six.text_type(e))
                     self.demo = None
             else:
                 self.demo = None
@@ -128,7 +130,7 @@ class Module(WbPage):
                 if 'page_options' in dir(sample_module):
                     for k,v in sample_module.page_options.items():
                         setattr(self, k, v)
-            except ImportError, e:
+            except ImportError as e:
                 warnings.warn("ImportError for '%s': %s" % (
                     self.module, str(e)))
             twc.DisplayOnlyWidget.prepare(self)
@@ -158,7 +160,7 @@ class Module(WbPage):
                 demo_for, source_for = {}, {}
                 try:
                     sample_module = __import__(self.module + '.samples', fromlist=[''])
-                except ImportError, e:
+                except ImportError as e:
                     warnings.warn("ImportError for '%s': %s" % (
                         self.module, str(e)))
                 else:
@@ -190,138 +192,25 @@ class Validators(WbPage):
                             if isinstance(getattr(vd, v), twc.validation.ValidatorMeta)]
 
 
-class WbCommand(pc.Command):
-    parser = pc.Command.standard_parser(verbose=True)
-    parser.add_option('-p', '--port',
-                      dest='port',
-                      help="Specify the port to listen on",
-                      default='8000')
-    parser.add_option('-l', '--listen',
-                      dest='host',
-                      help="Specify the address to listen on",
-                      default="127.0.0.1")
+TW2_DEVTOOLS_CONFIG_FILE = os.path.join(
+    os.path.abspath(os.path.dirname(__file__)),
+    'browser_config.ini',
+)
 
-    parser.add_option('-i', '--enable-pypi-metadata',
-                      action='store_true', dest='enable_pypi_metadata',
-                      default=False, help="Enable pypi package metadata")
+class WbCommand(gearbox.commands.serve.ServeCommand):
 
-    parser.add_option('-t', '--use-threadpool', action='store_true',
-                      dest='use_threadpool', default=False,
-                      help="Server requests from a pool of worker threads")
-    parser.add_option('-w', '--threadpool-workers',
-                      dest='threadpool_workers', default=10,
-                      help="Number of worker threads to create when " +
-                      "``use_threadpool`` is true")
-    parser.add_option('-s', '--request-queue-size',
-                      dest='request_queue_size', default=5,
-                      help="specifies the maximum number of queued connections")
+    def get_description(self):
+        return 'Serves the ToscaWidgets2 Widget Browser'
 
-    parser.add_option('--reload',
-                      dest='reload',
-                      action='store_true',
-                      help="Use auto-restart file monitor")
-    parser.add_option('--reload-interval',
-                      dest='reload_interval',
-                      default=1,
-                      help="Seconds between checking files (low "
-                      "number can cause significant CPU usage)")
+    def get_parser(self, prog_name):
+        parser = super(WbCommand, self).get_parser(prog_name)
 
-    _reloader_environ_key = 'PYTHON_RELOADER_SHOULD_RUN'
+        # Hack the --config-file option to return *our* config file by default.
+        for i in range(len(parser._actions)):
+            if parser._actions[i].dest == 'config_file':
+                parser._actions[i].default = TW2_DEVTOOLS_CONFIG_FILE
 
-
-
-    def restart_with_reloader(self):
-        """ Copy/pasted from paste.script.server. """
-        self.restart_with_monitor(reloader=True)
-
-    def restart_with_monitor(self, reloader=False):
-        """ Copy/pasted from paste.script.server. """
-
-        if self.verbose > 0:
-            if reloader:
-                print 'Starting subprocess with file monitor'
-            else:
-                print 'Starting subprocess with monitor parent'
-        while 1:
-            args = [self.quote_first_command_arg(sys.executable)] + sys.argv
-            new_environ = os.environ.copy()
-            if reloader:
-                new_environ[self._reloader_environ_key] = 'true'
-
-            proc = None
-            try:
-                try:
-                    _turn_sigterm_into_systemexit()
-                    proc = subprocess.Popen(args, env=new_environ)
-                    exit_code = proc.wait()
-                    proc = None
-                except KeyboardInterrupt:
-                    print '^C caught in monitor process'
-                    if self.verbose > 1:
-                        raise
-                    return 1
-            finally:
-                if (proc is not None
-                    and hasattr(os, 'kill')):
-                    import signal
-                    try:
-                        os.kill(proc.pid, signal.SIGTERM)
-                    except (OSError, IOError):
-                        pass
-
-            if reloader:
-                # Reloader always exits with code 3; but if we are
-                # a monitor, any exit code will restart
-                if exit_code != 3:
-                    return exit_code
-            if self.verbose > 0:
-                print '-'*20, 'Restarting', '-'*20
-
-
-    def command(self):
-        if self.options.reload:
-            if os.environ.get(self._reloader_environ_key):
-                from paste import reloader
-                if self.verbose > 1:
-                    print 'Running reloading file monitor'
-
-                reloader.install(int(self.options.reload_interval))
-
-            else:
-                self.restart_with_reloader()
-
-        if self.verbose > 0:
-            if hasattr(os, 'getpid'):
-                msg = 'Starting server in PID %i.' % os.getpid()
-            else:
-                msg = 'Starting server.'
-            print msg
-
-        try:
-            self.serve()
-        except (SystemExit, KeyboardInterrupt), e:
-            if self.verbose > 1:
-                raise
-            if str(e):
-                msg = ' '+str(e)
-            else:
-                msg = ''
-            print 'Exiting%s (-v to see traceback)' % msg
-
-
-    def serve(self):
-        WbPage.enable_pypi_metadata = self.options.enable_pypi_metadata
-        tw2.devtools.dev_server(
-            host=self.options.host, port=self.options.port,
-            use_threadpool=self.options.use_threadpool,
-            threadpool_workers=self.options.threadpool_workers,
-            request_queue_size=self.options.request_queue_size,
-        )
-
-    group_name = 'tw2'
-    summary = 'Browse available ToscaWidgets'
-    min_args = 0
-    max_args = 0
+        return parser
 
 if __name__ == '__main__':
     tw2.devtools.dev_server()
