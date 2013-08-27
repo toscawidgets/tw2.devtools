@@ -18,7 +18,7 @@ setup(
     author='Paul Johnston, Christopher Perkins, Alberto Valverde Gonzalez & contributors',
     author_email='toscawidgets-discuss@googlegroups.com',
     url = "http://toscawidgets.org/",
-    download_url = "https://pypi.python.org/pypi/tw2.core/",
+    download_url = "https://pypi.python.org/pypi/tw2.devtools/",
     license='MIT',
     install_requires=[
         'tw2.core>=2.1.0a',
