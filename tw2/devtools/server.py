@@ -35,6 +35,7 @@ def dev_server(
 
     wsgiref_server_runner(
         app,
+        global_conf=None,
         host=host, port=port,
         use_threadpool=use_threadpool,
         threadpool_workers=threadpool_workers,
