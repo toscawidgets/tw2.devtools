@@ -27,7 +27,12 @@ def dev_server(
     #    import paste.translogger as pt
     #    app = pt.TransLogger(app)
 
-    from gearbox.commands.server import wsgiref_server_runner
+    # Handle old and new versions of gearbox.
+    try:
+        from gearbox.commands.serve import wsgiref_server_runner
+    except ImportError:
+        from gearbox.commands.server import wsgiref_server_runner
+
     wsgiref_server_runner(
         app,
         host=host, port=port,
