@@ -1,7 +1,7 @@
 Changelog
 =========
 
-2.2.0.3
+2.2.0.4
 -------
 
 - Added tag release_2.0b5 for changeset 4f960ee4b2bf `f648fdac0 <https://github.com/toscawidgets/tw2.devtools/commit/f648fdac087eea4541d6415e8d8f196fc98c29d5>`_
@@ -45,6 +45,7 @@ Changelog
 - Fixed docs for tw2 references `cf5d9599a <https://github.com/toscawidgets/tw2.devtools/commit/cf5d9599a3144f9ac0356f34073d2e184d8d59aa>`_
 - Fixed widget definition for tw2 `7a8ca9455 <https://github.com/toscawidgets/tw2.devtools/commit/7a8ca94557c6a2de314d413bce7b2eb932486abb>`_
 - Added imports to stop stupid test errors `47a89412e <https://github.com/toscawidgets/tw2.devtools/commit/47a89412ebb31743d2e0f9f3de81288a23fac37a>`_
+- Merge branch 'hotfix/oldref-test-tmpl-fix' `bd9c12721 <https://github.com/toscawidgets/tw2.devtools/commit/bd9c12721fc8bc767760e0c78f0c7b65d2f4b4d6>`_
 - Merge branch 'hotfix/oldref-test-tmpl-fix' into develop `bed80f09e <https://github.com/toscawidgets/tw2.devtools/commit/bed80f09ef65f0eb9b716911b0768b9dbaa44773>`_
 - Ignoring build products. `8cbed0cc1 <https://github.com/toscawidgets/tw2.devtools/commit/8cbed0cc125416ed52b4b81fc68cf8fb5a0f66e5>`_
 - Removed hard dependency on protovis. `9c8190ab0 <https://github.com/toscawidgets/tw2.devtools/commit/9c8190ab03d68a0335aaeaddcf58a2e0cfc3b567>`_
@@ -85,8 +86,13 @@ Changelog
 - Metadata fixups, tw2.core#90 `beafeed3c <https://github.com/toscawidgets/tw2.devtools/commit/beafeed3c4c14901c4df33ab7ece239ce35b37af>`_
 - Fix download_url `78ef8a4e7 <https://github.com/toscawidgets/tw2.devtools/commit/78ef8a4e7acc2cddd05dde047a656b72f85facae>`_
 - pep8 `b8c1acc93 <https://github.com/toscawidgets/tw2.devtools/commit/b8c1acc93de9c8fe9f8eacb64a14296315a7eb5f>`_
+- Handle old and new versions of gearbox. `843bb06ea <https://github.com/toscawidgets/tw2.devtools/commit/843bb06ea02ef9cc2667a722814fc319d5accde6>`_
+- 2.2.0.1 `221344c63 <https://github.com/toscawidgets/tw2.devtools/commit/221344c63503271fcdedde4233ba865c2c43b8b6>`_
 - Handle old and new versions of gearbox. `d734bf586 <https://github.com/toscawidgets/tw2.devtools/commit/d734bf586dd667205bbe22ea5bf9e34ee6885edf>`_
 - 2.2.0.1 `b07bf659d <https://github.com/toscawidgets/tw2.devtools/commit/b07bf659df35152bf47dcab82d579f6b1c359303>`_
+- 2.2.0.2 `371ecbfb8 <https://github.com/toscawidgets/tw2.devtools/commit/371ecbfb8b1e19021d5418f13aaae13dd0ec73e5>`_
+- 2.2.0.3 `63f5d3046 <https://github.com/toscawidgets/tw2.devtools/commit/63f5d304644d6982b32991adc22e74600f8a18e9>`_
+- Get the function signature right. `e3b2f938e <https://github.com/toscawidgets/tw2.devtools/commit/e3b2f938ed85a9e92dc72ac57234e3148fdbd368>`_
 
 release_2.0b5
 -------------
