@@ -1,8 +1,95 @@
 Changelog
 =========
 
-2.2.0.1
+2.2.0.2
 -------
+
+- Added tag release_2.0b5 for changeset 4f960ee4b2bf `f648fdac0 <https://github.com/toscawidgets/tw2.devtools/commit/f648fdac087eea4541d6415e8d8f196fc98c29d5>`_
+- Adding jquery `da5374508 <https://github.com/toscawidgets/tw2.devtools/commit/da5374508b55006b86190acb76d1bdadad8dbc56>`_
+- Tools to show and hide documentation `58241077b <https://github.com/toscawidgets/tw2.devtools/commit/58241077bc9638391bb51fc327c7a8511ffea62b>`_
+- Showing and hiding documentation `12881d35b <https://github.com/toscawidgets/tw2.devtools/commit/12881d35b67785d552272a6265d35b1f8c70e5af>`_
+- Module-configurable hiding of documentation `f7f1d9120 <https://github.com/toscawidgets/tw2.devtools/commit/f7f1d91206abccbb6e781367fe882078a0c4db19>`_
+- Smarter resource injection in case of _hide_docs `b62d78e07 <https://github.com/toscawidgets/tw2.devtools/commit/b62d78e07da3f5bad368248d189b06c22655071d>`_
+- Added links to widget headers `60097eabc <https://github.com/toscawidgets/tw2.devtools/commit/60097eabcfe69a1bc998ec98c6d7430d4d7c25cd>`_
+- Checking for demos with no listed resources `1272aa8ad <https://github.com/toscawidgets/tw2.devtools/commit/1272aa8ad81f107e394a0fb565287a8c38893e07>`_
+- Checking for Nonetype demos `3a9bedb4f <https://github.com/toscawidgets/tw2.devtools/commit/3a9bedb4f365b69b0ab3ac511bf7fc210191fbf4>`_
+- Warnings on ImportError. `c1ab8d77a <https://github.com/toscawidgets/tw2.devtools/commit/c1ab8d77acaf144c092969454a764f88f3a500e4>`_
+- Added another ImportError warning `c19cd2c4c <https://github.com/toscawidgets/tw2.devtools/commit/c19cd2c4c7128fa2a88617a8218b27f02eb5a10b>`_
+- Doh.  Need to specify the exception. `54c4f716d <https://github.com/toscawidgets/tw2.devtools/commit/54c4f716d8da53019717007144a1ae9c8665ffb3>`_
+- Cleaned up trailing whitespace `145e33386 <https://github.com/toscawidgets/tw2.devtools/commit/145e333868551777a5a50227e09d25b6832fa813>`_
+- New "view source" link for widget demos. `608e0b4d7 <https://github.com/toscawidgets/tw2.devtools/commit/608e0b4d7b32b1f4fffeda87e4998c6e667f1f3e>`_
+- More graceful failures when looking for demo sourcecode. `fc3f827ce <https://github.com/toscawidgets/tw2.devtools/commit/fc3f827cec3eaa9c933e7e0d349d2d96b81de974>`_
+- Doh... `338fbf8f8 <https://github.com/toscawidgets/tw2.devtools/commit/338fbf8f8b2e6ac7001e260745220a689f8c7b4d>`_
+- Added download counts from pypi `96ff1a014 <https://github.com/toscawidgets/tw2.devtools/commit/96ff1a014d90413d792dd47fea9024b39a3734cc>`_
+- Doh.  Have to check for versions existing. `4574a8501 <https://github.com/toscawidgets/tw2.devtools/commit/4574a850111a1883185a13e1c44b4cbb2dc814e4>`_
+- Showing graphs of commits over time. `4b1d5ef96 <https://github.com/toscawidgets/tw2.devtools/commit/4b1d5ef963ae8cec4f21c56769728e939ce46692>`_
+- Got bitbucket stuff working. `ee92160c4 <https://github.com/toscawidgets/tw2.devtools/commit/ee92160c4d0b1931c5b025f6ec09b4280aebf764>`_
+- Added paster flags to explicitly enable the metadata gathering and display. `e405b1b77 <https://github.com/toscawidgets/tw2.devtools/commit/e405b1b77c365d6c88960db2f772dabe15917f18>`_
+- Adding paste.httpserver params. `4e6b8a862 <https://github.com/toscawidgets/tw2.devtools/commit/4e6b8a8623e41de83cb00c858689e886ee3088cc>`_
+- Duplicate argument fix `ad6773aa1 <https://github.com/toscawidgets/tw2.devtools/commit/ad6773aa1233c2898e033bb4bd1435ebcda8005b>`_
+- Typo fix `a481956d0 <https://github.com/toscawidgets/tw2.devtools/commit/a481956d0934d856db765e36a2cce38ca34c7c49>`_
+- Removed multiprocessing from the github repo stuff.  Memory hog. `b6576d8db <https://github.com/toscawidgets/tw2.devtools/commit/b6576d8dba32c2b82b58152a38413b73224b5e10>`_
+- Did the wrong version change in the last commit. `3e6e256fa <https://github.com/toscawidgets/tw2.devtools/commit/3e6e256fa6e4bb72fdf0645b3654fb7ca2cd960c>`_
+- Adding decause `2039b6f44 <https://github.com/toscawidgets/tw2.devtools/commit/2039b6f443726f3b957755347159d673a3c3d1b2>`_
+- Decorators are decorators (are decorators). `6fa7943d2 <https://github.com/toscawidgets/tw2.devtools/commit/6fa7943d288857c5605592b6039a1bd1ee6d9c84>`_
+- Added a test of the memoize stuff. `30213ab68 <https://github.com/toscawidgets/tw2.devtools/commit/30213ab689cd4873016d3f3c6422f57618f4404f>`_
+- Move dev_server to tw2.devtools `fe8d5424e <https://github.com/toscawidgets/tw2.devtools/commit/fe8d5424ecd0161fb6c5a5caabb578604ce855db>`_
+- Move repoze_tm from make_middleware to dev_server `563a0aa95 <https://github.com/toscawidgets/tw2.devtools/commit/563a0aa95078ec35986f7d5e425a7310a0743969>`_
+- Fix for Python 2.5 `22e88cf0c <https://github.com/toscawidgets/tw2.devtools/commit/22e88cf0c9e1672e320974947c8944b9c9766e6c>`_
+- Fix for Python 2.5 `154c3a017 <https://github.com/toscawidgets/tw2.devtools/commit/154c3a017441ec7688169a4d902b976d2a051560>`_
+- Need decorator for memoize. `14056944d <https://github.com/toscawidgets/tw2.devtools/commit/14056944d357ca5f23afe730954b3da9467cf758>`_
+- Merge paj `8d7b226d8 <https://github.com/toscawidgets/tw2.devtools/commit/8d7b226d856a361137ccf711783d38536608fe60>`_
+- Version bump for decorator dependency. `257bfb468 <https://github.com/toscawidgets/tw2.devtools/commit/257bfb468a342c9a885bd127dacfa833880ead65>`_
+- Devtools actually requires genshi and mako. `42099077c <https://github.com/toscawidgets/tw2.devtools/commit/42099077cbd27de716ad265bd725a2b9a758a3ce>`_
+- Fixed widget test template for TW2 `493b5d343 <https://github.com/toscawidgets/tw2.devtools/commit/493b5d343554af52d600d45fe4bb48aa098139cb>`_
+- Fixed docs for tw2 references `cf5d9599a <https://github.com/toscawidgets/tw2.devtools/commit/cf5d9599a3144f9ac0356f34073d2e184d8d59aa>`_
+- Fixed widget definition for tw2 `7a8ca9455 <https://github.com/toscawidgets/tw2.devtools/commit/7a8ca94557c6a2de314d413bce7b2eb932486abb>`_
+- Added imports to stop stupid test errors `47a89412e <https://github.com/toscawidgets/tw2.devtools/commit/47a89412ebb31743d2e0f9f3de81288a23fac37a>`_
+- Merge branch 'hotfix/oldref-test-tmpl-fix' into develop `bed80f09e <https://github.com/toscawidgets/tw2.devtools/commit/bed80f09ef65f0eb9b716911b0768b9dbaa44773>`_
+- Ignoring build products. `8cbed0cc1 <https://github.com/toscawidgets/tw2.devtools/commit/8cbed0cc125416ed52b4b81fc68cf8fb5a0f66e5>`_
+- Removed hard dependency on protovis. `9c8190ab0 <https://github.com/toscawidgets/tw2.devtools/commit/9c8190ab03d68a0335aaeaddcf58a2e0cfc3b567>`_
+- Strainer is required for tests to pass. `5cc15dd49 <https://github.com/toscawidgets/tw2.devtools/commit/5cc15dd491ad5d7f7f97752ae74c810e704f7bd7>`_
+- Version bump. `116248c72 <https://github.com/toscawidgets/tw2.devtools/commit/116248c726d12340448a89e03d7df79575a352d7>`_
+- Require repoze.tm. `d2f1092e8 <https://github.com/toscawidgets/tw2.devtools/commit/d2f1092e8a3c88074a9a648f24e7af2e6f873be0>`_
+- Version bump for repoze.tm. `8c853a945 <https://github.com/toscawidgets/tw2.devtools/commit/8c853a945b5f2f950304a4da8eed7c098ba4226b>`_
+- Removed all references to repo metadata.  It was a bad idea. `cfaf98d67 <https://github.com/toscawidgets/tw2.devtools/commit/cfaf98d6701415fdf1d218256c5cc54b0b2c1763>`_
+- Using TabsWidget for the view now. `c6d4c7aa9 <https://github.com/toscawidgets/tw2.devtools/commit/c6d4c7aa93757a13015767ff4b4943d0dcba27b6>`_
+- Big dos2unix pass. `612d2d8a5 <https://github.com/toscawidgets/tw2.devtools/commit/612d2d8a542d1b04b0a9cb7fd6eede2f1ef43b49>`_
+- Ignore sqla db (if it shows up). `366678db8 <https://github.com/toscawidgets/tw2.devtools/commit/366678db843329a514299de0001073640e614ad2>`_
+- Monokai.  My favorite pygments theme. `ddfc4899b <https://github.com/toscawidgets/tw2.devtools/commit/ddfc4899b9b920434eb2b5e9e7994a80d6913c93>`_
+- Be more careful with import multiprocessing. `9740bf6c2 <https://github.com/toscawidgets/tw2.devtools/commit/9740bf6c2c63b07cac88c73a0b0f9a433b4f81cc>`_
+- CSS Tweaks. `38b454197 <https://github.com/toscawidgets/tw2.devtools/commit/38b45419785ae336e62ea05c314c650e2a9e8639>`_
+- Protect against user errors. `859f78cc4 <https://github.com/toscawidgets/tw2.devtools/commit/859f78cc47e4b55f42e235588ca57216ac178a01>`_
+- Careful with the demos. `fbb9141ca <https://github.com/toscawidgets/tw2.devtools/commit/fbb9141ca6ad506410eff417c9396efc7211614e>`_
+- Protect other jquery-ui elements from the devtools css. `cb5039e48 <https://github.com/toscawidgets/tw2.devtools/commit/cb5039e48fac001ad6788083e498c5af29d5a944>`_
+- Merge branch 'feature/facelift' into develop `1abfeca7b <https://github.com/toscawidgets/tw2.devtools/commit/1abfeca7bf6d1fca08e7dc3fdb30bd2beb2b72db>`_
+- Version bump for facelift. `70fb7ee6e <https://github.com/toscawidgets/tw2.devtools/commit/70fb7ee6ebf73622cc5d7ff900fd8485397f4978>`_
+- Added a "Template" tab. `7bade7b69 <https://github.com/toscawidgets/tw2.devtools/commit/7bade7b6977dba37d31d528be9d8e8db1c7b1491>`_
+- Version bump for template tab. -- 2.1.0a. `3844d26e2 <https://github.com/toscawidgets/tw2.devtools/commit/3844d26e2e8e830391908bfac90c5444dfcee006>`_
+- Wrap lines when we have to for pygmentized source and templates. `3034af1e3 <https://github.com/toscawidgets/tw2.devtools/commit/3034af1e375ec35a292f2e7a6065305b79e7a3c1>`_
+- Be more careful with user demos yet still. `5bd2a3ea7 <https://github.com/toscawidgets/tw2.devtools/commit/5bd2a3ea7a8892262ca65a10041e0fad940aebfd>`_
+- --reload is now an option to the paster command.  Fixes #6. `be79b57fc <https://github.com/toscawidgets/tw2.devtools/commit/be79b57fc40aae19f0810cd76b06af25411f03ee>`_
+- Version bump for file monitor. `23d523965 <https://github.com/toscawidgets/tw2.devtools/commit/23d523965504daf82b2d50c02f0df6a0768c6d93>`_
+- repoze.tm is not strictly required.  Fixes #2. `d0a70e1b4 <https://github.com/toscawidgets/tw2.devtools/commit/d0a70e1b4fb6261ec67ef1b5204229e1f8edbec0>`_
+- Unhide the select2 widget.  Fixes #9. `bcec69f49 <https://github.com/toscawidgets/tw2.devtools/commit/bcec69f4958be05687040fe73e7a799f9b638a5f>`_
+- Fix encoding issue with the latest genshi. `bb81b64df <https://github.com/toscawidgets/tw2.devtools/commit/bb81b64df791a32808a30e76b6bd3a436ed2d456>`_
+- 2.1.0 `e23a53349 <https://github.com/toscawidgets/tw2.devtools/commit/e23a53349e86da076ece858f7c0017e2e7475f7c>`_
+- Remove pypi-metadata. `077f7fa82 <https://github.com/toscawidgets/tw2.devtools/commit/077f7fa822bf20f6ce194ef519433b23f7b230a2>`_
+- Initial run of python-modernize. `f7396b335 <https://github.com/toscawidgets/tw2.devtools/commit/f7396b33530ab3e694f37e4414c455290bd68011>`_
+- Replace our own dev server with gearbox. `56252f0dc <https://github.com/toscawidgets/tw2.devtools/commit/56252f0dcc5bca34831ffa92160eba6d531f0266>`_
+- Merge branch 'feature/2.2' into develop `9b8912ef7 <https://github.com/toscawidgets/tw2.devtools/commit/9b8912ef798c3db4e6b7e05edc3744a116c577b2>`_
+- Use a different port by default just to prove that we can. `e7a87ae6f <https://github.com/toscawidgets/tw2.devtools/commit/e7a87ae6f85246222027991442a49dd928f7137d>`_
+- 2.2.0 `6b9b47077 <https://github.com/toscawidgets/tw2.devtools/commit/6b9b47077ae9470531173ad91e2f5245cbca89b0>`_
+- Title is a required parameter these days. `9de094107 <https://github.com/toscawidgets/tw2.devtools/commit/9de094107e627b19d4ca9b120b921491a0fe2413>`_
+- Also add module title `8d92de05c <https://github.com/toscawidgets/tw2.devtools/commit/8d92de05c7f7ed7748627cd42ed877c18ff0cef3>`_
+- Metadata fixups, tw2.core#90 `beafeed3c <https://github.com/toscawidgets/tw2.devtools/commit/beafeed3c4c14901c4df33ab7ece239ce35b37af>`_
+- Fix download_url `78ef8a4e7 <https://github.com/toscawidgets/tw2.devtools/commit/78ef8a4e7acc2cddd05dde047a656b72f85facae>`_
+- pep8 `b8c1acc93 <https://github.com/toscawidgets/tw2.devtools/commit/b8c1acc93de9c8fe9f8eacb64a14296315a7eb5f>`_
+- Handle old and new versions of gearbox. `d734bf586 <https://github.com/toscawidgets/tw2.devtools/commit/d734bf586dd667205bbe22ea5bf9e34ee6885edf>`_
+- 2.2.0.1 `b07bf659d <https://github.com/toscawidgets/tw2.devtools/commit/b07bf659df35152bf47dcab82d579f6b1c359303>`_
+
+release_2.0b5
+-------------
 
 - Added tag release_2.0b5 for changeset 4f960ee4b2bf `f648fdac0 <https://github.com/toscawidgets/tw2.devtools/commit/f648fdac087eea4541d6415e8d8f196fc98c29d5>`_
 - Adding jquery `da5374508 <https://github.com/toscawidgets/tw2.devtools/commit/da5374508b55006b86190acb76d1bdadad8dbc56>`_
@@ -83,84 +170,11 @@ Changelog
 - Title is a required parameter these days. `9de094107 <https://github.com/toscawidgets/tw2.devtools/commit/9de094107e627b19d4ca9b120b921491a0fe2413>`_
 - Handle old and new versions of gearbox. `843bb06ea <https://github.com/toscawidgets/tw2.devtools/commit/843bb06ea02ef9cc2667a722814fc319d5accde6>`_
 
-release_2.0b5
--------------
+2.2.0.1
+-------
 
-- Added tag release_2.0b5 for changeset 4f960ee4b2bf `f648fdac0 <https://github.com/toscawidgets/tw2.devtools/commit/f648fdac087eea4541d6415e8d8f196fc98c29d5>`_
-- Adding jquery `da5374508 <https://github.com/toscawidgets/tw2.devtools/commit/da5374508b55006b86190acb76d1bdadad8dbc56>`_
-- Tools to show and hide documentation `58241077b <https://github.com/toscawidgets/tw2.devtools/commit/58241077bc9638391bb51fc327c7a8511ffea62b>`_
-- Showing and hiding documentation `12881d35b <https://github.com/toscawidgets/tw2.devtools/commit/12881d35b67785d552272a6265d35b1f8c70e5af>`_
-- Module-configurable hiding of documentation `f7f1d9120 <https://github.com/toscawidgets/tw2.devtools/commit/f7f1d91206abccbb6e781367fe882078a0c4db19>`_
-- Smarter resource injection in case of _hide_docs `b62d78e07 <https://github.com/toscawidgets/tw2.devtools/commit/b62d78e07da3f5bad368248d189b06c22655071d>`_
-- Added links to widget headers `60097eabc <https://github.com/toscawidgets/tw2.devtools/commit/60097eabcfe69a1bc998ec98c6d7430d4d7c25cd>`_
-- Checking for demos with no listed resources `1272aa8ad <https://github.com/toscawidgets/tw2.devtools/commit/1272aa8ad81f107e394a0fb565287a8c38893e07>`_
-- Checking for Nonetype demos `3a9bedb4f <https://github.com/toscawidgets/tw2.devtools/commit/3a9bedb4f365b69b0ab3ac511bf7fc210191fbf4>`_
-- Warnings on ImportError. `c1ab8d77a <https://github.com/toscawidgets/tw2.devtools/commit/c1ab8d77acaf144c092969454a764f88f3a500e4>`_
-- Added another ImportError warning `c19cd2c4c <https://github.com/toscawidgets/tw2.devtools/commit/c19cd2c4c7128fa2a88617a8218b27f02eb5a10b>`_
-- Doh.  Need to specify the exception. `54c4f716d <https://github.com/toscawidgets/tw2.devtools/commit/54c4f716d8da53019717007144a1ae9c8665ffb3>`_
-- Cleaned up trailing whitespace `145e33386 <https://github.com/toscawidgets/tw2.devtools/commit/145e333868551777a5a50227e09d25b6832fa813>`_
-- New "view source" link for widget demos. `608e0b4d7 <https://github.com/toscawidgets/tw2.devtools/commit/608e0b4d7b32b1f4fffeda87e4998c6e667f1f3e>`_
-- More graceful failures when looking for demo sourcecode. `fc3f827ce <https://github.com/toscawidgets/tw2.devtools/commit/fc3f827cec3eaa9c933e7e0d349d2d96b81de974>`_
-- Doh... `338fbf8f8 <https://github.com/toscawidgets/tw2.devtools/commit/338fbf8f8b2e6ac7001e260745220a689f8c7b4d>`_
-- Added download counts from pypi `96ff1a014 <https://github.com/toscawidgets/tw2.devtools/commit/96ff1a014d90413d792dd47fea9024b39a3734cc>`_
-- Doh.  Have to check for versions existing. `4574a8501 <https://github.com/toscawidgets/tw2.devtools/commit/4574a850111a1883185a13e1c44b4cbb2dc814e4>`_
-- Showing graphs of commits over time. `4b1d5ef96 <https://github.com/toscawidgets/tw2.devtools/commit/4b1d5ef963ae8cec4f21c56769728e939ce46692>`_
-- Got bitbucket stuff working. `ee92160c4 <https://github.com/toscawidgets/tw2.devtools/commit/ee92160c4d0b1931c5b025f6ec09b4280aebf764>`_
-- Added paster flags to explicitly enable the metadata gathering and display. `e405b1b77 <https://github.com/toscawidgets/tw2.devtools/commit/e405b1b77c365d6c88960db2f772dabe15917f18>`_
-- Adding paste.httpserver params. `4e6b8a862 <https://github.com/toscawidgets/tw2.devtools/commit/4e6b8a8623e41de83cb00c858689e886ee3088cc>`_
-- Duplicate argument fix `ad6773aa1 <https://github.com/toscawidgets/tw2.devtools/commit/ad6773aa1233c2898e033bb4bd1435ebcda8005b>`_
-- Typo fix `a481956d0 <https://github.com/toscawidgets/tw2.devtools/commit/a481956d0934d856db765e36a2cce38ca34c7c49>`_
-- Removed multiprocessing from the github repo stuff.  Memory hog. `b6576d8db <https://github.com/toscawidgets/tw2.devtools/commit/b6576d8dba32c2b82b58152a38413b73224b5e10>`_
-- Did the wrong version change in the last commit. `3e6e256fa <https://github.com/toscawidgets/tw2.devtools/commit/3e6e256fa6e4bb72fdf0645b3654fb7ca2cd960c>`_
-- Adding decause `2039b6f44 <https://github.com/toscawidgets/tw2.devtools/commit/2039b6f443726f3b957755347159d673a3c3d1b2>`_
-- Decorators are decorators (are decorators). `6fa7943d2 <https://github.com/toscawidgets/tw2.devtools/commit/6fa7943d288857c5605592b6039a1bd1ee6d9c84>`_
-- Added a test of the memoize stuff. `30213ab68 <https://github.com/toscawidgets/tw2.devtools/commit/30213ab689cd4873016d3f3c6422f57618f4404f>`_
-- Move dev_server to tw2.devtools `fe8d5424e <https://github.com/toscawidgets/tw2.devtools/commit/fe8d5424ecd0161fb6c5a5caabb578604ce855db>`_
-- Move repoze_tm from make_middleware to dev_server `563a0aa95 <https://github.com/toscawidgets/tw2.devtools/commit/563a0aa95078ec35986f7d5e425a7310a0743969>`_
-- Fix for Python 2.5 `22e88cf0c <https://github.com/toscawidgets/tw2.devtools/commit/22e88cf0c9e1672e320974947c8944b9c9766e6c>`_
-- Fix for Python 2.5 `154c3a017 <https://github.com/toscawidgets/tw2.devtools/commit/154c3a017441ec7688169a4d902b976d2a051560>`_
-- Need decorator for memoize. `14056944d <https://github.com/toscawidgets/tw2.devtools/commit/14056944d357ca5f23afe730954b3da9467cf758>`_
-- Merge paj `8d7b226d8 <https://github.com/toscawidgets/tw2.devtools/commit/8d7b226d856a361137ccf711783d38536608fe60>`_
-- Version bump for decorator dependency. `257bfb468 <https://github.com/toscawidgets/tw2.devtools/commit/257bfb468a342c9a885bd127dacfa833880ead65>`_
-- Devtools actually requires genshi and mako. `42099077c <https://github.com/toscawidgets/tw2.devtools/commit/42099077cbd27de716ad265bd725a2b9a758a3ce>`_
-- Fixed widget test template for TW2 `493b5d343 <https://github.com/toscawidgets/tw2.devtools/commit/493b5d343554af52d600d45fe4bb48aa098139cb>`_
-- Fixed docs for tw2 references `cf5d9599a <https://github.com/toscawidgets/tw2.devtools/commit/cf5d9599a3144f9ac0356f34073d2e184d8d59aa>`_
-- Fixed widget definition for tw2 `7a8ca9455 <https://github.com/toscawidgets/tw2.devtools/commit/7a8ca94557c6a2de314d413bce7b2eb932486abb>`_
-- Added imports to stop stupid test errors `47a89412e <https://github.com/toscawidgets/tw2.devtools/commit/47a89412ebb31743d2e0f9f3de81288a23fac37a>`_
-- Merge branch 'hotfix/oldref-test-tmpl-fix' into develop `bed80f09e <https://github.com/toscawidgets/tw2.devtools/commit/bed80f09ef65f0eb9b716911b0768b9dbaa44773>`_
-- Ignoring build products. `8cbed0cc1 <https://github.com/toscawidgets/tw2.devtools/commit/8cbed0cc125416ed52b4b81fc68cf8fb5a0f66e5>`_
-- Removed hard dependency on protovis. `9c8190ab0 <https://github.com/toscawidgets/tw2.devtools/commit/9c8190ab03d68a0335aaeaddcf58a2e0cfc3b567>`_
-- Strainer is required for tests to pass. `5cc15dd49 <https://github.com/toscawidgets/tw2.devtools/commit/5cc15dd491ad5d7f7f97752ae74c810e704f7bd7>`_
-- Version bump. `116248c72 <https://github.com/toscawidgets/tw2.devtools/commit/116248c726d12340448a89e03d7df79575a352d7>`_
-- Require repoze.tm. `d2f1092e8 <https://github.com/toscawidgets/tw2.devtools/commit/d2f1092e8a3c88074a9a648f24e7af2e6f873be0>`_
-- Version bump for repoze.tm. `8c853a945 <https://github.com/toscawidgets/tw2.devtools/commit/8c853a945b5f2f950304a4da8eed7c098ba4226b>`_
-- Removed all references to repo metadata.  It was a bad idea. `cfaf98d67 <https://github.com/toscawidgets/tw2.devtools/commit/cfaf98d6701415fdf1d218256c5cc54b0b2c1763>`_
-- Using TabsWidget for the view now. `c6d4c7aa9 <https://github.com/toscawidgets/tw2.devtools/commit/c6d4c7aa93757a13015767ff4b4943d0dcba27b6>`_
-- Big dos2unix pass. `612d2d8a5 <https://github.com/toscawidgets/tw2.devtools/commit/612d2d8a542d1b04b0a9cb7fd6eede2f1ef43b49>`_
-- Ignore sqla db (if it shows up). `366678db8 <https://github.com/toscawidgets/tw2.devtools/commit/366678db843329a514299de0001073640e614ad2>`_
-- Monokai.  My favorite pygments theme. `ddfc4899b <https://github.com/toscawidgets/tw2.devtools/commit/ddfc4899b9b920434eb2b5e9e7994a80d6913c93>`_
-- Be more careful with import multiprocessing. `9740bf6c2 <https://github.com/toscawidgets/tw2.devtools/commit/9740bf6c2c63b07cac88c73a0b0f9a433b4f81cc>`_
-- CSS Tweaks. `38b454197 <https://github.com/toscawidgets/tw2.devtools/commit/38b45419785ae336e62ea05c314c650e2a9e8639>`_
-- Protect against user errors. `859f78cc4 <https://github.com/toscawidgets/tw2.devtools/commit/859f78cc47e4b55f42e235588ca57216ac178a01>`_
-- Careful with the demos. `fbb9141ca <https://github.com/toscawidgets/tw2.devtools/commit/fbb9141ca6ad506410eff417c9396efc7211614e>`_
-- Protect other jquery-ui elements from the devtools css. `cb5039e48 <https://github.com/toscawidgets/tw2.devtools/commit/cb5039e48fac001ad6788083e498c5af29d5a944>`_
-- Merge branch 'feature/facelift' into develop `1abfeca7b <https://github.com/toscawidgets/tw2.devtools/commit/1abfeca7bf6d1fca08e7dc3fdb30bd2beb2b72db>`_
-- Version bump for facelift. `70fb7ee6e <https://github.com/toscawidgets/tw2.devtools/commit/70fb7ee6ebf73622cc5d7ff900fd8485397f4978>`_
-- Added a "Template" tab. `7bade7b69 <https://github.com/toscawidgets/tw2.devtools/commit/7bade7b6977dba37d31d528be9d8e8db1c7b1491>`_
-- Version bump for template tab. -- 2.1.0a. `3844d26e2 <https://github.com/toscawidgets/tw2.devtools/commit/3844d26e2e8e830391908bfac90c5444dfcee006>`_
-- Wrap lines when we have to for pygmentized source and templates. `3034af1e3 <https://github.com/toscawidgets/tw2.devtools/commit/3034af1e375ec35a292f2e7a6065305b79e7a3c1>`_
-- Be more careful with user demos yet still. `5bd2a3ea7 <https://github.com/toscawidgets/tw2.devtools/commit/5bd2a3ea7a8892262ca65a10041e0fad940aebfd>`_
-- --reload is now an option to the paster command.  Fixes #6. `be79b57fc <https://github.com/toscawidgets/tw2.devtools/commit/be79b57fc40aae19f0810cd76b06af25411f03ee>`_
-- Version bump for file monitor. `23d523965 <https://github.com/toscawidgets/tw2.devtools/commit/23d523965504daf82b2d50c02f0df6a0768c6d93>`_
-- repoze.tm is not strictly required.  Fixes #2. `d0a70e1b4 <https://github.com/toscawidgets/tw2.devtools/commit/d0a70e1b4fb6261ec67ef1b5204229e1f8edbec0>`_
-- Unhide the select2 widget.  Fixes #9. `bcec69f49 <https://github.com/toscawidgets/tw2.devtools/commit/bcec69f4958be05687040fe73e7a799f9b638a5f>`_
-- Fix encoding issue with the latest genshi. `bb81b64df <https://github.com/toscawidgets/tw2.devtools/commit/bb81b64df791a32808a30e76b6bd3a436ed2d456>`_
-- 2.1.0 `e23a53349 <https://github.com/toscawidgets/tw2.devtools/commit/e23a53349e86da076ece858f7c0017e2e7475f7c>`_
-- Remove pypi-metadata. `077f7fa82 <https://github.com/toscawidgets/tw2.devtools/commit/077f7fa822bf20f6ce194ef519433b23f7b230a2>`_
-- Initial run of python-modernize. `f7396b335 <https://github.com/toscawidgets/tw2.devtools/commit/f7396b33530ab3e694f37e4414c455290bd68011>`_
-- Replace our own dev server with gearbox. `56252f0dc <https://github.com/toscawidgets/tw2.devtools/commit/56252f0dcc5bca34831ffa92160eba6d531f0266>`_
-- Merge branch 'feature/2.2' into develop `9b8912ef7 <https://github.com/toscawidgets/tw2.devtools/commit/9b8912ef798c3db4e6b7e05edc3744a116c577b2>`_
-- Use a different port by default just to prove that we can. `e7a87ae6f <https://github.com/toscawidgets/tw2.devtools/commit/e7a87ae6f85246222027991442a49dd928f7137d>`_
+- Title is a required parameter these days. `9de094107 <https://github.com/toscawidgets/tw2.devtools/commit/9de094107e627b19d4ca9b120b921491a0fe2413>`_
+- Handle old and new versions of gearbox. `843bb06ea <https://github.com/toscawidgets/tw2.devtools/commit/843bb06ea02ef9cc2667a722814fc319d5accde6>`_
 
 2.2.0
 -----
