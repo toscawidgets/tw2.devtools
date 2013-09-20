@@ -1,6 +1,6 @@
 """Setuptools setup file"""
 
-import sys, os
+import os
 
 from setuptools import setup, find_packages
 
@@ -12,9 +12,14 @@ except:
 
 setup(
     name='tw2.devtools',
-    version='2.2.0.1',
-    description="Web widget creation toolkit based on TurboGears widgets - development tools",
-    long_description = open('README.txt').read().split('\n\n', 1)[1],
+    version='2.2.0.2',
+    description='The development tools for ToscaWidgets 2, a web widget toolkit.',
+    long_description=open('README.txt').read().split('\n\n', 1)[1],
+    author='Paul Johnston, Christopher Perkins, Alberto Valverde Gonzalez & contributors',
+    author_email='toscawidgets-discuss@googlegroups.com',
+    url="http://toscawidgets.org/",
+    download_url="https://pypi.python.org/pypi/tw2.devtools/",
+    license='MIT',
     install_requires=[
         'tw2.core>=2.1.0a',
         'gearbox',
@@ -28,38 +33,34 @@ setup(
         "genshi",
         "mako",
         ],
-    extras_require = {
+    extras_require={
         'build_docs': [
             "Sphinx",
             ],
         },
-    tests_require = [
+    tests_require=[
         'WebTest',
         'nose',
         'sieve',
     ],
-    url = "http://toscawidgets.org/documentation/tw2.core/",
-    author='Paul Johnston, Christopher Perkins, Alberto Valverde & contributors',
-    author_email='paj@pajhome.org.uk',
-    license='MIT',
-    test_suite = 'nose.collector',
+    test_suite='nose.collector',
     packages=find_packages(exclude=['ez_setup', 'tests']),
-    namespace_packages = ['tw2'],
+    namespace_packages=['tw2'],
     include_package_data=True,
-    exclude_package_data={"thirdparty" : ["*"]},
+    exclude_package_data={"thirdparty": ["*"]},
     entry_points="""
     [paste.paster_create_template]
     tw2.library=tw2.devtools.paste_template:ToscaWidgetsTemplate
 
     [gearbox.commands]
-    tw2.browser = tw2.devtools.browser:WbCommand
+    tw2.browser=tw2.devtools.browser:WbCommand
 
     [paste.server_runner]
-    tw2_dev_server = tw2.devtools.server:dev_server
+    tw2_dev_server=tw2.devtools.server:dev_server
 
     """,
     zip_safe=False,
-    classifiers = [
+    classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Web Environment',
         'Environment :: Web Environment :: ToscaWidgets',

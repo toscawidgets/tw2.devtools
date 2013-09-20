@@ -118,6 +118,11 @@ class ModuleMissing(Exception):
     pass
 
 class Module(WbPage):
+
+    def prepare(self):
+        self.title = self.child.module
+        super(Module, self).prepare()
+
     def fetch_data(self, req):
         self.child.module = req.GET['module']
         self.child.child.module = req.GET['module']
